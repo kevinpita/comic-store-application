@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<toc version="1.0">
+	<tocitem text="Manual">
+		<tocitem target="principal" text="Principal">
+			<tocitem target="configuracion_conexion" text="Configuración Conexión"/>
+		</tocitem>
+		<tocitem target="peliculas" text="Películas"/>
+		<tocitem target="actores" text="Actores"/>
+		<tocitem target="informes" text="Informes"/>
+		<tocitem target="generos" text="Géneros"/>
+	</tocitem>
+</toc>

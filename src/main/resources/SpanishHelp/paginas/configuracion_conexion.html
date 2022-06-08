@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Configuración Conexión</title>
+</head>
+<body>
+<h1>Configuración de la conexión</h1>
+<img src="../imagenes/configuracion_conexion.png">
+<p>Esta pantalla intentará cargar los datos de un fichero llamado "configuración.properties" (el mismo donde se guardan)<br/>
+    en caso de existir se mostrarán en sus campos correspondientes</p>
+<p>En esta pantalla se puede establecer los datos de la conexión a la base de datos:</p>
+<ul>
+    <li>Nombre de la base de datos</li>
+    <li>Dirección de la base de datos</li>
+    <li>Puerto de la base de datos</li>
+    <li>Usuario de la base de datos</li>
+    <li>Contraseña</li>
+</ul>
+<p>Estos campos tienen unas restricciones:</p>
+<ul>
+    <li>Nombre no puede estar vacío</li>
+    <li>Dirección no puede estar vacío</li>
+    <li>Puerto no puede estar vacío</li>
+    <li>Puerto tiene que ser un número entre 1 y 65535</li>
+    <li>Usuario no puede estar vacío</li>
+</ul>
+
+<p>En la parte inferior se puede observar un icono de un ojo y 3 botones</p>
+<ul>
+    <li>El icono del ojo muestra la contraseña mientras se le esté haciendo click.</li>
+    <li>El botón de Comprobar comprobará la contraseña contra la base de datos<br/>
+        comprobando que la conexión funcione y existan las tablas necesarias<br/>
+        indicando cualquier error que pueda producirse. En el caso de no existir las tablas<br/>
+        preguntará si se quieren crear.</li>
+    <img src="../imagenes/configuracion_conexion_error.png"/>
+    <li>El botón de Guardar, guardará en un archivo llamado "configuración.properties", que <br/>
+    que se encontrará en el mismo directorio que la aplicación, la configuración de la base de datos</li>
+    <li>El botón de Cerrar cerrará la ventana</li>
+</ul>
+
+
+</body>
+</html>
