@@ -15,8 +15,6 @@ import javafx.stage.Stage;
 public class MainWindow extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        // Load resource bundle
-
         // Load fxml file with resource bundle
         FXMLLoader fxmlLoader =
                 new FXMLLoader(
