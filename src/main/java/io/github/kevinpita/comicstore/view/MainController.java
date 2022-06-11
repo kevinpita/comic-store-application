@@ -74,7 +74,10 @@ public class MainController {
             ((Button) pane.lookupButton(t)).setDefaultButton(t == ButtonType.NO);
         }
 
+        // center alert on parent window
+        alert.initOwner(settingsButton.getScene().getWindow());
         Optional<ButtonType> value = alert.showAndWait();
+
         if (value.isEmpty() || value.get() != ButtonType.YES) {
             return;
         }
