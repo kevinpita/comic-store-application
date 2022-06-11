@@ -11,13 +11,18 @@ import javafx.util.Duration;
 
 public class MainController {
     @FXML private Button settingsButton;
-    @FXML private Button authorButton;
-    @FXML private Button reportButton;
     @FXML private Tooltip settingsButtonTooltip;
     @FXML private Tooltip helpButton;
     @FXML private Tooltip languageButton;
-    @FXML private Button comicButton;
-    @FXML private Button collectionButton;
+    @FXML private Button listCollectionButton;
+    @FXML private Button createComicButton;
+    @FXML private Button listComicButton;
+    @FXML private Button createAuthorButton;
+    @FXML private Button listReportButton;
+    @FXML private Button listAuthorButton;
+    @FXML private Button createCollectionButton;
+    @FXML private Label createButton;
+    @FXML private Label listButton;
 
     public void initialize() {
         rotateSettingsButton();
@@ -25,13 +30,21 @@ public class MainController {
     }
 
     private void setStringBindings() {
-        authorButton.textProperty().bind(i18n.getStringBinding("authorButton"));
-        reportButton.textProperty().bind(i18n.getStringBinding("reportButton"));
         settingsButtonTooltip.textProperty().bind(i18n.getStringBinding("settingsButton.tooltip"));
         helpButton.textProperty().bind(i18n.getStringBinding("helpButton.tooltip"));
         languageButton.textProperty().bind(i18n.getStringBinding("translateButton.tooltip"));
-        comicButton.textProperty().bind(i18n.getStringBinding("comicButton"));
-        collectionButton.textProperty().bind(i18n.getStringBinding("collectionButton"));
+
+        listComicButton.textProperty().bind(i18n.getStringBinding("comicButton"));
+        listCollectionButton.textProperty().bind(i18n.getStringBinding("collectionButton"));
+        listAuthorButton.textProperty().bind(i18n.getStringBinding("authorButton"));
+        listReportButton.textProperty().bind(i18n.getStringBinding("reportButton"));
+
+        createComicButton.textProperty().bind(i18n.getStringBinding("comicButton"));
+        createCollectionButton.textProperty().bind(i18n.getStringBinding("collectionButton"));
+        createAuthorButton.textProperty().bind(i18n.getStringBinding("authorButton"));
+
+        createButton.textProperty().bind(i18n.getStringBinding("createButton"));
+        listButton.textProperty().bind(i18n.getStringBinding("listButton"));
     }
 
     private void rotateSettingsButton() {
