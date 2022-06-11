@@ -18,3 +18,7 @@
 Button {
     -fx-cursor: hand;
 }
+
+.mainColor {
+    -fx-background-color: #333;
+}
