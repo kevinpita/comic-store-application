@@ -1,0 +1,20 @@
+.menuButton {
+    -fx-background-color: #FFF;
+    -fx-background-radius: 5;
+}
+
+.transparent {
+    -fx-background-color: transparent;
+}
+
+.hoverButton:hover {
+    -fx-background-color: #b6cade;
+}
+
+.selected {
+    -fx-background-color: #84aece;
+}
+
+Button {
+    -fx-cursor: hand;
+}
