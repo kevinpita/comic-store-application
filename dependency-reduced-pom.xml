@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.kevinpita</groupId>
   <artifactId>comicstore</artifactId>
-  <name>comicstore</name>
-  <version>1.0-SNAPSHOT</version>
+  <name>Comic Store Application</name>
+  <version>0.0.2</version>
   <build>
     <plugins>
       <plugin>
@@ -23,7 +23,7 @@
           <execution>
             <id>default-cli</id>
             <configuration>
-              <mainClass>io.github.kevinpita.comicstore/io.github.kevinpita.comicstore.HelloApplication</mainClass>
+              <mainClass>io.github.kevinpita.comicstore/io.github.kevinpita.comicstore.view.MainWindow</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
@@ -53,10 +53,40 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.22.6</version>
+        <configuration>
+          <formats>
+            <format>
+              <includes>
+                <include>*.md</include>
+                <include>.gitignore</include>
+              </includes>
+              <trimTrailingWhitespace />
+              <endWithNewline />
+              <indent>
+                <spaces>true</spaces>
+                <spacesPerTab>4</spacesPerTab>
+              </indent>
+            </format>
+          </formats>
+          <java>
+            <googleJavaFormat>
+              <style>AOSP</style>
+              <reflowLongStrings>true</reflowLongStrings>
+            </googleJavaFormat>
+            <licenseHeader>
+              <content>/* Kevin Pita $YEAR */</content>
+            </licenseHeader>
+          </java>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <properties>
+    <java.version>11</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <junit.version>5.8.2</junit.version>
   </properties>
 </project>
