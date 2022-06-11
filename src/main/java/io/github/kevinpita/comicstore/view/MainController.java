@@ -23,6 +23,7 @@ public class MainController {
     @FXML private Button createCollectionButton;
     @FXML private Label createButton;
     @FXML private Label listButton;
+    @FXML private Label searchLabel;
 
     public void initialize() {
         rotateSettingsButton();
@@ -45,6 +46,7 @@ public class MainController {
 
         createButton.textProperty().bind(i18n.getStringBinding("createButton"));
         listButton.textProperty().bind(i18n.getStringBinding("listButton"));
+        searchLabel.textProperty().bind(i18n.getStringBinding("searchLabel"));
     }
 
     private void rotateSettingsButton() {
