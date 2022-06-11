@@ -1,0 +1,76 @@
+/* Kevin Pita 2022 */
+package io.github.kevinpita.comicstore.view;
+
+import io.github.kevinpita.comicstore.utils.i18n;
+import java.util.Locale;
+import java.util.Optional;
+import javafx.animation.RotateTransition;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.util.Duration;
+
+public class MainController {
+    @FXML private Button settingsButton;
+    @FXML private Button authorButton;
+    @FXML private Button reportButton;
+    @FXML private Tooltip settingsButtonTooltip;
+    @FXML private Tooltip helpButton;
+    @FXML private Tooltip languageButton;
+    @FXML private Button comicButton;
+    @FXML private Button collectionButton;
+
+    public void initialize() {
+        rotateSettingsButton();
+        setStringBindings();
+    }
+
+    private void setStringBindings() {
+        authorButton.textProperty().bind(i18n.getStringBinding("authorButton"));
+        reportButton.textProperty().bind(i18n.getStringBinding("reportButton"));
+        settingsButtonTooltip.textProperty().bind(i18n.getStringBinding("settingsButton.tooltip"));
+        helpButton.textProperty().bind(i18n.getStringBinding("helpButton.tooltip"));
+        languageButton.textProperty().bind(i18n.getStringBinding("translateButton.tooltip"));
+        comicButton.textProperty().bind(i18n.getStringBinding("comicButton"));
+        collectionButton.textProperty().bind(i18n.getStringBinding("collectionButton"));
+    }
+
+    private void rotateSettingsButton() {
+        RotateTransition rotation = new RotateTransition(Duration.seconds(0.5), settingsButton);
+        rotation.setCycleCount(1);
+        rotation.setByAngle(360);
+
+        settingsButton.setOnMouseEntered(e -> rotation.play());
+    }
+
+    @FXML
+    public void askForLanguageChange() {
+        Alert alert =
+                new Alert(
+                        Alert.AlertType.CONFIRMATION,
+                        i18n.getString("languageChangeConfirm"),
+                        ButtonType.YES,
+                        ButtonType.NO);
+        alert.setTitle(i18n.getString("languageChangeTitle"));
+
+        alert.setHeaderText(null);
+        alert.setGraphic(null);
+
+        // Set NO button as default
+        DialogPane pane = alert.getDialogPane();
+        for (ButtonType t : alert.getButtonTypes()) {
+            ((Button) pane.lookupButton(t)).setDefaultButton(t == ButtonType.NO);
+        }
+
+        Optional<ButtonType> value = alert.showAndWait();
+        if (value.isEmpty() || value.get() != ButtonType.YES) {
+            return;
+        }
+
+        if (Locale.getDefault().equals(new Locale("es", "ES"))) {
+            Locale.setDefault(new Locale("gl", "ES"));
+        } else {
+            Locale.setDefault(new Locale("es", "ES"));
+        }
+        i18n.update();
+    }
+}
