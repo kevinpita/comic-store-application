@@ -15,9 +15,7 @@ import javafx.scene.control.TextField;
 public class ConfigurationController {
     @javafx.fxml.FXML private Button configSave;
     @javafx.fxml.FXML private TextField configServer;
-    @javafx.fxml.FXML private Button configCancel;
     @javafx.fxml.FXML private TextField configPassword;
-    @javafx.fxml.FXML private Button configCheck;
 
     public void initialize() {
         configServer.setText(Configuration.getApiUrl());
