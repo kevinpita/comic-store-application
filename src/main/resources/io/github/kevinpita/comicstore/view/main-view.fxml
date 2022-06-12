@@ -4,12 +4,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -263,9 +264,10 @@
                         </HBox>
                     </top>
                     <center>
-                        <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <BorderPane fx:id="listParentPane" prefHeight="200.0" prefWidth="200.0"
+                                    BorderPane.alignment="CENTER">
                             <center>
-                                <FlowPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+                                <fx:include fx:id="importedPane" source="comic-list.fxml"/>
                             </center>
                         </BorderPane>
                     </center>
