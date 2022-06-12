@@ -5,6 +5,7 @@ import io.github.kevinpita.comicstore.utils.i18n;
 import java.util.Locale;
 import java.util.Optional;
 import javafx.animation.RotateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Duration;
@@ -25,7 +26,10 @@ public class MainController {
     @FXML private Label listButton;
     @FXML private Label searchLabel;
 
+    private Button currentMenuButton;
+
     public void initialize() {
+        currentMenuButton = listComicButton;
         rotateSettingsButton();
         setStringBindings();
     }
@@ -90,5 +94,18 @@ public class MainController {
             Locale.setDefault(new Locale("es", "ES"));
         }
         i18n.update();
+    }
+
+    @FXML
+    public void changeButton(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+        if (clickedButton.equals(currentMenuButton)) {
+            return;
+        }
+        clickedButton.getStyleClass().add("selected");
+        clickedButton.getStyleClass().remove("hoverButton");
+        currentMenuButton.getStyleClass().remove("selected");
+        currentMenuButton.getStyleClass().add("hoverButton");
+        currentMenuButton = clickedButton;
     }
 }
