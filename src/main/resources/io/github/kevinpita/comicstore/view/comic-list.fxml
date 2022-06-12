@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/18"
+<BorderPane prefHeight="600.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="io.github.kevinpita.comicstore.view.ComicListController">
     <center>
-        <ScrollPane fitToHeight="true" fitToWidth="true">
+        <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: #525252;">
             <content>
                 <FlowPane columnHalignment="CENTER" prefWrapLength="0.0" rowValignment="TOP"
                           style="-fx-background-color: #525252;">
