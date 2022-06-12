@@ -6,7 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity"
             prefHeight="700.0" prefWidth="1100.0" stylesheets="@main.css"
             xmlns="http://javafx.com/javafx/18" fx:controller="io.github.kevinpita.comicstore.view.MainController">
     <left>
@@ -96,7 +97,8 @@
                     <BorderPane.margin>
                         <Insets bottom="30.0"/>
                     </BorderPane.margin>
-                    <Button id="settingsButton" fx:id="settingsButton" mnemonicParsing="false" styleClass="transparent">
+                    <Button id="settingsButton" fx:id="settingsButton" mnemonicParsing="false" onAction="#openSettings"
+                            styleClass="transparent">
                         <VBox.margin>
                             <Insets bottom="40.0"/>
                         </VBox.margin>

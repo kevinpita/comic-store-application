@@ -22,3 +22,19 @@ Button {
 .mainColor {
     -fx-background-color: #333;
 }
+
+.configStyle {
+    -fx-border-color: #FFF;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFF;
+}
+
+.configTextField {
+    -fx-background-color: #6D6469;
+}
+
+.configHover:hover {
+    -fx-background-color: #646D68;
+}
