@@ -1,5 +1,5 @@
 /* Kevin Pita 2022 */
-package io.github.kevinpita.comicstore.utils;
+package io.github.kevinpita.comicstore.util;
 
 import java.util.ResourceBundle;
 import javafx.beans.binding.StringBinding;

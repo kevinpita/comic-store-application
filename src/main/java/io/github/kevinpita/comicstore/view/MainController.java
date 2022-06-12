@@ -1,7 +1,7 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.view;
 
-import io.github.kevinpita.comicstore.utils.i18n;
+import io.github.kevinpita.comicstore.util.i18n;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Optional;
