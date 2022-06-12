@@ -10,8 +10,12 @@ import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MainController {
@@ -32,6 +36,7 @@ public class MainController {
 
     private Button currentMenuButton;
     @FXML private BorderPane listParentPane;
+    @FXML private ComicListController importedPaneController;
 
     public void initialize() {
         currentMenuButton = listComicButton;
@@ -125,5 +130,37 @@ public class MainController {
                                         fxmlFile)),
                         i18n.getResourceBundle());
         listParentPane.setCenter(fxmlLoader.load());
+    }
+
+    @FXML
+    public void openSettings() {
+        try {
+            FXMLLoader fxmlLoader =
+                    new FXMLLoader(
+                            MainWindow.class.getResource(
+                                    "/io/github/kevinpita/comicstore/view/configuration.fxml"),
+                            i18n.getResourceBundle());
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+
+            stage.setScene(scene);
+            stage.setTitle(i18n.getString("configurationTitle"));
+
+            Bounds mainBounds = currentMenuButton.getScene().getRoot().getLayoutBounds();
+            stage.setX(
+                    currentMenuButton.getScene().getWindow().getX()
+                            + (mainBounds.getWidth() - 495) / 2);
+            stage.setY(
+                    currentMenuButton.getScene().getWindow().getY()
+                            + (mainBounds.getHeight() - 254) / 2);
+
+            stage.setResizable(false);
+            stage.initOwner(currentMenuButton.getScene().getWindow());
+            stage.initModality(Modality.WINDOW_MODAL);
+
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
