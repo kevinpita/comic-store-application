@@ -5,14 +5,12 @@ import java.io.*;
 import java.util.Locale;
 import java.util.Properties;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Data
 public class Configuration {
-    private static String apiUrl = "http://localhost:8383/";
-    private static String authToken = "auth_token_env_compose";
+    @Getter @Setter private static String apiUrl = "http://localhost:8383/";
+    @Getter @Setter private static String authToken = "auth_token_env_compose";
 
     @Setter(AccessLevel.NONE)
     @Getter(AccessLevel.NONE)
@@ -57,8 +55,7 @@ public class Configuration {
             language = prop.getProperty("language");
         } catch (FileNotFoundException ignored) {
             writeConfiguration();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
         }
     }
 
@@ -69,7 +66,7 @@ public class Configuration {
         prop.setProperty("language", language);
         try (OutputStream output = new FileOutputStream("./configuration.properties")) {
             prop.store(output, null);
-        } catch (IOException ignored) {
+        } catch (Exception ignored) {
         }
     }
 }
