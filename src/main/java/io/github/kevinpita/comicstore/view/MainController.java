@@ -2,12 +2,15 @@
 package io.github.kevinpita.comicstore.view;
 
 import io.github.kevinpita.comicstore.utils.i18n;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Optional;
 import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
 
 public class MainController {
@@ -27,6 +30,7 @@ public class MainController {
     @FXML private Label searchLabel;
 
     private Button currentMenuButton;
+    @FXML private BorderPane listParentPane;
 
     public void initialize() {
         currentMenuButton = listComicButton;
@@ -97,7 +101,7 @@ public class MainController {
     }
 
     @FXML
-    public void changeButton(ActionEvent event) {
+    public void changeButton(ActionEvent event) throws IOException {
         Button clickedButton = (Button) event.getSource();
         if (clickedButton.equals(currentMenuButton)) {
             return;
@@ -107,5 +111,16 @@ public class MainController {
         currentMenuButton.getStyleClass().remove("selected");
         currentMenuButton.getStyleClass().add("hoverButton");
         currentMenuButton = clickedButton;
+
+        String fxmlFile =
+                currentMenuButton.getId().split("list")[1].split("Button")[0].toLowerCase();
+        FXMLLoader fxmlLoader =
+                new FXMLLoader(
+                        MainWindow.class.getResource(
+                                String.format(
+                                        "/io/github/kevinpita/comicstore/view/%s-list.fxml",
+                                        fxmlFile)),
+                        i18n.getResourceBundle());
+        listParentPane.setCenter(fxmlLoader.load());
     }
 }
