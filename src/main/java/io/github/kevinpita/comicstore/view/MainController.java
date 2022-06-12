@@ -32,11 +32,11 @@ public class MainController {
     @FXML private Button createCollectionButton;
     @FXML private Label createButton;
     @FXML private Label listButton;
-    @FXML private Label searchLabel;
-
+    @FXML private Button searchLabel;
     private Button currentMenuButton;
     @FXML private BorderPane listParentPane;
     @FXML private ComicListController importedPaneController;
+    @FXML private TextField searchBar;
 
     public void initialize() {
         currentMenuButton = listComicButton;
@@ -60,7 +60,9 @@ public class MainController {
 
         createButton.textProperty().bind(i18n.getStringBinding("createButton"));
         listButton.textProperty().bind(i18n.getStringBinding("listButton"));
+
         searchLabel.textProperty().bind(i18n.getStringBinding("searchLabel"));
+        searchBar.promptTextProperty().bind(i18n.getStringBinding("searchBarHint"));
     }
 
     private void rotateSettingsButton() {
@@ -162,5 +164,10 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void removeSearchText() {
+        searchBar.setText("");
     }
 }

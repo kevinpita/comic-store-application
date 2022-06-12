@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="700.0" prefWidth="1100.0" stylesheets="@main.css"
             xmlns="http://javafx.com/javafx/18" fx:controller="io.github.kevinpita.comicstore.view.MainController">
     <left>
@@ -230,29 +229,44 @@
                         <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="200.0"
                               styleClass="mainColor" BorderPane.alignment="CENTER">
                             <children>
-                                <Label fx:id="searchLabel" text="%searchLabel" textFill="WHITE" HBox.hgrow="SOMETIMES">
-                                    <font>
-                                        <Font size="18.0"/>
-                                    </font>
-                                </Label>
-                                <TextField HBox.hgrow="SOMETIMES">
+                                <HBox alignment="CENTER" styleClass="searchBoxParent" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <TextField fx:id="searchBar" promptText="%searchBarHint"
+                                                   styleClass="transparent" HBox.hgrow="SOMETIMES">
+                                            <HBox.margin>
+                                                <Insets left="5.0"/>
+                                            </HBox.margin>
+                                            <font>
+                                                <Font size="18.0"/>
+                                            </font>
+                                        </TextField>
+                                        <Button mnemonicParsing="false" onAction="#removeSearchText"
+                                                styleClass="transparent">
+                                            <graphic>
+                                                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true"
+                                                           preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@images/removeText.png"/>
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                        </Button>
+                                        <Button fx:id="searchLabel" alignment="CENTER" prefHeight="40.0"
+                                                prefWidth="125.0"
+                                                style="-fx-background-color: #707070; -fx-background-radius: 20 0 0 20;"
+                                                text="%searchLabel" textAlignment="CENTER">
+                                            <font>
+                                                <Font size="18.0"/>
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets bottom="1.0" left="15.0"/>
+                                            </HBox.margin>
+                                        </Button>
+                                    </children>
                                     <HBox.margin>
-                                        <Insets left="10.0"/>
+                                        <Insets bottom="30.0" left="40.0" right="40.0" top="30.0"/>
                                     </HBox.margin>
-                                    <font>
-                                        <Font size="18.0"/>
-                                    </font>
-                                </TextField>
-                                <Button mnemonicParsing="false" styleClass="transparent">
-                                    <graphic>
-                                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true"
-                                                   preserveRatio="true">
-                                            <image>
-                                                <Image url="@images/search.png"/>
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </Button>
+                                </HBox>
                             </children>
                         </HBox>
                     </top>

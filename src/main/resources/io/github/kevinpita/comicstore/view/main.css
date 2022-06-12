@@ -38,3 +38,8 @@ Button {
 .configHover:hover {
     -fx-background-color: #646D68;
 }
+
+.searchBoxParent {
+    -fx-background-color: #FFF;
+    -fx-background-radius: 50;
+}
