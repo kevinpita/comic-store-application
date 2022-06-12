@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane prefHeight="600.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/18"
             fx:controller="io.github.kevinpita.comicstore.view.AuthorListController">
     <center>
         <Label text="AUTHOR" BorderPane.alignment="CENTER"/>

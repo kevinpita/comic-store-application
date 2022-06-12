@@ -13,6 +13,10 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         // Load fxml file with resource bundle
@@ -48,9 +52,5 @@ public class MainWindow extends Application {
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((primaryScreenBounds.getWidth() - stage.getMinWidth()) / 2);
         stage.setY((primaryScreenBounds.getHeight() - stage.getMinHeight()) / 2);
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }

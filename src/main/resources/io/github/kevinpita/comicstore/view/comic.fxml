@@ -7,27 +7,30 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.ComicController">
-   <children>
-      <AnchorPane fx:id="comicPane" prefHeight="231.0" prefWidth="114.0">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <children>
-            <ImageView fx:id="comicImage" fitHeight="193.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/comic.png"/>
-               </image>
-            </ImageView>
-            <Label fx:id="comicTtle" layoutX="10.0" layoutY="185.0" prefHeight="52.0" prefWidth="107.0" text="Título del comic" textFill="WHITE" wrapText="true">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-   </children>
-   <padding>
-      <Insets right="25.0" />
-   </padding>
+<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="io.github.kevinpita.comicstore.view.ComicController">
+    <children>
+        <AnchorPane fx:id="comicPane" prefHeight="231.0" prefWidth="114.0">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <children>
+                <ImageView fx:id="comicImage" fitHeight="193.0" fitWidth="132.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@images/comic.png"/>
+                    </image>
+                </ImageView>
+                <Label fx:id="comicTtle" layoutX="10.0" layoutY="185.0" prefHeight="52.0" prefWidth="107.0"
+                       text="Título del comic" textFill="WHITE" wrapText="true">
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+    </children>
+    <padding>
+        <Insets right="25.0"/>
+    </padding>
 </AnchorPane>
