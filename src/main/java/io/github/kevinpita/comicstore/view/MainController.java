@@ -1,6 +1,7 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.view;
 
+import io.github.kevinpita.comicstore.Configuration;
 import io.github.kevinpita.comicstore.util.i18n;
 import java.io.IOException;
 import java.util.Locale;
@@ -97,6 +98,8 @@ public class MainController {
         } else {
             Locale.setDefault(new Locale("es", "ES"));
         }
+        Configuration.setLanguage(Locale.getDefault());
+        Configuration.writeConfiguration();
         i18n.update();
     }
 
