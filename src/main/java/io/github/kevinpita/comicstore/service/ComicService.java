@@ -11,6 +11,7 @@ import io.github.kevinpita.comicstore.model.DataDto;
 import io.github.kevinpita.comicstore.util.CustomAlert;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -70,8 +71,7 @@ public class ComicService {
             }
             comics = gson.fromJson(response.body(), DataDto.class).getData();
         } catch (Exception ignored) {
-            ignored.printStackTrace();
-            log.error(ignored.getMessage());
+            log.error(ExceptionUtils.getStackTrace(ignored));
             CustomAlert.showConnectingAlert();
             System.exit(1);
         }
