@@ -38,3 +38,5 @@ build/
 configuration.properties
 .idea
 out/production/comic-store-application/io/github/kevinpita/comicstore
+
+app.log
