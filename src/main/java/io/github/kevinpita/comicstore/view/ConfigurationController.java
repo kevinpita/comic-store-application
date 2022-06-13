@@ -1,7 +1,8 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.view;
 
-import io.github.kevinpita.comicstore.Configuration;
+import io.github.kevinpita.comicstore.configuration.Configuration;
+import io.github.kevinpita.comicstore.configuration.UrlPath;
 import io.github.kevinpita.comicstore.util.i18n;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,9 +14,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class ConfigurationController {
-    @javafx.fxml.FXML private Button configSave;
-    @javafx.fxml.FXML private TextField configServer;
-    @javafx.fxml.FXML private TextField configPassword;
+    @FXML private Button configSave;
+    @FXML private TextField configServer;
+    @FXML private TextField configPassword;
 
     public void initialize() {
         configServer.setText(Configuration.getApiUrl());
@@ -65,8 +66,8 @@ public class ConfigurationController {
             return false;
         }
 
-        if (!server.endsWith("/")) {
-            server += "/";
+        if (server.endsWith("/")) {
+            server = server.substring(0, server.length() - 1);
         }
 
         return checkServer(server, password);
@@ -77,7 +78,7 @@ public class ConfigurationController {
         try {
             HttpRequest request =
                     HttpRequest.newBuilder()
-                            .uri(URI.create(server + "api/v1/validation"))
+                            .uri(URI.create(server + UrlPath.VALIDATION.getPath()))
                             .header("Authorization", password)
                             .build();
 
