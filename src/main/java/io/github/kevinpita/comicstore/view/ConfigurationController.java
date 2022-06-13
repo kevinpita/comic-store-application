@@ -12,7 +12,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
+@Slf4j
 public class ConfigurationController {
     @FXML private Button configSave;
     @FXML private TextField configServer;
@@ -37,6 +40,7 @@ public class ConfigurationController {
             alert.setHeaderText(i18n.getString("invalidServerHeader"));
             alert.setContentText(i18n.getString("invalidServerContent"));
         }
+        // center the dialog on the parent window
         alert.initOwner(configSave.getScene().getWindow());
         alert.show();
         return validationResult;
@@ -66,6 +70,7 @@ public class ConfigurationController {
             return false;
         }
 
+        // remove trailing slash if any
         if (server.endsWith("/")) {
             server = server.substring(0, server.length() - 1);
         }
@@ -87,6 +92,7 @@ public class ConfigurationController {
 
             if (isServerValid(response)) return true;
         } catch (Exception ignored) {
+            log.error(ExceptionUtils.getStackTrace(ignored));
         }
         return false;
     }

@@ -6,17 +6,23 @@ import io.github.kevinpita.comicstore.service.ComicService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.FlowPane;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 public class ComicListController {
     @FXML private FlowPane comicFlowPane;
 
     public void initialize() {
+        // fill comic list on window initialization
         ComicService.getInstance().fillComics();
+        // get all comics from filled list
         List<ComicDto> comics = ComicService.getInstance().getComics();
 
+        // for each comic create an instance
         comics.forEach(
                 comic -> {
                     FXMLLoader loader =
@@ -31,6 +37,7 @@ public class ComicListController {
                     try {
                         comicFlowPane.getChildren().add(loader.load());
                     } catch (IOException e) {
+                        log.error(ExceptionUtils.getStackTrace(e));
                     }
                 });
     }

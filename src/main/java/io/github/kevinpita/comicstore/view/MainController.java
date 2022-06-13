@@ -17,7 +17,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
+@Slf4j
 public class MainController {
     @FXML private Button settingsButton;
     @FXML private Tooltip settingsButtonTooltip;
@@ -66,10 +69,12 @@ public class MainController {
     }
 
     private void rotateSettingsButton() {
+        // rotate settings button 360 degrees in 0.5 seconds
         RotateTransition rotation = new RotateTransition(Duration.seconds(0.5), settingsButton);
         rotation.setCycleCount(1);
         rotation.setByAngle(360);
 
+        // play rotate animation
         settingsButton.setOnMouseEntered(e -> rotation.play());
     }
 
@@ -105,25 +110,34 @@ public class MainController {
         } else {
             Locale.setDefault(new Locale("es", "ES"));
         }
+
+        // write new default language into config file
         Configuration.setLanguage(Locale.getDefault());
         Configuration.writeConfiguration();
+
+        // reload binded strings
         i18n.update();
     }
 
     @FXML
     public void changeButton(ActionEvent event) throws IOException {
         Button clickedButton = (Button) event.getSource();
+
         if (clickedButton.equals(currentMenuButton)) {
             return;
         }
+
         clickedButton.getStyleClass().add("selected");
         clickedButton.getStyleClass().remove("hoverButton");
+
         currentMenuButton.getStyleClass().remove("selected");
         currentMenuButton.getStyleClass().add("hoverButton");
         currentMenuButton = clickedButton;
 
+        // get new FXML to show
         String fxmlFile =
                 currentMenuButton.getId().split("list")[1].split("Button")[0].toLowerCase();
+        // load new loaded FXML into borderpane
         FXMLLoader fxmlLoader =
                 new FXMLLoader(
                         MainWindow.class.getResource(
@@ -137,6 +151,7 @@ public class MainController {
     @FXML
     public void openSettings() {
         try {
+            // load configuration FXML
             FXMLLoader fxmlLoader =
                     new FXMLLoader(
                             MainWindow.class.getResource(
@@ -148,6 +163,7 @@ public class MainController {
             stage.setScene(scene);
             stage.setTitle(i18n.getString("configurationTitle"));
 
+            // put configuration FXML in the center of the parent window
             Bounds mainBounds = currentMenuButton.getScene().getRoot().getLayoutBounds();
             stage.setX(
                     currentMenuButton.getScene().getWindow().getX()
@@ -158,11 +174,12 @@ public class MainController {
 
             stage.setResizable(false);
             stage.initOwner(currentMenuButton.getScene().getWindow());
+            // make configuration screen modal
             stage.initModality(Modality.WINDOW_MODAL);
 
             stage.showAndWait();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(ExceptionUtils.getStackTrace(e));
         }
     }
 
