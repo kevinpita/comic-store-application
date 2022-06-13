@@ -1,17 +1,12 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import io.github.kevinpita.comicstore.configuration.UrlPath;
+import lombok.*;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import io.github.kevinpita.comicstore.configuration.UrlPath;
-import lombok.*;
 
 @Data
 @Builder
@@ -51,9 +46,6 @@ public class ComicDto implements Serializable {
     public static class ComicCopyDto implements Serializable {
         private Long id;
 
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-        @JsonDeserialize(using = LocalDateDeserializer.class)
-        @JsonSerialize(using = LocalDateSerializer.class)
         private LocalDate purchaseDate;
 
         private String state;
