@@ -1,5 +1,5 @@
 /* Kevin Pita 2022 */
-package io.github.kevinpita.comicstore.model;
+package io.github.kevinpita.comicstore.model.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,12 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class DataDto {
-    private List<ComicDto> data;
+class DataDto {
     private boolean error;
     private String message;
 }

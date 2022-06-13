@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.IOException;
+import java.rmi.server.ExportException;
 import java.util.List;
 
 @Slf4j
@@ -36,7 +37,7 @@ public class ComicListController {
                     controller.setTitle(comic.getFullTitle());
                     try {
                         comicFlowPane.getChildren().add(loader.load());
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         log.error(ExceptionUtils.getStackTrace(e));
                     }
                 });

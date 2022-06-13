@@ -9,11 +9,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 
-public class ComicController {
+public class CollectionController {
 
-    @FXML private AnchorPane comicPane;
-    @FXML private Label comicTitle;
-    @FXML private ImageView comicImage;
+    @FXML private AnchorPane collectionPane;
+    @FXML private Label collectionTitle;
+    @FXML private ImageView collectionImage;
 
     private Image image;
     private String title;
@@ -28,11 +28,11 @@ public class ComicController {
 
     @FXML
     public void initialize() {
-        comicImage.setImage(image);
-        comicTitle.setText(title);
+        collectionImage.setImage(image);
+        collectionTitle.setText(title);
 
         Tooltip tooltip = new Tooltip(title);
         tooltip.setFont(new Font(16));
-        Tooltip.install(comicPane, tooltip);
+        Tooltip.install(collectionPane, tooltip);
     }
 }

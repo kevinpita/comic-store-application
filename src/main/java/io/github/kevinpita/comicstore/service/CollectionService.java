@@ -6,8 +6,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import io.github.kevinpita.comicstore.configuration.Configuration;
 import io.github.kevinpita.comicstore.configuration.UrlPath;
-import io.github.kevinpita.comicstore.model.ComicDto;
-import io.github.kevinpita.comicstore.model.data.ComicListDto;
+import io.github.kevinpita.comicstore.model.CollectionDto;
+import io.github.kevinpita.comicstore.model.data.CollectionListDto;
 import io.github.kevinpita.comicstore.util.CustomAlert;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -24,23 +24,23 @@ import java.util.List;
 
 // comic singleton
 @Slf4j
-public class ComicService {
-    private static ComicService instance;
+public class CollectionService {
+    private static CollectionService instance;
     @Getter
-    private List<ComicDto> comics = new ArrayList<>();
+    private List<CollectionDto> collections = new ArrayList<>();
 
-    private ComicService() {
+    private CollectionService() {
     }
 
-    public static ComicService getInstance() {
+    public static CollectionService getInstance() {
         if (instance == null) {
-            instance = new ComicService();
+            instance = new CollectionService();
         }
         return instance;
     }
 
-    public void fillComics() {
-        String url = UrlPath.COMIC.getUrl();
+    public void fillCollections() {
+        String url = UrlPath.COLLECTION.getUrl();
         String password = Configuration.getAuthToken();
 
         HttpClient client = HttpClient.newHttpClient();
@@ -69,7 +69,7 @@ public class ComicService {
             if (response.statusCode() != 200) {
                 return;
             }
-            comics = gson.fromJson(response.body(), ComicListDto.class).getData();
+            collections = gson.fromJson(response.body(), CollectionListDto.class).getData();
         } catch (Exception ignored) {
             log.error(ExceptionUtils.getStackTrace(ignored));
             CustomAlert.showConnectingAlert();

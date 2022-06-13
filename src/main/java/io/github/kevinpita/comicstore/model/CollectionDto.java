@@ -3,6 +3,8 @@ package io.github.kevinpita.comicstore.model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import io.github.kevinpita.comicstore.configuration.UrlPath;
 import lombok.*;
 
 @Data
@@ -21,6 +23,6 @@ public class CollectionDto implements Serializable {
     private String imageUrl;
 
     public String getImageUrl() {
-        return String.format("/images/comics/%d.png", id);
+        return UrlPath.COLLECTION_IMAGE.getUrl() + "/" + id;
     }
 }

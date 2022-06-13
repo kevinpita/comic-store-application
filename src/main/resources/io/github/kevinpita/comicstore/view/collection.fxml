@@ -10,17 +10,17 @@
 <AnchorPane prefHeight="245.0" prefWidth="151.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
 
     <children>
-        <AnchorPane fx:id="comicPane" prefHeight="231.0" prefWidth="114.0">
+        <AnchorPane fx:id="collectionPane" prefHeight="231.0" prefWidth="114.0">
             <opaqueInsets>
                 <Insets />
             </opaqueInsets>
             <children>
-                <ImageView fx:id="comicImage" fitHeight="193.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="collectionImage" fitHeight="193.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="http://localhost:8383/images/comic/1" />
+                        <Image url="http://localhost:8383/images/collection/1" />
                     </image>
                 </ImageView>
-                <Label fx:id="comicTitle" layoutX="10.0" layoutY="193.0" prefHeight="52.0" prefWidth="107.0" text="Título del comic" textFill="WHITE" wrapText="true">
+                <Label fx:id="collectionTitle" layoutX="10.0" layoutY="193.0" prefHeight="52.0" prefWidth="107.0" text="Título del colección" textFill="WHITE" wrapText="true">
                     <font>
                         <Font size="15.0" />
                     </font>
