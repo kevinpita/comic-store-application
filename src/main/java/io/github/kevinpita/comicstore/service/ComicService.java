@@ -8,20 +8,25 @@ import io.github.kevinpita.comicstore.configuration.Configuration;
 import io.github.kevinpita.comicstore.configuration.UrlPath;
 import io.github.kevinpita.comicstore.model.ComicDto;
 import io.github.kevinpita.comicstore.model.DataDto;
+import io.github.kevinpita.comicstore.util.CustomAlert;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 // comic singleton
+@Slf4j
 public class ComicService {
     private static ComicService instance;
     @Getter
-    private List<ComicDto> comics;
+    private List<ComicDto> comics = new ArrayList<>();
 
     private ComicService() {
     }
@@ -40,15 +45,13 @@ public class ComicService {
         HttpClient client = HttpClient.newHttpClient();
         try {
             HttpRequest request =
-                    HttpRequest.newBuilder()
+                    HttpRequest.newBuilder().timeout(Duration.ofSeconds(3))
                             .uri(URI.create(url))
                             .header("Authorization", password)
                             .build();
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            System.out.println(response.body());
 
             Gson gson =
                     new GsonBuilder()
@@ -62,9 +65,15 @@ public class ComicService {
                                                 Integer.parseInt(date.split("-")[2]));
                                     })
                             .create();
+            if (response.statusCode() != 200) {
+                return;
+            }
             comics = gson.fromJson(response.body(), DataDto.class).getData();
         } catch (Exception ignored) {
             ignored.printStackTrace();
+            log.error(ignored.getMessage());
+            CustomAlert.showConnectingAlert();
+            System.exit(1);
         }
     }
 }
