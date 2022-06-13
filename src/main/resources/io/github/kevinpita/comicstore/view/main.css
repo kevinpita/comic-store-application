@@ -43,3 +43,13 @@ Button {
     -fx-background-color: #FFF;
     -fx-background-radius: 50;
 }
+
+.searchButton {
+    -fx-background-color: #707070;
+    -fx-background-radius: 20 0 0 20;
+}
+
+.searchButton:focused {
+    -fx-background-radius: 20 0 0 20;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+}

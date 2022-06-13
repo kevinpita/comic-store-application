@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="700.0" prefWidth="1100.0" stylesheets="@main.css"
-            xmlns="http://javafx.com/javafx/18" fx:controller="io.github.kevinpita.comicstore.view.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
+            prefWidth="1100.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/18"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.MainController">
     <left>
         <BorderPane styleClass="mainColor" BorderPane.alignment="CENTER">
             <BorderPane.margin>
@@ -252,9 +252,8 @@
                                             </graphic>
                                         </Button>
                                         <Button fx:id="searchLabel" alignment="CENTER" prefHeight="40.0"
-                                                prefWidth="125.0"
-                                                style="-fx-background-color: #707070; -fx-background-radius: 20 0 0 20;"
-                                                text="%searchLabel" textAlignment="CENTER">
+                                                prefWidth="125.0" styleClass="searchButton" text="%searchLabel"
+                                                textAlignment="CENTER">
                                             <font>
                                                 <Font size="18.0"/>
                                             </font>
@@ -264,7 +263,7 @@
                                         </Button>
                                     </children>
                                     <HBox.margin>
-                                        <Insets bottom="30.0" left="40.0" right="40.0" top="30.0"/>
+                                        <Insets bottom="32.0" left="40.0" right="40.0" top="30.0"/>
                                     </HBox.margin>
                                 </HBox>
                             </children>
