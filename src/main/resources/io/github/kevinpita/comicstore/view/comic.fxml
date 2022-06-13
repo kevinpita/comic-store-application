@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.shape.Rectangle?>
 <AnchorPane prefHeight="245.0" prefWidth="151.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
 
     <children>
@@ -15,11 +16,8 @@
                 <Insets />
             </opaqueInsets>
             <children>
-                <ImageView fx:id="comicImage" fitHeight="193.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="http://localhost:8383/images/comic/1" />
-                    </image>
-                </ImageView>
+                <Rectangle fx:id="comicImage" height="193.0" width="132.0" pickOnBounds="true" >
+                </Rectangle>
                 <Label fx:id="comicTitle" layoutX="10.0" layoutY="193.0" prefHeight="52.0" prefWidth="107.0" text="Título del comic" textFill="WHITE" wrapText="true">
                     <font>
                         <Font size="15.0" />

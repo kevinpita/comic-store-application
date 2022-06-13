@@ -7,13 +7,15 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 public class ComicController {
 
     @FXML private AnchorPane comicPane;
     @FXML private Label comicTitle;
-    @FXML private ImageView comicImage;
+    @FXML private Rectangle comicImage;
 
     private Image image;
     private String title;
@@ -28,7 +30,7 @@ public class ComicController {
 
     @FXML
     public void initialize() {
-        comicImage.setImage(image);
+        comicImage.setFill(new ImagePattern(image));
         comicTitle.setText(title);
 
         Tooltip tooltip = new Tooltip(title);

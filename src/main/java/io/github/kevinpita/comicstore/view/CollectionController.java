@@ -5,15 +5,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+
 
 public class CollectionController {
 
     @FXML private AnchorPane collectionPane;
     @FXML private Label collectionTitle;
-    @FXML private ImageView collectionImage;
+    @FXML private Rectangle collectionImage;
 
     private Image image;
     private String title;
@@ -28,7 +30,7 @@ public class CollectionController {
 
     @FXML
     public void initialize() {
-        collectionImage.setImage(image);
+        collectionImage.setFill(new ImagePattern(image, 0, 0, 1, 1, true));
         collectionTitle.setText(title);
 
         Tooltip tooltip = new Tooltip(title);
