@@ -1,5 +1,5 @@
 /* Kevin Pita 2022 */
-package io.github.kevinpita.comicstore;
+package io.github.kevinpita.comicstore.configuration;
 
 import java.io.*;
 import java.util.Locale;
@@ -9,7 +9,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class Configuration {
-    @Getter @Setter private static String apiUrl = "http://localhost:8383/";
+    @Getter(AccessLevel.NONE)
+    @Setter
+    private static String apiUrl = "http://localhost:8383/";
+
     @Getter @Setter private static String authToken = "auth_token_env_compose";
 
     @Setter(AccessLevel.NONE)
@@ -21,6 +24,14 @@ public class Configuration {
     private static Configuration instance;
 
     private Configuration() {}
+
+    public static String getApiUrl() {
+        String url = apiUrl;
+        if (url.endsWith("/")) {
+            url = url.substring(0, url.length() - 1);
+        }
+        return url;
+    }
 
     public static Configuration getInstance() {
         if (instance == null) {
