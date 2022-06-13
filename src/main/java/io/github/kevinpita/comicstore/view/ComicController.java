@@ -29,9 +29,8 @@ public class ComicController {
     @FXML
     public void initialize() {
         comicImage.setImage(image);
-        System.out.println(image.getHeight());
-
         comicTtle.setText(title);
+
         Tooltip tooltip = new Tooltip(title);
         tooltip.setFont(new Font(16));
         Tooltip.install(comicPane, tooltip);

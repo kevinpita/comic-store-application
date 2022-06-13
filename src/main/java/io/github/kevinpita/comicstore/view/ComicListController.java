@@ -5,7 +5,6 @@ import io.github.kevinpita.comicstore.model.ComicDto;
 import io.github.kevinpita.comicstore.service.ComicService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 
 import java.io.IOException;
@@ -30,10 +29,8 @@ public class ComicListController {
                     controller.setImage(comic.getImageUrl());
                     controller.setTitle(comic.getFullTitle());
                     try {
-                        System.out.println("Loading comic: " + comic.getFullTitle());
                         comicFlowPane.getChildren().add(loader.load());
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
                 });
     }
