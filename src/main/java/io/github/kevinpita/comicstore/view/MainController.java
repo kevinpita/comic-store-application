@@ -97,7 +97,15 @@ public class MainController {
         // Set NO button as default
         DialogPane pane = alert.getDialogPane();
         for (ButtonType t : alert.getButtonTypes()) {
-            ((Button) pane.lookupButton(t)).setDefaultButton(t == ButtonType.NO);
+
+            Button b = (Button) pane.lookupButton(t);
+            if (t == ButtonType.NO) {
+                b.setDefaultButton(true);
+                b.setText(i18n.getString("no"));
+            } else {
+                b.setDefaultButton(false);
+                b.setText(i18n.getString("yes"));
+            }
         }
 
         // center alert on parent window
@@ -165,7 +173,7 @@ public class MainController {
             searchBar.setDisable(false);
             removeSearchTextButton.setDisable(false);
         }
-        // load new loaded FXML into borderpane
+
         FXMLLoader fxmlLoader =
                 new FXMLLoader(
                         MainWindow.class.getResource(
