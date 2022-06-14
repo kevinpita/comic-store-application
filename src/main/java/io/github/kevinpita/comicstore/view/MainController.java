@@ -2,7 +2,9 @@
 package io.github.kevinpita.comicstore.view;
 
 import io.github.kevinpita.comicstore.configuration.Configuration;
+import io.github.kevinpita.comicstore.model.AuthorDto;
 import io.github.kevinpita.comicstore.util.i18n;
+import io.github.kevinpita.comicstore.view.create.AuthorData;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Optional;
@@ -11,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -210,6 +213,44 @@ public class MainController {
 
             stage.setResizable(false);
             stage.initOwner(currentMenuButton.getScene().getWindow());
+            // make configuration screen modal
+            stage.initModality(Modality.WINDOW_MODAL);
+
+            stage.showAndWait();
+        } catch (IOException e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @FXML
+    public void openAuthorCreator() {
+        openAuthorWindow(null, currentMenuButton);
+    }
+
+    public static void openAuthorWindow(AuthorDto author, Node reference) {
+        try {
+            // load configuration FXML
+            FXMLLoader fxmlLoader =
+                    new FXMLLoader(
+                            MainWindow.class.getResource(
+                                    "/io/github/kevinpita/comicstore/view/create/author-data.fxml"),
+                            i18n.getResourceBundle());
+            AuthorData authorData = new AuthorData(author);
+            fxmlLoader.setController(authorData);
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+
+            stage.setScene(scene);
+            stage.setTitle(i18n.getString("authorCreatorTitle"));
+
+            // put configuration FXML in the center of the parent window
+            Bounds mainBounds = reference.getScene().getRoot().getLayoutBounds();
+            stage.setX(reference.getScene().getWindow().getX() + (mainBounds.getWidth() - 421) / 2);
+            stage.setY(
+                    reference.getScene().getWindow().getY() + (mainBounds.getHeight() - 370) / 2);
+
+            stage.setResizable(false);
+            stage.initOwner(reference.getScene().getWindow());
             // make configuration screen modal
             stage.initModality(Modality.WINDOW_MODAL);
 
