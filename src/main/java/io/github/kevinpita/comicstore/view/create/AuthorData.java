@@ -72,7 +72,7 @@ public class AuthorData {
             return;
         }
 
-        boolean created = false;
+        boolean created;
         if (authorDto == null) {
             created = AuthorService.createAuthor(name, lastName);
         } else {
@@ -84,6 +84,8 @@ public class AuthorData {
         }
         if (created) {
             CustomAlert.showInfo(i18n.getString("newAuthorAlert"));
+        } else {
+            CustomAlert.showAlert(i18n.getString("authorFormCreateErrorMessage"));
         }
 
         saveButton.getScene().getWindow().hide();
@@ -91,6 +93,16 @@ public class AuthorData {
 
     @FXML
     void delete() {
-        saveButton.getScene().getWindow().hide();
+        if (authorDto == null) {
+            return;
+        }
+        boolean deleteResult = AuthorService.deleteAuthor(authorDto.getId());
+        if (deleteResult) {
+            CustomAlert.showInfo(i18n.getString("deleteAuthorAlert"));
+            saveButton.getScene().getWindow().hide();
+            return;
+        }
+        CustomAlert.showAlert(i18n.getString("authorFormDeleteErrorMessage"));
+
     }
 }

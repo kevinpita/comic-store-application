@@ -186,4 +186,33 @@ public class AuthorService {
         }
         return false;
     }
+
+    public static boolean deleteAuthor(int id) {
+        String url = UrlPath.AUTHOR.getUrl() + "/" + id;
+        String password = Configuration.getAuthToken();
+
+        HttpClient client = HttpClient.newHttpClient();
+        try {
+            HttpRequest request =
+                    HttpRequest.newBuilder()
+                            .DELETE()
+                            .timeout(Duration.ofSeconds(3))
+                            .header("Authorization", password)
+                            .uri(URI.create(url))
+                            .build();
+
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                return false;
+            }
+            AuthorService.getInstance().getAuthors();
+            return true;
+        } catch (Exception ignored) {
+            log.error(ExceptionUtils.getStackTrace(ignored));
+            CustomAlert.showConnectingAlert();
+        }
+        return false;
+    }
 }
