@@ -40,3 +40,4 @@ configuration.properties
 out/production/comic-store-application/io/github/kevinpita/comicstore
 
 app.log
+.idea
