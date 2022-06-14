@@ -1,20 +1,17 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.view;
 
-import io.github.kevinpita.comicstore.model.AuthorDto;
 import io.github.kevinpita.comicstore.model.AuthorTable;
 import io.github.kevinpita.comicstore.service.AuthorService;
 import io.github.kevinpita.comicstore.util.i18n;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Predicate;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -47,27 +44,10 @@ public class AuthorListController {
         comicCountTableColumn.setCellValueFactory(
                 new PropertyValueFactory<AuthorTable, Integer>("createdComics"));
 
-        List<AuthorDto> authors = AuthorService.getInstance().getAuthors();
-
-        List<AuthorTable> authorsList = new ArrayList<>();
-        authors.forEach(
-                author -> {
-                    SimpleStringProperty name = new SimpleStringProperty(author.getName());
-                    SimpleStringProperty lastName = new SimpleStringProperty(author.getLastName());
-                    SimpleIntegerProperty createdComicNumber =
-                            new SimpleIntegerProperty(author.getCreatedComics());
-                    AuthorTable authorTable =
-                            AuthorTable.builder()
-                                    .name(name)
-                                    .lastName(lastName)
-                                    .createdComics(createdComicNumber)
-                                    .build();
-                    authorsList.add(authorTable);
-                });
+        ObservableList<AuthorTable> authors = AuthorService.getInstance().getAuthorsTable();
 
         Scene scene = MainWindow.mainScene;
-        FilteredList<AuthorTable> filteredData =
-                new FilteredList<>(FXCollections.observableArrayList(authorsList));
+        FilteredList<AuthorTable> filteredData = new FilteredList<>(authors);
         TextField textField = (TextField) scene.lookup("#searchBar");
         textField
                 .textProperty()
@@ -75,6 +55,25 @@ public class AuthorListController {
                         (observable, oldValue, newValue) -> {
                             filteredData.setPredicate(createPredicate(newValue));
                         });
-        table.setItems(filteredData);
+        SortedList<AuthorTable> sortedData = new SortedList<>(filteredData);
+        table.setItems(sortedData);
+        sortedData.comparatorProperty().bind(table.comparatorProperty());
+
+        table.setRowFactory(
+                tv -> {
+                    TableRow<AuthorTable> row = new TableRow<>();
+                    row.setOnMouseClicked(
+                            event -> {
+                                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                                    AuthorTable rowData = row.getItem();
+                                    editAuthor(rowData);
+                                }
+                            });
+                    return row;
+                });
+    }
+
+    private void editAuthor(AuthorTable rowData) {
+        MainController.openAuthorWindow(rowData.getDto(), table);
     }
 }
