@@ -9,7 +9,8 @@ public enum UrlPath {
     VALIDATION("/api/v1/validation"),
     STATS("/api/v1/stats"),
     COMIC("/api/v1/comics"),
-    COLLECTION("/api/v1/collections");
+    COLLECTION("/api/v1/collections"),
+    AUTHOR("/api/v1/creators");
 
     private final String path;
 
