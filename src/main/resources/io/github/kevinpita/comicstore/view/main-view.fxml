@@ -241,6 +241,13 @@
                                                     </image>
                                                 </ImageView>
                                             </graphic>
+                                 <tooltip>
+                                    <Tooltip fx:id="removeSearchText" text="%removeSearchText">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Tooltip>
+                                 </tooltip>
                                         </Button>
                                         <Label fx:id="searchLabel" alignment="CENTER" prefHeight="40.0" prefWidth="125.0" styleClass="searchButton" text="%searchLabel" textAlignment="CENTER">
                                             <font>

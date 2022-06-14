@@ -40,6 +40,8 @@ public class MainController {
     @FXML private BorderPane listParentPane;
     @FXML private ComicListController importedPaneController;
     @FXML private TextField searchBar;
+    @FXML
+    private Tooltip removeSearchText;
 
     public void initialize() {
         currentMenuButton = listComicButton;
@@ -66,6 +68,7 @@ public class MainController {
 
         searchLabel.textProperty().bind(i18n.getStringBinding("searchLabel"));
         searchBar.promptTextProperty().bind(i18n.getStringBinding("searchBarHint"));
+        removeSearchText.textProperty().bind(i18n.getStringBinding("removeSearchText"));
     }
 
     private void rotateSettingsButton() {
