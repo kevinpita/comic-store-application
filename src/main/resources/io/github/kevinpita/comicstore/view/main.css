@@ -55,8 +55,9 @@ Button {
 }
 
 .separator *.line {
+    -fx-background-color: #3C3C3C;
     -fx-border-style: solid;
-    -fx-border-width: 1px;
+    -fx-border-width: 3px;
 }
 
 .scroll-bar{
@@ -96,4 +97,12 @@ Button {
     -fx-font-weight: bold;
     -fx-border-color: #727272;
     -fx-font-size: 16px;
+}
+
+TableView {
+    -fx-accent: #1e74c6;
+    -fx-focus-color: -fx-accent;
+    -fx-base: #525252;
+    -fx-control-inner-background: derive(-fx-base, 35%);
+    -fx-control-inner-background-alt: -fx-control-inner-background ;
 }
