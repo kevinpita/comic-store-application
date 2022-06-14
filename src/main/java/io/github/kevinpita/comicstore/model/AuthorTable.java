@@ -7,6 +7,7 @@ import lombok.Builder;
 
 @Builder
 public class AuthorTable {
+    private final SimpleIntegerProperty id;
     private final SimpleStringProperty name;
     private final SimpleStringProperty lastName;
     private final SimpleIntegerProperty createdComics;
@@ -45,5 +46,26 @@ public class AuthorTable {
 
     public void setCreatedComics(int createdComics) {
         this.createdComics.set(createdComics);
+    }
+
+    public int getId() {
+        return id.get();
+    }
+
+    public SimpleIntegerProperty idProperty() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id.set(id);
+    }
+
+    public AuthorDto getDto() {
+        return AuthorDto.builder()
+                .id(id.get())
+                .name(name.get())
+                .lastName(lastName.get())
+                .createdComics(createdComics.get())
+                .build();
     }
 }
