@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/18"
-            fx:controller="io.github.kevinpita.comicstore.view.AuthorListController">
-    <center>
-        <Label text="AUTHOR" BorderPane.alignment="CENTER"/>
-    </center>
+
+<BorderPane prefHeight="600.0" prefWidth="630.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.AuthorListController">
+   <center>
+      <TableView prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #525252;" BorderPane.alignment="CENTER">
+          <placeholder>
+              <Label text="" />
+          </placeholder>
+        <columns>
+          <TableColumn fx:id="authorNameTableColumn" minWidth="0.0" prefWidth="210.0" text="%authorName" />
+          <TableColumn fx:id="authorLastNameTableColumn" prefWidth="210.0" text="%authorLastName" />
+            <TableColumn fx:id="comicCountTableColumn" minWidth="0.0" prefWidth="210.0" text="%authorComicCount" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </center>
 </BorderPane>
