@@ -1,6 +1,7 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.view;
 
+import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -21,6 +22,14 @@ public class CollectionController {
 
     public void setImage(String imageUrl) {
         image = new Image(imageUrl);
+        if (image.isError()) {
+            image =
+                    new Image(
+                            Objects.requireNonNull(
+                                    this.getClass()
+                                            .getResourceAsStream(
+                                                    "/io/github/kevinpita/comicstore/view/images/nopicture.png")));
+        }
     }
 
     public void setTitle(String title) {
