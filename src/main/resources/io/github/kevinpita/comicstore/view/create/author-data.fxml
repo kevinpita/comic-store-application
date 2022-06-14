@@ -5,22 +5,28 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="parentAnchorPane" prefHeight="370.0" prefWidth="421.0" styleClass="parentPane" stylesheets="@create.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <AnchorPane layoutX="11.0" layoutY="32.0">
-         <children>
-            <TextField fx:id="inputAuthorName" layoutX="96.0" prefHeight="25.0" prefWidth="289.0" promptText="%createAuthorName" styleClass="mediumWhiteTextField" />
-            <Label layoutY="7.0" styleClass="mediumWhiteLabel" text="%createAuthorName" />
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="11.0" layoutY="103.0">
-         <children>
-            <Label layoutY="7.0" styleClass="mediumWhiteLabel" text="%createAuthorLastName" />
-            <TextField fx:id="inputAuthorLastName" layoutX="96.0" prefHeight="25.0" prefWidth="289.0" promptText="%createAuthorLastName" styleClass="mediumWhiteTextField" />
-         </children>
-      </AnchorPane>
-      <Button fx:id="saveButton" layoutX="111.0" layoutY="173.0" mnemonicParsing="false" onAction="#save" prefHeight="40.0" prefWidth="200.0" styleClass="buttonStyle" text="%createSave" />
-      <Button fx:id="removeButton" disable="true" layoutX="111.0" layoutY="235.0" mnemonicParsing="false" onAction="#delete" prefHeight="40.0" prefWidth="200.0" styleClass="buttonStyle" text="%createDelete" />
-      <Button layoutX="111.0" layoutY="297.0" mnemonicParsing="false" onAction="#cancel" prefHeight="40.0" prefWidth="200.0" styleClass="buttonStyle" text="%createCancel" />
-   </children>
+<AnchorPane fx:id="parentAnchorPane" prefHeight="370.0" prefWidth="421.0" styleClass="parentPane"
+            stylesheets="@create.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <AnchorPane layoutX="11.0" layoutY="32.0">
+            <children>
+                <TextField fx:id="inputAuthorName" layoutX="96.0" prefHeight="25.0" prefWidth="289.0"
+                           promptText="%createAuthorName" styleClass="mediumWhiteTextField"/>
+                <Label layoutY="7.0" styleClass="mediumWhiteLabel" text="%createAuthorName"/>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="11.0" layoutY="103.0">
+            <children>
+                <Label layoutY="7.0" styleClass="mediumWhiteLabel" text="%createAuthorLastName"/>
+                <TextField fx:id="inputAuthorLastName" layoutX="96.0" prefHeight="25.0" prefWidth="289.0"
+                           promptText="%createAuthorLastName" styleClass="mediumWhiteTextField"/>
+            </children>
+        </AnchorPane>
+        <Button fx:id="saveButton" layoutX="111.0" layoutY="173.0" mnemonicParsing="false" onAction="#save"
+                prefHeight="40.0" prefWidth="200.0" styleClass="buttonStyle" text="%createSave"/>
+        <Button fx:id="removeButton" disable="true" layoutX="111.0" layoutY="235.0" mnemonicParsing="false"
+                onAction="#delete" prefHeight="40.0" prefWidth="200.0" styleClass="buttonStyle" text="%createDelete"/>
+        <Button layoutX="111.0" layoutY="297.0" mnemonicParsing="false" onAction="#cancel" prefHeight="40.0"
+                prefWidth="200.0" styleClass="buttonStyle" text="%createCancel"/>
+    </children>
 </AnchorPane>

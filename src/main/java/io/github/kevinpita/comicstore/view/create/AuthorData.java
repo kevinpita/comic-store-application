@@ -103,6 +103,5 @@ public class AuthorData {
             return;
         }
         CustomAlert.showAlert(i18n.getString("authorFormDeleteErrorMessage"));
-
     }
 }
