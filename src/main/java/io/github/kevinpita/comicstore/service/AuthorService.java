@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import io.github.kevinpita.comicstore.configuration.Configuration;
 import io.github.kevinpita.comicstore.configuration.UrlPath;
-import io.github.kevinpita.comicstore.model.CreatorDto;
+import io.github.kevinpita.comicstore.model.AuthorDto;
 import io.github.kevinpita.comicstore.model.data.AuthorListDto;
 import io.github.kevinpita.comicstore.util.CustomAlert;
 import java.net.URI;
@@ -23,7 +23,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 @Slf4j
 public class AuthorService {
     private static AuthorService instance;
-    private List<CreatorDto> authors;
+    private List<AuthorDto> authors;
 
     private AuthorService() {}
 
@@ -34,7 +34,7 @@ public class AuthorService {
         return instance;
     }
 
-    public List<CreatorDto> getAuthors() {
+    public List<AuthorDto> getAuthors() {
         if (authors == null) {
             fillAuthors();
         }

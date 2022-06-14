@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreatorDto implements Serializable {
+public class AuthorDto implements Serializable {
     private int id;
     private String name;
     private String lastName;

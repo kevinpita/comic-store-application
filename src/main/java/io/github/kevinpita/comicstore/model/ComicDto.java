@@ -21,7 +21,7 @@ public class ComicDto implements Serializable {
     private String imageUrl;
 
     private CollectionDto collection;
-    private List<ComicCreatorDto> comicCreators;
+    private List<ComicAuthorDto> comicCreators;
     private List<ComicCopyDto> copies;
 
     public String getFullTitle() {

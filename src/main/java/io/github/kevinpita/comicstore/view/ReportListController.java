@@ -1,8 +1,8 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.view;
 
+import io.github.kevinpita.comicstore.model.AuthorDto;
 import io.github.kevinpita.comicstore.model.CollectionDto;
-import io.github.kevinpita.comicstore.model.CreatorDto;
 import io.github.kevinpita.comicstore.service.AuthorService;
 import io.github.kevinpita.comicstore.service.CollectionService;
 import io.github.kevinpita.comicstore.util.i18n;
@@ -31,12 +31,11 @@ public class ReportListController {
         List<CollectionDto> collections = CollectionService.getInstance().getCollections();
         ObservableList<CollectionDto> collectionObservableList =
                 FXCollections.observableArrayList(collections);
-        List<CreatorDto> creators = AuthorService.getInstance().getAuthors();
-        ObservableList<CreatorDto> creatorObservableList =
-                FXCollections.observableArrayList(creators);
+        List<AuthorDto> authors = AuthorService.getInstance().getAuthors();
+        ObservableList<AuthorDto> authorObservableList = FXCollections.observableArrayList(authors);
 
         comboReportComicCollection.setItems(collectionObservableList);
-        comboReportComicAuthor.setItems(creatorObservableList);
+        comboReportComicAuthor.setItems(authorObservableList);
 
         if (comboReportComicCollection.getItems().size() > 0) {
             comboReportComicCollection.getSelectionModel().select(0);
