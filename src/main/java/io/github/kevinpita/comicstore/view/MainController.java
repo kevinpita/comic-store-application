@@ -40,8 +40,8 @@ public class MainController {
     @FXML private BorderPane listParentPane;
     @FXML private ComicListController importedPaneController;
     @FXML private TextField searchBar;
-    @FXML
-    private Tooltip removeSearchText;
+    @FXML private Tooltip removeSearchText;
+    @FXML private Button removeSearchTextButton;
 
     public void initialize() {
         currentMenuButton = listComicButton;
@@ -142,6 +142,29 @@ public class MainController {
         // get new FXML to show
         String fxmlFile =
                 currentMenuButton.getId().split("list")[1].split("Button")[0].toLowerCase();
+
+        switch (fxmlFile) {
+            case "comic":
+                searchBar.promptTextProperty().bind(i18n.getStringBinding("searchBarHint"));
+                break;
+            case "collection":
+                searchBar
+                        .promptTextProperty()
+                        .bind(i18n.getStringBinding("searchBarHintCollection"));
+                break;
+            case "author":
+                searchBar.promptTextProperty().bind(i18n.getStringBinding("searchBarHintAuthor"));
+                break;
+            case "report":
+                searchBar.promptTextProperty().bind(i18n.getStringBinding("searchBarHintReport"));
+                searchBar.setDisable(true);
+                removeSearchTextButton.setDisable(true);
+                break;
+        }
+        if (!fxmlFile.equals("report") && searchBar.isDisable()) {
+            searchBar.setDisable(false);
+            removeSearchTextButton.setDisable(false);
+        }
         // load new loaded FXML into borderpane
         FXMLLoader fxmlLoader =
                 new FXMLLoader(
