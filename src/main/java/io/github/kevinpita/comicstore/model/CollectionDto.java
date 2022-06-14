@@ -1,10 +1,9 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.model;
 
+import io.github.kevinpita.comicstore.configuration.UrlPath;
 import java.io.Serializable;
 import java.util.List;
-
-import io.github.kevinpita.comicstore.configuration.UrlPath;
 import lombok.*;
 
 @Data

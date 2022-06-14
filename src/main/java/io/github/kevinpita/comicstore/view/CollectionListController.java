@@ -2,18 +2,13 @@
 package io.github.kevinpita.comicstore.view;
 
 import io.github.kevinpita.comicstore.model.CollectionDto;
-import io.github.kevinpita.comicstore.model.ComicDto;
 import io.github.kevinpita.comicstore.service.CollectionService;
-import io.github.kevinpita.comicstore.service.ComicService;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.FlowPane;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-
-import java.io.IOException;
-import java.rmi.server.ExportException;
-import java.util.List;
 
 @Slf4j
 public class CollectionListController {

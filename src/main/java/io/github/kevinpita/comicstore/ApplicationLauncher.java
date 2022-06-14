@@ -3,7 +3,6 @@ package io.github.kevinpita.comicstore;
 
 import io.github.kevinpita.comicstore.configuration.Configuration;
 import io.github.kevinpita.comicstore.view.MainWindow;
-
 import java.util.Locale;
 
 public class ApplicationLauncher {
