@@ -249,7 +249,7 @@
                                     </Tooltip>
                                  </tooltip>
                                         </Button>
-                                        <Label fx:id="searchLabel" alignment="CENTER" prefHeight="40.0" prefWidth="125.0" styleClass="searchButton" text="%searchLabel" textAlignment="CENTER">
+                                        <Label fx:id="searchLabel" alignment="CENTER" prefHeight="40.0" prefWidth="125.0" styleClass="searchButton" text="%searchLabel" textAlignment="CENTER" textFill="WHITE">
                                             <font>
                                                 <Font size="18.0" />
                                             </font>
