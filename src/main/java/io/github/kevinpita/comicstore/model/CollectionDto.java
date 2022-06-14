@@ -28,8 +28,8 @@ public class CollectionDto implements Serializable {
     @Override
     public String toString() {
         String stringResult = name;
-        if (stringResult.length() > 30) {
-            stringResult = stringResult.substring(0, 30) + "...";
+        if (stringResult.length() > 50) {
+            stringResult = stringResult.substring(0, 50) + "...";
         }
         return stringResult;
     }

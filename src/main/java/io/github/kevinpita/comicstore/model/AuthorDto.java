@@ -20,8 +20,8 @@ public class AuthorDto implements Serializable {
     @Override
     public String toString() {
         String stringResult = name + " " + lastName;
-        if (stringResult.length() > 30) {
-            stringResult = stringResult.substring(0, 30).strip() + "...";
+        if (stringResult.length() > 50) {
+            stringResult = stringResult.substring(0, 50).strip() + "...";
         }
 
         return stringResult;
