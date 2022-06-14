@@ -25,7 +25,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 @Slf4j
 public class ComicService {
     private static ComicService instance;
-    @Getter private List<ComicDto> comics = new ArrayList<>();
+    @Getter private List<ComicDto> comics;
 
     private ComicService() {}
 
@@ -36,6 +36,12 @@ public class ComicService {
         return instance;
     }
 
+    public List<ComicDto> getComics() {
+        if (comics == null) {
+            fillComics();
+        }
+        return comics;
+    }
     public void fillComics() {
         String url = UrlPath.COMIC.getUrl();
         String password = Configuration.getAuthToken();

@@ -15,8 +15,6 @@ public class ComicListController {
     @FXML private FlowPane comicFlowPane;
 
     public void initialize() {
-        // fill comic list on window initialization
-        ComicService.getInstance().fillComics();
         // get all comics from filled list
         List<ComicDto> comics = ComicService.getInstance().getComics();
 

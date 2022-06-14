@@ -35,7 +35,7 @@ public class MainController {
     @FXML private Button createCollectionButton;
     @FXML private Label createButton;
     @FXML private Label listButton;
-    @FXML private Button searchLabel;
+    @FXML private Label searchLabel;
     private Button currentMenuButton;
     @FXML private BorderPane listParentPane;
     @FXML private ComicListController importedPaneController;
@@ -126,6 +126,8 @@ public class MainController {
         if (clickedButton.equals(currentMenuButton)) {
             return;
         }
+
+        searchBar.setText("");
 
         clickedButton.getStyleClass().add("selected");
         clickedButton.getStyleClass().remove("hoverButton");

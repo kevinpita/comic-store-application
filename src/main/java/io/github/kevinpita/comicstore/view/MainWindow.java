@@ -13,6 +13,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
+    public static Scene mainScene;
     public static void main(String[] args) {
         launch();
     }
@@ -27,6 +28,7 @@ public class MainWindow extends Application {
                         i18n.getResourceBundle());
 
         Scene scene = new Scene(fxmlLoader.load());
+        mainScene = scene;
 
         // set app icon
         stage.getIcons()

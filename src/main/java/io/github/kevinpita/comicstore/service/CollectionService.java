@@ -25,7 +25,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 @Slf4j
 public class CollectionService {
     private static CollectionService instance;
-    @Getter private List<CollectionDto> collections = new ArrayList<>();
+    private List<CollectionDto> collections;
 
     private CollectionService() {}
 
@@ -36,6 +36,12 @@ public class CollectionService {
         return instance;
     }
 
+    public List<CollectionDto> getCollections() {
+        if (collections == null) {
+            fillCollections();
+        }
+        return collections;
+    }
     public void fillCollections() {
         String url = UrlPath.COLLECTION.getUrl();
         String password = Configuration.getAuthToken();

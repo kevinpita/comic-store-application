@@ -28,8 +28,7 @@ import java.util.List;
 @Slf4j
 public class AuthorService {
     private static AuthorService instance;
-    @Getter
-    private List<CreatorDto> authors = new ArrayList<>();
+    private List<CreatorDto> authors;
 
     private AuthorService() {
     }
@@ -41,6 +40,12 @@ public class AuthorService {
         return instance;
     }
 
+    public List<CreatorDto> getAuthors() {
+        if (authors == null) {
+            fillAuthors();
+        }
+        return authors;
+    }
     public void fillAuthors() {
         String url = UrlPath.AUTHOR.getUrl();
         String password = Configuration.getAuthToken();
