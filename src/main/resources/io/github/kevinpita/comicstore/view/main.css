@@ -60,16 +60,16 @@ Button {
     -fx-border-width: 3px;
 }
 
-.scroll-bar{
-    -fx-background-color: derive(-fx-base,45%)
+.scroll-bar {
+    -fx-background-color: derive(-fx-base, 45%)
 }
 
 
-.table-view{
+.table-view {
     -fx-selection-bar-non-focused: derive(-fx-base, 50%);
 }
 
-.table-view .column-header{
+.table-view .column-header {
     -fx-alignment: CENTER;
     -fx-font-weight: none;
 }
@@ -77,7 +77,7 @@ Button {
 .list-cell:even,
 .list-cell:odd,
 .table-row-cell:even,
-.table-row-cell:odd{
+.table-row-cell:odd {
     -fx-control-inner-background: derive(-fx-base, 15%);
 }
 
@@ -87,9 +87,9 @@ Button {
 }
 
 .list-cell,
-.table-row-cell{
+.table-row-cell {
     -fx-border-color: transparent;
-    -fx-table-cell-border-color:transparent;
+    -fx-table-cell-border-color: transparent;
 }
 
 .column-header {
@@ -104,5 +104,33 @@ TableView {
     -fx-focus-color: -fx-accent;
     -fx-base: #525252;
     -fx-control-inner-background: derive(-fx-base, 35%);
-    -fx-control-inner-background-alt: -fx-control-inner-background ;
+    -fx-control-inner-background-alt: -fx-control-inner-background;
+}
+
+.dark-blue {
+    -fx-background-color: #090a0c,
+    linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+    linear-gradient(#20262b, #191d22),
+    radial-gradient(center 50% 0%, radius 100%, rgba(114, 131, 148, 0.9), rgba(255, 255, 255, 0));
+    -fx-background-radius: 5, 4, 3, 5;
+    -fx-background-insets: 0, 1, 2, 0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: white;
+
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: #4d5965;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover {
+    -fx-background-color: #2d343c;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #4c5e6c;
 }
