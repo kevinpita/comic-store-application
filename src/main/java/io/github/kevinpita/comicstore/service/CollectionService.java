@@ -15,7 +15,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -23,7 +24,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 @Slf4j
 public class CollectionService {
     private static CollectionService instance;
-    private List<CollectionDto> collections;
+    private ObservableList<CollectionDto> collections;
 
     private CollectionService() {}
 
@@ -34,8 +35,9 @@ public class CollectionService {
         return instance;
     }
 
-    public List<CollectionDto> getCollections() {
+    public ObservableList<CollectionDto> getCollections() {
         if (collections == null) {
+            collections = FXCollections.observableArrayList();
             fillCollections();
         }
         return collections;
@@ -73,7 +75,8 @@ public class CollectionService {
             if (response.statusCode() != 200) {
                 return;
             }
-            collections = gson.fromJson(response.body(), CollectionListDto.class).getData();
+            collections.clear();
+            collections.setAll(gson.fromJson(response.body(), CollectionListDto.class).getData());
         } catch (Exception ignored) {
             log.error(ExceptionUtils.getStackTrace(ignored));
             CustomAlert.showConnectingAlert();

@@ -15,7 +15,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -24,7 +25,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 @Slf4j
 public class ComicService {
     private static ComicService instance;
-    @Getter private List<ComicDto> comics;
+    @Getter private ObservableList<ComicDto> comics;
 
     private ComicService() {}
 
@@ -35,8 +36,9 @@ public class ComicService {
         return instance;
     }
 
-    public List<ComicDto> getComics() {
+    public ObservableList<ComicDto> getComics() {
         if (comics == null) {
+            comics = FXCollections.observableArrayList();
             fillComics();
         }
         return comics;
@@ -74,7 +76,8 @@ public class ComicService {
             if (response.statusCode() != 200) {
                 return;
             }
-            comics = gson.fromJson(response.body(), ComicListDto.class).getData();
+            comics.clear();
+            comics.setAll(gson.fromJson(response.body(), ComicListDto.class).getData());
         } catch (Exception ignored) {
             log.error(ExceptionUtils.getStackTrace(ignored));
             CustomAlert.showConnectingAlert();
