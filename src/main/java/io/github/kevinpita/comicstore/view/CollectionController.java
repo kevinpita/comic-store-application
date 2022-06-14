@@ -10,8 +10,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
-import java.util.Map;
-
 public class CollectionController {
 
     @FXML private AnchorPane collectionPane;
@@ -29,7 +27,7 @@ public class CollectionController {
         this.title = title;
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return title;
     }
 
@@ -42,5 +40,4 @@ public class CollectionController {
         tooltip.setFont(new Font(16));
         Tooltip.install(collectionPane, tooltip);
     }
-
 }

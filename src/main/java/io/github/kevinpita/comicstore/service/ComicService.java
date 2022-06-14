@@ -15,7 +15,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +41,7 @@ public class ComicService {
         }
         return comics;
     }
+
     public void fillComics() {
         String url = UrlPath.COMIC.getUrl();
         String password = Configuration.getAuthToken();

@@ -1,10 +1,9 @@
+/* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.model;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
 
 @Builder
 public class AuthorTable {

@@ -15,9 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -42,6 +40,7 @@ public class CollectionService {
         }
         return collections;
     }
+
     public void fillCollections() {
         String url = UrlPath.COLLECTION.getUrl();
         String password = Configuration.getAuthToken();

@@ -3,13 +3,11 @@ package io.github.kevinpita.comicstore.view;
 
 import io.github.kevinpita.comicstore.model.CollectionDto;
 import io.github.kevinpita.comicstore.service.CollectionService;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
@@ -24,8 +22,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 @Slf4j
 public class CollectionListController {
-    @FXML
-    private FlowPane collectionFlowPane;
+    @FXML private FlowPane collectionFlowPane;
     private Map<Node, CollectionController> nodeControllerMap = new HashMap<>();
 
     private Predicate<Node> createPredicate(String searchText) {
@@ -61,12 +58,15 @@ public class CollectionListController {
                     }
                 });
         Scene scene = MainWindow.mainScene;
-        FilteredList<Node> filteredData = new FilteredList<>(FXCollections.observableArrayList(collectionList));
+        FilteredList<Node> filteredData =
+                new FilteredList<>(FXCollections.observableArrayList(collectionList));
         TextField textField = (TextField) scene.lookup("#searchBar");
-        textField.textProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    filteredData.setPredicate(createPredicate(newValue));
-                });
+        textField
+                .textProperty()
+                .addListener(
+                        (observable, oldValue, newValue) -> {
+                            filteredData.setPredicate(createPredicate(newValue));
+                        });
         Bindings.bindContent(collectionFlowPane.getChildren(), filteredData);
     }
 }

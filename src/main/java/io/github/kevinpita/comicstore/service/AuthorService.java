@@ -6,23 +6,18 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import io.github.kevinpita.comicstore.configuration.Configuration;
 import io.github.kevinpita.comicstore.configuration.UrlPath;
-import io.github.kevinpita.comicstore.model.CollectionDto;
 import io.github.kevinpita.comicstore.model.CreatorDto;
 import io.github.kevinpita.comicstore.model.data.AuthorListDto;
-import io.github.kevinpita.comicstore.model.data.CollectionListDto;
 import io.github.kevinpita.comicstore.util.CustomAlert;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 // comic singleton
 @Slf4j
@@ -30,8 +25,7 @@ public class AuthorService {
     private static AuthorService instance;
     private List<CreatorDto> authors;
 
-    private AuthorService() {
-    }
+    private AuthorService() {}
 
     public static AuthorService getInstance() {
         if (instance == null) {
@@ -46,6 +40,7 @@ public class AuthorService {
         }
         return authors;
     }
+
     public void fillAuthors() {
         String url = UrlPath.AUTHOR.getUrl();
         String password = Configuration.getAuthToken();

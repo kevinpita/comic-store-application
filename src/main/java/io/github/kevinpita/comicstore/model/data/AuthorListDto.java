@@ -2,12 +2,11 @@
 package io.github.kevinpita.comicstore.model.data;
 
 import io.github.kevinpita.comicstore.model.CreatorDto;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @Builder
