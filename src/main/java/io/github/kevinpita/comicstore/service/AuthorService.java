@@ -45,8 +45,8 @@ public class AuthorService {
         if (authorsTable == null) {
             authors = FXCollections.observableArrayList();
             authorsTable = FXCollections.observableArrayList();
-            fillAuthors();
         }
+        fillAuthors();
         return authorsTable;
     }
 
@@ -54,12 +54,13 @@ public class AuthorService {
         if (authors == null) {
             authors = FXCollections.observableArrayList();
             authorsTable = FXCollections.observableArrayList();
-            fillAuthors();
         }
+        fillAuthors();
+
         return authors;
     }
 
-    public void fillAuthors() {
+    private void fillAuthors() {
         String url = UrlPath.AUTHOR.getUrl();
         String password = Configuration.getAuthToken();
 
@@ -146,7 +147,7 @@ public class AuthorService {
             if (response.statusCode() != 201) {
                 return false;
             }
-            AuthorService.getInstance().fillAuthors();
+            AuthorService.getInstance().getAuthors();
             return true;
         } catch (Exception ignored) {
             log.error(ExceptionUtils.getStackTrace(ignored));
