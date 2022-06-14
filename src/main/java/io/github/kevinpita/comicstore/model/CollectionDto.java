@@ -24,4 +24,13 @@ public class CollectionDto implements Serializable {
     public String getImageUrl() {
         return UrlPath.COLLECTION_IMAGE.getUrl() + "/" + id;
     }
+
+    @Override
+    public String toString() {
+        String stringResult = name;
+        if (stringResult.length() > 30) {
+            stringResult = stringResult.substring(0, 30) + "...";
+        }
+        return stringResult;
+    }
 }

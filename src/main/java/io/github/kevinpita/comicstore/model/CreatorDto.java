@@ -16,4 +16,14 @@ public class CreatorDto implements Serializable {
     private String name;
     private String lastName;
     private int createdComics;
+
+    @Override
+    public String toString() {
+        String stringResult = name + " " + lastName;
+        if (stringResult.length() > 30) {
+            stringResult = stringResult.substring(0, 30).strip() + "...";
+        }
+
+        return stringResult;
+    }
 }
