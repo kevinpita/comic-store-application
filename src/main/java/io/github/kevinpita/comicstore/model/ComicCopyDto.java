@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class ComicCopyDto implements Serializable {
     private Long id;
     private LocalDate purchaseDate;
+    private String cover;
     private String state;
     private BigDecimal price;
     private ComicDto comic;

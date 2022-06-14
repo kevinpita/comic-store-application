@@ -13,5 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreatorDto implements Serializable {
     private int id;
-    private String fullName;
+    private String name;
+    private String lastName;
+    private int createdComics;
 }
