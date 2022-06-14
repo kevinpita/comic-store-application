@@ -1,10 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="600.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/18"
-            fx:controller="io.github.kevinpita.comicstore.view.ReportListController">
-    <center>
-        <Label text="REPORT" BorderPane.alignment="CENTER"/>
-    </center>
-</BorderPane>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<GridPane prefHeight="600.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.ReportListController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" percentHeight="50.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <center>
+            <Button fx:id="btnReportComic" mnemonicParsing="false" prefHeight="70.0" prefWidth="160.0" text="%comicReport" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
+         </center>
+      </BorderPane>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+         <center>
+            <Button fx:id="btnReportCollection" mnemonicParsing="false" prefHeight="70.0" prefWidth="160.0" text="%collectionReport" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
+         </center>
+      </BorderPane>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+         <center>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER_RIGHT">
+               <children>
+                  <Button fx:id="btnReportComicAuthor" mnemonicParsing="false" prefHeight="70.0" prefWidth="160.0" text="%comicReportAuthor" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <ComboBox fx:id="comboReportComicAuthor" prefHeight="20.0" prefWidth="160.0">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </ComboBox>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <center>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER_RIGHT">
+               <children>
+                  <Button fx:id="btnReportComicCollection" mnemonicParsing="false" prefHeight="70.0" prefWidth="160.0" text="%comicReportCollection" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <ComboBox fx:id="comboReportComicCollection" prefHeight="20.0" prefWidth="160.0">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </ComboBox>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</GridPane>
