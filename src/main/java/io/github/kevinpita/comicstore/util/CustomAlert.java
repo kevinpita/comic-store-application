@@ -27,4 +27,12 @@ public class CustomAlert {
         alert.setContentText("");
         alert.showAndWait();
     }
+
+    public static void showInfo(String headerText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(i18n.getString("infoTitle"));
+        alert.setHeaderText(headerText);
+        alert.setContentText("");
+        alert.showAndWait();
+    }
 }
