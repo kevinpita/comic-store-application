@@ -1,0 +1,42 @@
+.parentPane {
+    -fx-background-color: #495562;
+}
+
+.mediumWhiteLabel {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.mediumWhiteTextField {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+    -fx-background-radius: 10;
+    -fx-border-color: white;
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+}
+
+.buttonStyle {
+    -fx-background-color: #536579;
+    -fx-background-insets: 0,1,4,5,6;
+    -fx-background-radius: 9,8,5,4,3;
+    -fx-padding: 15 30 15 30;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+}
+
+.buttonStyle:hover {
+    -fx-background-color: #667485;
+}
+
+.errorLabel {
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+}
+.errorField {
+    -fx-background-color: rgba(255, 0, 0, 0.2);
+    -fx-border-color: red;
+}
