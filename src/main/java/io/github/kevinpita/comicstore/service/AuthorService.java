@@ -155,4 +155,35 @@ public class AuthorService {
         }
         return false;
     }
+
+    public static boolean updateAuthor(int id, String name, String lastName) {
+        String url = UrlPath.AUTHOR.getUrl() + "/" + id;
+        String password = Configuration.getAuthToken();
+
+        HttpClient client = HttpClient.newHttpClient();
+        String json = new Gson().toJson(AuthorDto.builder().name(name).lastName(lastName).build());
+        try {
+            HttpRequest request =
+                    HttpRequest.newBuilder()
+                            .PUT(HttpRequest.BodyPublishers.ofString(json))
+                            .timeout(Duration.ofSeconds(3))
+                            .header("Authorization", password)
+                            .header("Content-Type", "application/json")
+                            .uri(URI.create(url))
+                            .build();
+
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 201) {
+                return false;
+            }
+            AuthorService.getInstance().getAuthors();
+            return true;
+        } catch (Exception ignored) {
+            log.error(ExceptionUtils.getStackTrace(ignored));
+            CustomAlert.showConnectingAlert();
+        }
+        return false;
+    }
 }
