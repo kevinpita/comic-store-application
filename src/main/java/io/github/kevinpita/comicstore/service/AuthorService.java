@@ -25,7 +25,6 @@ import javafx.collections.ObservableList;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-// comic singleton
 @Slf4j
 public class AuthorService {
     private static AuthorService instance;
@@ -99,7 +98,6 @@ public class AuthorService {
         } catch (Exception ignored) {
             log.error(ExceptionUtils.getStackTrace(ignored));
             CustomAlert.showConnectingAlert();
-            System.exit(1);
         }
     }
 

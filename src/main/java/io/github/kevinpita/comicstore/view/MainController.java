@@ -4,6 +4,7 @@ package io.github.kevinpita.comicstore.view;
 import io.github.kevinpita.comicstore.configuration.Configuration;
 import io.github.kevinpita.comicstore.model.AuthorDto;
 import io.github.kevinpita.comicstore.model.CollectionDto;
+import io.github.kevinpita.comicstore.service.CollectionService;
 import io.github.kevinpita.comicstore.util.i18n;
 import io.github.kevinpita.comicstore.view.create.AuthorData;
 import io.github.kevinpita.comicstore.view.create.CollectionData;
@@ -52,6 +53,7 @@ public class MainController {
         currentMenuButton = listComicButton;
         rotateSettingsButton();
         setStringBindings();
+        CollectionService.setBorderPanel(listParentPane);
     }
 
     private void setStringBindings() {
@@ -267,7 +269,6 @@ public class MainController {
         try {
             openCollectionWindow(null, currentMenuButton, listParentPane);
         } catch (Exception e) {
-            System.out.println(":)");
         }
     }
 

@@ -1,12 +1,14 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.view;
 
+import io.github.kevinpita.comicstore.model.CollectionDto;
 import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -19,6 +21,13 @@ public class CollectionController {
 
     private Image image;
     private String title;
+    private CollectionDto collection;
+    private BorderPane borderPane;
+
+    public CollectionController(CollectionDto collection, BorderPane borderPane) {
+        this.collection = collection;
+        this.borderPane = borderPane;
+    }
 
     public void setImage(String imageUrl) {
         image = new Image(imageUrl);
@@ -48,5 +57,10 @@ public class CollectionController {
         Tooltip tooltip = new Tooltip(title);
         tooltip.setFont(new Font(16));
         Tooltip.install(collectionPane, tooltip);
+    }
+
+    @FXML
+    public void openCollectionEditWindow() {
+        MainController.openCollectionWindow(this.collection, this.collectionImage, this.borderPane);
     }
 }

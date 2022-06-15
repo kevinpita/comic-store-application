@@ -28,12 +28,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.layout.BorderPane;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 // comic singleton
 @Slf4j
 public class CollectionService {
+    private static BorderPane borderPane;
+
+    public static void setBorderPanel(BorderPane borderPane) {
+        CollectionService.borderPane = borderPane;
+    }
+
     private Gson gson =
             new GsonBuilder()
                     .registerTypeAdapter(
@@ -120,7 +127,6 @@ public class CollectionService {
             }
 
             String b = response.body();
-            System.out.println(b);
             int id = getInstance().getGson().fromJson(b, NewCollectionDto.class).getData().getId();
             uploadImage(image, id);
             return 2;
@@ -164,12 +170,40 @@ public class CollectionService {
                 return 1;
             }
             AuthorService.getInstance().getAuthors();
+            if (image != null) {
+                uploadImage(image, id);
+            }
             return 2;
         } catch (Exception ignored) {
             log.error(ExceptionUtils.getStackTrace(ignored));
             CustomAlert.showConnectingAlert();
         }
         return 1;
+    }
+
+    public static boolean deletePicture(int id) {
+        String url = UrlPath.COLLECTION_IMAGE.getUrl() + "/" + id;
+        String password = Configuration.getAuthToken();
+
+        HttpClient client = HttpClient.newHttpClient();
+        try {
+            HttpRequest request =
+                    HttpRequest.newBuilder()
+                            .DELETE()
+                            .timeout(Duration.ofSeconds(3))
+                            .header("Authorization", password)
+                            .uri(URI.create(url))
+                            .build();
+
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return response.statusCode() == 200;
+        } catch (Exception ignored) {
+            log.error(ExceptionUtils.getStackTrace(ignored));
+            CustomAlert.showConnectingAlert();
+        }
+        return false;
     }
 
     public static boolean deleteCollection(int id) {
@@ -192,7 +226,7 @@ public class CollectionService {
             if (response.statusCode() != 200) {
                 return false;
             }
-            AuthorService.getInstance().getAuthors();
+            deletePicture(id);
             return true;
         } catch (Exception ignored) {
             log.error(ExceptionUtils.getStackTrace(ignored));
@@ -224,7 +258,8 @@ public class CollectionService {
                                             getClass()
                                                     .getResource(
                                                             "/io/github/kevinpita/comicstore/view/collection.fxml"));
-                            CollectionController controller = new CollectionController();
+                            CollectionController controller =
+                                    new CollectionController(collection, borderPane);
                             loader.setController(controller);
                             controller.setImage(collection.getImageUrl());
                             controller.setTitle(collection.getName());
@@ -264,7 +299,6 @@ public class CollectionService {
         } catch (Exception ignored) {
             log.error(ExceptionUtils.getStackTrace(ignored));
             CustomAlert.showConnectingAlert();
-            System.exit(1);
         }
     }
 

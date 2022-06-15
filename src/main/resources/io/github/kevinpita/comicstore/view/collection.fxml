@@ -2,12 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.shape.Rectangle?>
 <AnchorPane prefHeight="245.0" prefWidth="151.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
 
     <children>
@@ -16,7 +14,7 @@
                 <Insets />
             </opaqueInsets>
             <children>
-                <Rectangle fx:id="collectionImage" height="193.0" width="132.0">
+                <Rectangle fx:id="collectionImage" height="193.0" onMouseClicked="#openCollectionEditWindow" width="132.0">
                 </Rectangle>
                 <Label fx:id="collectionTitle" layoutX="10.0" layoutY="193.0" prefHeight="52.0" prefWidth="107.0" text="Título del colección" textFill="WHITE" wrapText="true">
                     <font>

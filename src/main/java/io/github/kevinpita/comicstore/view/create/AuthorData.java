@@ -27,6 +27,7 @@ public class AuthorData {
 
     public void initialize() {
         if (authorDto == null) {
+            Platform.runLater(() -> parentAnchorPane.requestFocus());
             return;
         }
 

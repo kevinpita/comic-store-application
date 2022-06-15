@@ -183,7 +183,7 @@
                                         <String fx:value="hoverButton" />
                                     </styleClass>
                                 </Button>
-                                <Button fx:id="createCollectionButton" alignment="CENTER" contentDisplay="CENTER" prefHeight="0.0" prefWidth="170.0" text="%collectionButton">
+                                <Button fx:id="createCollectionButton" alignment="CENTER" contentDisplay="CENTER" onAction="#openCollectionCreator" prefHeight="0.0" prefWidth="170.0" text="%collectionButton">
                                     <VBox.margin>
                                         <Insets bottom="40.0" />
                                     </VBox.margin>

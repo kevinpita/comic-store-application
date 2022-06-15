@@ -23,6 +23,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 @Slf4j
 public class CollectionData {
@@ -138,7 +139,7 @@ public class CollectionData {
             try {
                 reloadedPane.setCenter(fxmlLoader.load());
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                log.error("Error loading collection list view", ExceptionUtils.getStackTrace(e));
             }
             CustomAlert.showInfo(i18n.getString("newCollectionAlert"));
         } else if (createdStatus == 0) {
@@ -158,6 +159,17 @@ public class CollectionData {
         }
         boolean deleteResult = CollectionService.deleteCollection(collectionDto.getId());
         if (deleteResult) {
+            CollectionService.getInstance().getCollectionsAsNodes();
+            FXMLLoader fxmlLoader =
+                    new FXMLLoader(
+                            MainWindow.class.getResource(
+                                    "/io/github/kevinpita/comicstore/view/collection-list.fxml"),
+                            i18n.getResourceBundle());
+            try {
+                reloadedPane.setCenter(fxmlLoader.load());
+            } catch (IOException e) {
+                log.error("Error loading collection list view", ExceptionUtils.getStackTrace(e));
+            }
             CustomAlert.showInfo(i18n.getString("deleteCollectionAlert"));
             inputCollectionPublisher.getScene().getWindow().hide();
             return;

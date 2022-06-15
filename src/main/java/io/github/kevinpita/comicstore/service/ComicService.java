@@ -39,8 +39,8 @@ public class ComicService {
     public ObservableList<ComicDto> getComics() {
         if (comics == null) {
             comics = FXCollections.observableArrayList();
-            fillComics();
         }
+        fillComics();
         return comics;
     }
 
@@ -81,7 +81,6 @@ public class ComicService {
         } catch (Exception ignored) {
             log.error(ExceptionUtils.getStackTrace(ignored));
             CustomAlert.showConnectingAlert();
-            System.exit(1);
         }
     }
 }
