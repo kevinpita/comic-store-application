@@ -2,7 +2,9 @@
 package io.github.kevinpita.comicstore.view.create;
 
 import io.github.kevinpita.comicstore.model.CollectionDto;
+import io.github.kevinpita.comicstore.model.ComicTable;
 import io.github.kevinpita.comicstore.service.CollectionService;
+import io.github.kevinpita.comicstore.service.ComicService;
 import io.github.kevinpita.comicstore.util.CustomAlert;
 import io.github.kevinpita.comicstore.util.i18n;
 import io.github.kevinpita.comicstore.view.MainWindow;
@@ -13,9 +15,8 @@ import java.util.Objects;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -34,6 +35,9 @@ public class CollectionData {
     @FXML private TextArea txtAreaDescription;
     @FXML private Button removeButton;
 
+    @FXML private TableView comicListTableCollection;
+    @FXML private TableColumn tableColumnComicId;
+    @FXML private TableColumn tableColumnComicTitle;
     private Path imagePath;
     CollectionDto collectionDto;
     BorderPane reloadedPane;
@@ -65,6 +69,14 @@ public class CollectionData {
             Platform.runLater(() -> parentPane.requestFocus());
             return;
         }
+        comicListTableCollection.setDisable(false);
+
+        tableColumnComicId.setCellValueFactory(new PropertyValueFactory<ComicTable, Integer>("id"));
+        tableColumnComicTitle.setCellValueFactory(
+                new PropertyValueFactory<ComicTable, String>("title"));
+
+        comicListTableCollection.setItems(
+                ComicService.getComicTableList(collectionDto.getComics()));
 
         inputCollectionName.setText(collectionDto.getName());
         inputCollectionPublisher.setText(collectionDto.getPublisher());

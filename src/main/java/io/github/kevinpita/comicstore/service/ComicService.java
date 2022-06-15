@@ -7,6 +7,7 @@ import com.google.gson.JsonDeserializer;
 import io.github.kevinpita.comicstore.configuration.Configuration;
 import io.github.kevinpita.comicstore.configuration.UrlPath;
 import io.github.kevinpita.comicstore.model.ComicDto;
+import io.github.kevinpita.comicstore.model.ComicTable;
 import io.github.kevinpita.comicstore.model.data.ComicListDto;
 import io.github.kevinpita.comicstore.util.CustomAlert;
 import java.net.URI;
@@ -15,6 +16,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
@@ -34,6 +36,13 @@ public class ComicService {
             instance = new ComicService();
         }
         return instance;
+    }
+
+    public static ObservableList<ComicTable> getComicTableList(List<ComicDto> comics) {
+        ObservableList<ComicTable> comicTableList = FXCollections.observableArrayList();
+        comics.forEach(
+                comic -> comicTableList.add(new ComicTable(comic.getId(), comic.getTitle())));
+        return comicTableList;
     }
 
     public ObservableList<ComicDto> getComics() {
