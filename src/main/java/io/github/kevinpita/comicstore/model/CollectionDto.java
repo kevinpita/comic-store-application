@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CollectionDto implements Serializable {
-    private Long id;
+    private int id;
     private String name;
     private String description;
     private String publisher;

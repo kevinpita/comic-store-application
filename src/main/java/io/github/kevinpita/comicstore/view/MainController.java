@@ -3,8 +3,10 @@ package io.github.kevinpita.comicstore.view;
 
 import io.github.kevinpita.comicstore.configuration.Configuration;
 import io.github.kevinpita.comicstore.model.AuthorDto;
+import io.github.kevinpita.comicstore.model.CollectionDto;
 import io.github.kevinpita.comicstore.util.i18n;
 import io.github.kevinpita.comicstore.view.create.AuthorData;
+import io.github.kevinpita.comicstore.view.create.CollectionData;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Optional;
@@ -250,6 +252,56 @@ public class MainController {
                     reference.getScene().getWindow().getY() + (mainBounds.getHeight() - 370) / 2);
 
             stage.setResizable(false);
+            stage.initOwner(reference.getScene().getWindow());
+            // make configuration screen modal
+            stage.initModality(Modality.WINDOW_MODAL);
+
+            stage.showAndWait();
+        } catch (IOException e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @FXML
+    public void openCollectionCreator() {
+        try {
+            openCollectionWindow(null, currentMenuButton, listParentPane);
+        } catch (Exception e) {
+            System.out.println(":)");
+        }
+    }
+
+    public static void openCollectionWindow(
+            CollectionDto collection, Node reference, BorderPane p) {
+        try {
+            // load configuration FXML
+            FXMLLoader fxmlLoader =
+                    new FXMLLoader(
+                            MainWindow.class.getResource(
+                                    "/io/github/kevinpita/comicstore/view/create/collection-data.fxml"),
+                            i18n.getResourceBundle());
+            CollectionData collectionData = new CollectionData(collection, p);
+            fxmlLoader.setController(collectionData);
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+
+            stage.setScene(scene);
+            stage.setTitle(i18n.getString("collectionCreatorTitle"));
+
+            // put configuration FXML in the center of the parent window
+            stage.setHeight(840);
+            stage.setWidth(840);
+            stage.setMinHeight(840);
+            stage.setMinWidth(840);
+
+            Bounds mainBounds = reference.getScene().getRoot().getLayoutBounds();
+            stage.setX(
+                    reference.getScene().getWindow().getX()
+                            + (mainBounds.getWidth() - stage.getWidth()) / 2);
+            stage.setY(
+                    reference.getScene().getWindow().getY()
+                            + (mainBounds.getHeight() - stage.getHeight()) / 2);
+
             stage.initOwner(reference.getScene().getWindow());
             // make configuration screen modal
             stage.initModality(Modality.WINDOW_MODAL);
