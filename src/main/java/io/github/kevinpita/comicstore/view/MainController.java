@@ -75,7 +75,7 @@ public class MainController {
     }
 
     @FXML
-    public void askForLanguageChange() {
+    private void askForLanguageChange() {
         Alert alert =
                 new Alert(
                         Alert.AlertType.CONFIRMATION,
@@ -127,7 +127,7 @@ public class MainController {
     }
 
     @FXML
-    public void changeButton(ActionEvent event) {
+    private void changeButton(ActionEvent event) {
         // get clicked source
         Button clickedButton = (Button) event.getSource();
 
@@ -187,7 +187,7 @@ public class MainController {
     }
 
     @FXML
-    public void openSettings() {
+    private void openSettings() {
         try {
             // load configuration FXML
             FXMLLoader fxmlLoader = getFxmlLoader("configuration");
@@ -220,25 +220,25 @@ public class MainController {
     }
 
     @FXML
-    public void openAuthorCreator() {
+    private void openAuthorCreator() {
         removeSearchText();
         openAuthorWindow(null);
     }
 
     @FXML
-    public void openCollectionCreator() {
+    private void openCollectionCreator() {
         removeSearchText();
         openCollectionWindow(null);
     }
 
     @FXML
-    public void openComicCreator() {
+    private void openComicCreator() {
         removeSearchText();
         openComicWindow(null);
     }
 
     @FXML
-    public void removeSearchText() {
+    private void removeSearchText() {
         txtFieldSearchBar.setText("");
     }
 

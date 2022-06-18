@@ -24,7 +24,7 @@ public class MainWindow extends Application {
     }
 
     @Override
-    public void start(Stage stage) {
+    private void start(Stage stage) {
         // Load fxml file with resource bundle
         FXMLLoader fxmlLoader =
                 new FXMLLoader(

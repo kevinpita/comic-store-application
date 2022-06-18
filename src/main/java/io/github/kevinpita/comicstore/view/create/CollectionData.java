@@ -6,10 +6,9 @@ import io.github.kevinpita.comicstore.model.ComicTable;
 import io.github.kevinpita.comicstore.service.CollectionService;
 import io.github.kevinpita.comicstore.service.ComicService;
 import io.github.kevinpita.comicstore.util.CustomAlert;
+import io.github.kevinpita.comicstore.util.ImageUtil;
 import io.github.kevinpita.comicstore.util.i18n;
 import io.github.kevinpita.comicstore.view.MainController;
-import io.github.kevinpita.comicstore.view.MainWindow;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -22,7 +21,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.stage.FileChooser;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -39,9 +37,9 @@ public class CollectionData {
     @FXML private TableView<ComicTable> comicListTableCollection;
     @FXML private TableColumn<ComicTable, Integer> tableColumnComicId;
     @FXML private TableColumn<ComicTable, String> tableColumnComicTitle;
-    private Path imagePath;
-    @Setter CollectionDto collectionDto;
     @FXML private Button saveButton;
+    private Path imagePath;
+    @Setter private CollectionDto collectionDto;
 
     public void lateInit() {
         if (setupImage()) return;
@@ -54,6 +52,118 @@ public class CollectionData {
 
         Platform.runLater(() -> parentPane.requestFocus());
         removeButton.setDisable(false);
+    }
+
+    @FXML
+    private void cancel() {
+        circlePicture.getScene().getWindow().hide();
+    }
+
+    @FXML
+    private void save() {
+        boolean error;
+        String name = inputCollectionName.getText().strip();
+        String publisher = inputCollectionPublisher.getText().strip();
+        String description = txtAreaDescription.getText().strip();
+
+        error = checkError(name, publisher, description);
+
+        if (error) {
+            CustomAlert.showAlert(
+                    i18n.getString("formError"), i18n.getString("collectionFormErrorMessage"));
+            return;
+        }
+
+        if (checkSameObject(name, publisher, description)) return;
+
+        int createdStatus;
+        if (collectionDto == null) {
+            createdStatus =
+                    CollectionService.createCollection(name, publisher, description, imagePath);
+        } else {
+            createdStatus =
+                    CollectionService.updateCollection(
+                            collectionDto.getId(), name, publisher, description, imagePath);
+        }
+
+        if (createdStatus == 2) {
+            reloadCollectionList();
+            CustomAlert.showInfo(i18n.getString("newCollectionAlert"));
+        } else if (createdStatus == 0) {
+            inputCollectionName.getStyleClass().add("errorField");
+            CustomAlert.showAlert(i18n.getString("duplicatedCollectionFormErrorMessage"));
+        } else {
+            CustomAlert.showAlert(i18n.getString("createCollectionError"));
+        }
+
+        inputCollectionPublisher.getScene().getWindow().hide();
+    }
+
+    @FXML
+    private void delete() {
+        if (collectionDto == null) {
+            return;
+        }
+        boolean deleteResult = CollectionService.deleteCollection(collectionDto.getId());
+        if (deleteResult) {
+            reloadCollectionList();
+            CustomAlert.showInfo(i18n.getString("deleteCollectionAlert"));
+            inputCollectionPublisher.getScene().getWindow().hide();
+            return;
+        }
+        CustomAlert.showAlert(i18n.getString("collectionFormDeleteErrorMessage"));
+    }
+
+    @FXML
+    private void selectNewPicture() {
+        ImageUtil.selectImage(circlePicture, imagePath);
+    }
+
+    private void reloadCollectionList() {
+        CollectionService.getInstance().getCollectionsAsNodes();
+        FXMLLoader fxmlLoader = MainController.getFxmlLoader("collection-list");
+        try {
+            MainController.getMainPane().setCenter(fxmlLoader.load());
+        } catch (IOException e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            CustomAlert.showAlert(i18n.getString("errorScreenLoad"));
+        }
+    }
+
+    private boolean checkError(String name, String publisher, String description) {
+        boolean error = false;
+        if (name.isBlank() || name.length() > 255) {
+            inputCollectionName.getStyleClass().add("errorField");
+            error = true;
+        } else {
+            inputCollectionName.getStyleClass().remove("errorField");
+        }
+
+        if (publisher.isBlank() || publisher.length() > 255) {
+            inputCollectionPublisher.getStyleClass().add("errorField");
+            error = true;
+        } else {
+            inputCollectionPublisher.getStyleClass().remove("errorField");
+        }
+
+        if (description.length() > 512) {
+            txtAreaDescription.getStyleClass().add("errorField");
+            error = true;
+        } else {
+            txtAreaDescription.getStyleClass().remove("errorField");
+        }
+        return error;
+    }
+
+    private boolean checkSameObject(String name, String publisher, String description) {
+        if (name.equals(collectionDto.getName())
+                && publisher.equals(collectionDto.getPublisher())
+                && description.equals(collectionDto.getDescription())
+                && imagePath == null) {
+            inputCollectionPublisher.getScene().getWindow().hide();
+            return true;
+        }
+        return false;
     }
 
     private void setupTable() {
@@ -89,131 +199,5 @@ public class CollectionData {
             return true;
         }
         return false;
-    }
-
-    @FXML
-    public void cancel() {
-        circlePicture.getScene().getWindow().hide();
-    }
-
-    @FXML
-    void save() {
-        boolean error = false;
-        String name = inputCollectionName.getText().strip();
-        String publisher = inputCollectionPublisher.getText().strip();
-        String description = txtAreaDescription.getText().strip();
-
-        if (name.isBlank() || name.length() > 255) {
-            inputCollectionName.getStyleClass().add("errorField");
-            error = true;
-        } else {
-            inputCollectionName.getStyleClass().remove("errorField");
-        }
-
-        if (publisher.isBlank() || publisher.length() > 255) {
-            inputCollectionPublisher.getStyleClass().add("errorField");
-            error = true;
-        } else {
-            inputCollectionPublisher.getStyleClass().remove("errorField");
-        }
-
-        if (description.length() > 512) {
-            txtAreaDescription.getStyleClass().add("errorField");
-            error = true;
-        } else {
-            txtAreaDescription.getStyleClass().remove("errorField");
-        }
-
-        if (error) {
-            CustomAlert.showAlert(
-                    i18n.getString("formError"), i18n.getString("collectionFormErrorMessage"));
-            return;
-        }
-
-        int createdStatus;
-        if (collectionDto == null) {
-            createdStatus =
-                    CollectionService.createCollection(name, publisher, description, imagePath);
-        } else {
-            if (name.equals(collectionDto.getName())
-                    && publisher.equals(collectionDto.getPublisher())
-                    && description.equals(collectionDto.getDescription())
-                    && imagePath == null) {
-                inputCollectionPublisher.getScene().getWindow().hide();
-                return;
-            }
-            createdStatus =
-                    CollectionService.updateCollection(
-                            collectionDto.getId(), name, publisher, description, imagePath);
-        }
-        if (createdStatus == 2) {
-            CollectionService.getInstance().getCollectionsAsNodes();
-            FXMLLoader fxmlLoader =
-                    new FXMLLoader(
-                            MainWindow.class.getResource(
-                                    "/io/github/kevinpita/comicstore/view/collection-list.fxml"),
-                            i18n.getResourceBundle());
-            try {
-                MainController.getMainPane().setCenter(fxmlLoader.load());
-            } catch (IOException e) {
-                log.error(ExceptionUtils.getStackTrace(e));
-            }
-            CustomAlert.showInfo(i18n.getString("newCollectionAlert"));
-        } else if (createdStatus == 0) {
-            inputCollectionName.getStyleClass().add("errorField");
-            CustomAlert.showAlert(i18n.getString("duplicatedCollectionFormErrorMessage"));
-        } else {
-            CustomAlert.showAlert(i18n.getString("createCollectionError"));
-        }
-
-        inputCollectionPublisher.getScene().getWindow().hide();
-    }
-
-    @FXML
-    void delete() {
-        if (collectionDto == null) {
-            return;
-        }
-        boolean deleteResult = CollectionService.deleteCollection(collectionDto.getId());
-        if (deleteResult) {
-            CollectionService.getInstance().getCollectionsAsNodes();
-            FXMLLoader fxmlLoader =
-                    new FXMLLoader(
-                            MainWindow.class.getResource(
-                                    "/io/github/kevinpita/comicstore/view/collection-list.fxml"),
-                            i18n.getResourceBundle());
-            try {
-                MainController.getMainPane().setCenter(fxmlLoader.load());
-            } catch (IOException e) {
-                log.error("Error loading collection list view", ExceptionUtils.getStackTrace(e));
-            }
-            CustomAlert.showInfo(i18n.getString("deleteCollectionAlert"));
-            inputCollectionPublisher.getScene().getWindow().hide();
-            return;
-        }
-        CustomAlert.showAlert(i18n.getString("collectionFormDeleteErrorMessage"));
-    }
-
-    @FXML
-    public void selectNewPicture() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle(i18n.getString("selectPictureTitle"));
-        fileChooser
-                .getExtensionFilters()
-                .add(
-                        new FileChooser.ExtensionFilter(
-                                i18n.getString("selectPictureFilter"), "*.png", "*.jpg"));
-        File selectedFile = fileChooser.showOpenDialog(circlePicture.getScene().getWindow());
-        if (selectedFile == null) {
-            return;
-        }
-
-        Image image = new Image(selectedFile.toPath().toUri().toString());
-        if (!image.isError()) {
-            this.imagePath = selectedFile.toPath();
-        }
-        if (this.imagePath != null) {
-            circlePicture.setFill(new ImagePattern(image));
-        }
     }
 }

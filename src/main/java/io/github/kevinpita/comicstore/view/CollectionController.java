@@ -46,7 +46,7 @@ public class CollectionController {
     }
 
     @FXML
-    public void openCollectionEditWindow() {
+    private void openCollectionEditWindow() {
         MainController.openCollectionWindow(this.collection);
     }
 }

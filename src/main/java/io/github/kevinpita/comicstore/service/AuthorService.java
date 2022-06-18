@@ -2,20 +2,15 @@
 package io.github.kevinpita.comicstore.service;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import io.github.kevinpita.comicstore.configuration.Configuration;
 import io.github.kevinpita.comicstore.configuration.UrlPath;
 import io.github.kevinpita.comicstore.model.AuthorDto;
 import io.github.kevinpita.comicstore.model.AuthorTable;
 import io.github.kevinpita.comicstore.model.data.AuthorListDto;
 import io.github.kevinpita.comicstore.util.CustomAlert;
-import java.net.URI;
+import io.github.kevinpita.comicstore.util.RequestUtil;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Duration;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -61,56 +56,41 @@ public class AuthorService {
 
     private void fillAuthors() {
         String url = UrlPath.AUTHOR.getUrl();
-        String password = Configuration.getAuthToken();
 
         HttpClient client = HttpClient.newHttpClient();
         try {
-            HttpRequest request =
-                    HttpRequest.newBuilder()
-                            .timeout(Duration.ofSeconds(3))
-                            .uri(URI.create(url))
-                            .header("Authorization", password)
-                            .build();
+            HttpRequest request = RequestUtil.createRequest(url).build();
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            Gson gson =
-                    new GsonBuilder()
-                            .registerTypeAdapter(
-                                    LocalDate.class,
-                                    (JsonDeserializer<LocalDate>)
-                                            (json, type, jsonDeserializationContext) -> {
-                                                String date = json.getAsString();
-                                                return LocalDate.of(
-                                                        Integer.parseInt(date.split("-")[0]),
-                                                        Integer.parseInt(date.split("-")[1]),
-                                                        Integer.parseInt(date.split("-")[2]));
-                                            })
-                            .create();
+            Gson gson = RequestUtil.getGson();
+
             if (response.statusCode() != 200) {
                 return;
             }
+
             authors.clear();
             authors.setAll(gson.fromJson(response.body(), AuthorListDto.class).getData());
+
             authorsTable.clear();
-            authorsTable.setAll(dtoToTable(authors));
-        } catch (Exception ignored) {
-            log.error(ExceptionUtils.getStackTrace(ignored));
+            authorsTable.setAll(dtoToTable());
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
             CustomAlert.showConnectingAlert();
         }
     }
 
-    public List<AuthorTable> dtoToTable(List<AuthorDto> authorDtos) {
+    public List<AuthorTable> dtoToTable() {
         List<AuthorTable> authorsTable = new ArrayList<>();
 
         authors.forEach(
                 author -> {
-                    SimpleStringProperty name = new SimpleStringProperty(author.getName());
-                    SimpleStringProperty lastName = new SimpleStringProperty(author.getLastName());
-                    SimpleIntegerProperty createdComicNumber =
-                            new SimpleIntegerProperty(author.getCreatedComics());
-                    SimpleIntegerProperty id = new SimpleIntegerProperty(author.getId());
+                    var name = new SimpleStringProperty(author.getName());
+                    var lastName = new SimpleStringProperty(author.getLastName());
+                    var createdComicNumber = new SimpleIntegerProperty(author.getCreatedComics());
+                    var id = new SimpleIntegerProperty(author.getId());
+
                     AuthorTable authorTable =
                             AuthorTable.builder()
                                     .name(name)
@@ -118,6 +98,7 @@ public class AuthorService {
                                     .createdComics(createdComicNumber)
                                     .id(id)
                                     .build();
+
                     authorsTable.add(authorTable);
                 });
         return authorsTable;
@@ -125,18 +106,14 @@ public class AuthorService {
 
     public static boolean createAuthor(String name, String lastName) {
         String url = UrlPath.AUTHOR.getUrl();
-        String password = Configuration.getAuthToken();
 
         HttpClient client = HttpClient.newHttpClient();
-        String json = new Gson().toJson(AuthorDto.builder().name(name).lastName(lastName).build());
+        String json = new Gson().toJson(getAuthorDto(name, lastName));
         try {
             HttpRequest request =
-                    HttpRequest.newBuilder()
+                    RequestUtil.createRequest(url)
                             .POST(HttpRequest.BodyPublishers.ofString(json))
-                            .timeout(Duration.ofSeconds(3))
-                            .header("Authorization", password)
                             .header("Content-Type", "application/json")
-                            .uri(URI.create(url))
                             .build();
 
             HttpResponse<String> response =
@@ -147,8 +124,9 @@ public class AuthorService {
             }
             AuthorService.getInstance().getAuthors();
             return true;
-        } catch (Exception ignored) {
-            log.error(ExceptionUtils.getStackTrace(ignored));
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
+            // TODO CONNECTING ALERT
             CustomAlert.showConnectingAlert();
         }
         return false;
@@ -156,18 +134,15 @@ public class AuthorService {
 
     public static boolean updateAuthor(int id, String name, String lastName) {
         String url = UrlPath.AUTHOR.getUrl() + "/" + id;
-        String password = Configuration.getAuthToken();
 
         HttpClient client = HttpClient.newHttpClient();
-        String json = new Gson().toJson(AuthorDto.builder().name(name).lastName(lastName).build());
+
+        String json = new Gson().toJson(getAuthorDto(name, lastName));
         try {
             HttpRequest request =
-                    HttpRequest.newBuilder()
+                    RequestUtil.createRequest(url)
                             .PUT(HttpRequest.BodyPublishers.ofString(json))
-                            .timeout(Duration.ofSeconds(3))
-                            .header("Authorization", password)
                             .header("Content-Type", "application/json")
-                            .uri(URI.create(url))
                             .build();
 
             HttpResponse<String> response =
@@ -178,26 +153,23 @@ public class AuthorService {
             }
             AuthorService.getInstance().getAuthors();
             return true;
-        } catch (Exception ignored) {
-            log.error(ExceptionUtils.getStackTrace(ignored));
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
             CustomAlert.showConnectingAlert();
         }
         return false;
     }
 
+    private static AuthorDto getAuthorDto(String name, String lastName) {
+        return AuthorDto.builder().name(name).lastName(lastName).build();
+    }
+
     public static boolean deleteAuthor(int id) {
         String url = UrlPath.AUTHOR.getUrl() + "/" + id;
-        String password = Configuration.getAuthToken();
 
         HttpClient client = HttpClient.newHttpClient();
         try {
-            HttpRequest request =
-                    HttpRequest.newBuilder()
-                            .DELETE()
-                            .timeout(Duration.ofSeconds(3))
-                            .header("Authorization", password)
-                            .uri(URI.create(url))
-                            .build();
+            HttpRequest request = RequestUtil.createRequest(url).DELETE().build();
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -207,8 +179,8 @@ public class AuthorService {
             }
             AuthorService.getInstance().getAuthors();
             return true;
-        } catch (Exception ignored) {
-            log.error(ExceptionUtils.getStackTrace(ignored));
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
             CustomAlert.showConnectingAlert();
         }
         return false;

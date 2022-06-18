@@ -16,8 +16,8 @@ public class AuthorComicData {
     @FXML private Button saveButton;
 
     @FXML
-    public void save(ActionEvent actionEvent) {}
+    private void save(ActionEvent actionEvent) {}
 
     @FXML
-    public void delete(ActionEvent actionEvent) {}
+    private void delete(ActionEvent actionEvent) {}
 }
