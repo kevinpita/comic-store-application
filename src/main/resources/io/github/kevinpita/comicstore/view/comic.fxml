@@ -14,7 +14,7 @@
                 <Insets />
             </opaqueInsets>
             <children>
-                <Rectangle fx:id="comicImage" height="193.0" pickOnBounds="true" width="132.0">
+                <Rectangle fx:id="comicImage" height="193.0" onMouseClicked="#openComicEditWindow" pickOnBounds="true" width="132.0">
                 </Rectangle>
                 <Label fx:id="comicTitle" layoutX="10.0" layoutY="193.0" prefHeight="52.0" prefWidth="107.0" text="Título del comic" textFill="WHITE" wrapText="true">
                     <font>

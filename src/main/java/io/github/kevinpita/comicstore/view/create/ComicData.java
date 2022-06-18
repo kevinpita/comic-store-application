@@ -1,8 +1,12 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.view.create;
 
+import io.github.kevinpita.comicstore.model.CollectionDto;
 import io.github.kevinpita.comicstore.model.ComicDto;
+import io.github.kevinpita.comicstore.model.table.ComicAuthorTable;
+import io.github.kevinpita.comicstore.model.table.ComicCopyTable;
 import io.github.kevinpita.comicstore.service.CollectionService;
+import io.github.kevinpita.comicstore.service.ComicService;
 import io.github.kevinpita.comicstore.util.CustomAlert;
 import io.github.kevinpita.comicstore.util.ImageUtil;
 import io.github.kevinpita.comicstore.util.i18n;
@@ -11,9 +15,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
@@ -25,17 +32,17 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 @Slf4j
 public class ComicData {
     @FXML private Button newAuthorComic;
-    @FXML private TableColumn authorComicRoleTable;
-    @FXML private TableColumn comicCopyPurchaseTable;
+    @FXML private TableColumn<ComicAuthorTable, String> authorComicRoleTable;
+    @FXML private TableColumn<ComicAuthorTable, String> authorComicNameTable;
+    @FXML private TableColumn<ComicCopyTable, String> comicCopyPurchaseTable;
     @FXML private Button deleteComicCopy;
-    @FXML private ComboBox collectionPublisher;
-    @FXML private TableView comicCopyTable;
+    @FXML private ComboBox<CollectionDto> collectionPublisher;
+    @FXML private TableView<ComicCopyTable> comicCopyTable;
     @FXML private Button editAuthorComic;
     @FXML private Button deleteAuthorComic;
-    @FXML private TextArea collectionDescription;
-    @FXML private TableColumn comicCopyCoverTable;
+    @FXML private TableColumn<ComicCopyTable, String> comicCopyCoverTable;
     @FXML private Circle circlePicture;
-    @FXML private TableView authorComicTable;
+    @FXML private TableView<ComicAuthorTable> authorComicTable;
     @FXML private Button cancelButton;
     @FXML private Button newComicCopy;
     @FXML private Button removeButton;
@@ -44,23 +51,44 @@ public class ComicData {
     @FXML private Button editComicCopy;
     @FXML private Button saveButton;
     @FXML private TextField comicIssueNumber;
-    @FXML private TableColumn comicCopyStateTable;
-    @FXML private TableColumn authorComicNameTable;
-    @FXML private TableColumn comicCopyPriceTable;
+    @FXML private TableColumn<ComicCopyTable, String> comicCopyStateTable;
+    @FXML private TableColumn<ComicCopyTable, Double> comicCopyPriceTable;
+    @FXML private TextArea comicDescription;
     private Path imagePath;
     @Setter private ComicDto comicDto;
 
+    private ObservableList<ComicCopyTable> comicCopyTableList;
+    private ObservableList<ComicAuthorTable> comicAuthorTableList;
+
     public void lateInit() {
+        setupTable(authorComicTable, deleteAuthorComic, editAuthorComic);
+        setupTable(comicCopyTable, deleteComicCopy, editComicCopy);
+        setCollectionPublisher();
+
         if (setupImage()) return;
 
-        setupTable();
+        setupAuthorTableData();
+        setupCopyTableData();
 
-        //        inputCollectionName.setText(collectionDto.getName());
-        //        inputCollectionPublisher.setText(collectionDto.getPublisher());
-        //        txtAreaDescription.setText(collectionDto.getDescription());
+        creatorAuthorMenu.setText(comicDto.getTitle());
+        comicIssueNumber.setText(comicDto.getIssueNumber() + "");
+        comicDescription.setText(comicDto.getDescription());
 
         Platform.runLater(() -> parentPane.requestFocus());
         removeButton.setDisable(false);
+    }
+
+    private void setCollectionPublisher() {
+        ObservableList<CollectionDto> collectionDtoList =
+                CollectionService.getInstance().getCollections();
+
+        if (collectionDtoList.size() == 0) {
+            collectionPublisher.setDisable(true);
+            return;
+        }
+
+        collectionPublisher.setItems(collectionDtoList);
+        collectionPublisher.setValue(collectionDtoList.get(0));
     }
 
     @FXML
@@ -131,9 +159,54 @@ public class ComicData {
         imagePath = ImageUtil.selectImage(circlePicture, imagePath);
     }
 
+    @FXML
+    private void newComicCopy() {}
+
+    @FXML
+    private void newAuthorComic() {}
+
+    public void fillComicCopyTableList() {
+        if (comicCopyTableList == null) {
+            comicCopyTableList = FXCollections.observableArrayList();
+        }
+        comicCopyTableList.clear();
+        if (comicDto != null) {
+            comicDto.getCopies()
+                    .forEach(
+                            copy -> {
+                                ComicCopyTable comicCopyTable =
+                                        new ComicCopyTable(
+                                                copy.getCover(),
+                                                copy.getState(),
+                                                copy.getPrice(),
+                                                copy.getPurchaseDate());
+
+                                comicCopyTableList.add(comicCopyTable);
+                            });
+        }
+    }
+
+    public void fillComicAuthorTableList() {
+        if (comicAuthorTableList == null) {
+            comicAuthorTableList = FXCollections.observableArrayList();
+        }
+        comicAuthorTableList.clear();
+        if (comicDto != null) {
+            comicDto.getComicCreators()
+                    .forEach(
+                            comicCreator -> {
+                                ComicAuthorTable comicAuthorTable =
+                                        new ComicAuthorTable(
+                                                comicCreator.getRole(),
+                                                comicCreator.getCreator().toString());
+                                comicAuthorTableList.add(comicAuthorTable);
+                            });
+        }
+    }
+
     private void reloadCollectionList() {
-        CollectionService.getInstance().getCollectionsAsNodes();
-        FXMLLoader fxmlLoader = MainController.getFxmlLoader("collection-list");
+        ComicService.getInstance().getCollectionsAsNodes();
+        FXMLLoader fxmlLoader = MainController.getFxmlLoader("comic-list");
         try {
             MainController.getMainPane().setCenter(fxmlLoader.load());
         } catch (IOException e) {
@@ -179,14 +252,32 @@ public class ComicData {
         return false;
     }
 
-    private void setupTable() {
-        //        comicListTableCollection.setDisable(false);
-        //
-        //        tableColumnComicId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        //        tableColumnComicTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        //
-        //        comicListTableCollection.setItems(
-        //                ComicService.getComicTableList(collectionDto.getComics()));
+    private void setupTable(TableView<?> table, Button delete, Button edit) {
+        table.getSelectionModel()
+                .selectedItemProperty()
+                .addListener(
+                        (obs, oldSelection, newSelection) -> {
+                            delete.setDisable(newSelection == null);
+                            edit.setDisable(newSelection == null);
+                        });
+    }
+
+    private void setupAuthorTableData() {
+        authorComicNameTable.setCellValueFactory(new PropertyValueFactory<>("name"));
+        authorComicRoleTable.setCellValueFactory(new PropertyValueFactory<>("role"));
+
+        fillComicAuthorTableList();
+        authorComicTable.setItems(comicAuthorTableList);
+    }
+
+    private void setupCopyTableData() {
+        comicCopyStateTable.setCellValueFactory(new PropertyValueFactory<>("state"));
+        comicCopyPriceTable.setCellValueFactory(new PropertyValueFactory<>("price"));
+        comicCopyCoverTable.setCellValueFactory(new PropertyValueFactory<>("cover"));
+        comicCopyPurchaseTable.setCellValueFactory(new PropertyValueFactory<>("purchase"));
+
+        fillComicCopyTableList();
+        comicCopyTable.setItems(comicCopyTableList);
     }
 
     private boolean setupImage() {
@@ -202,8 +293,7 @@ public class ComicData {
                             Objects.requireNonNull(
                                     this.getClass()
                                             .getResourceAsStream(
-                                                    "/io/github/kevinpita/comicstore/view/images/collection.png")));
-            ;
+                                                    "/io/github/kevinpita/comicstore/view/images/comic.png")));
         }
 
         circlePicture.setFill(new ImagePattern(image));

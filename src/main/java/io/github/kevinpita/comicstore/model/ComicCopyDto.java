@@ -2,7 +2,6 @@
 package io.github.kevinpita.comicstore.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,22 +10,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ComicCopyDto implements Serializable {
     private Long id;
     private LocalDate purchaseDate;
-    private String cover;
     private String state;
-    private BigDecimal price;
-    private ComicDto comic;
-
-    @Data
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ComicDto implements Serializable {
-        private Long id;
-        private String title;
-        private String description;
-        private int issueNumber;
-    }
+    private Double price;
+    private String cover;
 }

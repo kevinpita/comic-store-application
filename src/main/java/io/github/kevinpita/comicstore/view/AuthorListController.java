@@ -1,7 +1,7 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.view;
 
-import io.github.kevinpita.comicstore.model.AuthorTable;
+import io.github.kevinpita.comicstore.model.table.AuthorTable;
 import io.github.kevinpita.comicstore.service.AuthorService;
 import io.github.kevinpita.comicstore.util.i18n;
 import java.util.function.Predicate;

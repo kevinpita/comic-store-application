@@ -82,7 +82,7 @@
                         <HBox prefHeight="100.0" prefWidth="207.0" GridPane.columnSpan="3" GridPane.rowIndex="3">
                             <children>
                                 <Label layoutY="7.0" prefWidth="230.0" styleClass="mediumWhiteLabel" text="%collectionDescription" />
-                                <TextArea fx:id="collectionDescription" prefHeight="135.0" prefWidth="286.0" promptText="%collectionDescription" HBox.hgrow="ALWAYS" />
+                                <TextArea fx:id="comicDescription" prefHeight="135.0" prefWidth="286.0" promptText="%collectionDescription" HBox.hgrow="ALWAYS" />
                             </children>
                             <GridPane.margin>
                                 <Insets top="20.0" />
@@ -159,7 +159,7 @@
                                                 <Insets top="15.0" />
                                             </VBox.margin>
                                         </Button>
-                                        <Button fx:id="deleteComicCopy" mnemonicParsing="false" prefWidth="95.0" styleClass="buttonStyle" text="%delete">
+                                        <Button fx:id="deleteComicCopy" disable="true" mnemonicParsing="false" prefWidth="95.0" styleClass="buttonStyle" text="%delete">
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>
@@ -210,7 +210,7 @@
                                                 <Insets top="15.0" />
                                             </VBox.margin>
                                         </Button>
-                                        <Button fx:id="deleteAuthorComic" mnemonicParsing="false" prefWidth="95.0" styleClass="buttonStyle" text="%delete">
+                                        <Button fx:id="deleteAuthorComic" disable="true" mnemonicParsing="false" prefWidth="95.0" styleClass="buttonStyle" text="%delete">
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>

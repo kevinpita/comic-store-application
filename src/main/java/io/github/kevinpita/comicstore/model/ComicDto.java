@@ -3,7 +3,6 @@ package io.github.kevinpita.comicstore.model;
 
 import io.github.kevinpita.comicstore.configuration.UrlPath;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 import lombok.*;
 
@@ -39,17 +38,5 @@ public class ComicDto implements Serializable {
     public static class CollectionDto implements Serializable {
         private int id;
         private String name;
-    }
-
-    @Data
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ComicCopyDto implements Serializable {
-        private Long id;
-        private LocalDate purchaseDate;
-        private String state;
-        private Double price;
-        private String cover;
     }
 }

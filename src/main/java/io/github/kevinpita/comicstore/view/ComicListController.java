@@ -32,6 +32,8 @@ public class ComicListController {
             }
 
             ComicController comicController = loader.getController();
+
+            comicController.setComic(comic);
             comicController.setImage(comic.getImageUrl());
             comicController.setTitle(comic.getFullTitle());
 

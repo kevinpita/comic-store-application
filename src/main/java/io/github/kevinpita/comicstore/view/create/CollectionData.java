@@ -2,7 +2,7 @@
 package io.github.kevinpita.comicstore.view.create;
 
 import io.github.kevinpita.comicstore.model.CollectionDto;
-import io.github.kevinpita.comicstore.model.ComicTable;
+import io.github.kevinpita.comicstore.model.table.ComicTable;
 import io.github.kevinpita.comicstore.service.CollectionService;
 import io.github.kevinpita.comicstore.service.ComicService;
 import io.github.kevinpita.comicstore.util.CustomAlert;

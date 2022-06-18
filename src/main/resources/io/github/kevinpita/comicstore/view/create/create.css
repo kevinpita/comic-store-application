@@ -104,8 +104,7 @@ TableView {
 }
 
 .combo-box .list-cell {
-    -fx-text-fill: #b2b2b2;
-
+    -fx-text-fill: white;
 }
 
 .combo-box-popup .list-view {
@@ -117,5 +116,5 @@ TableView {
 }
 
 .combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover {
-    -fx-background-color: #495562;
+    -fx-background-color: #3c4652;
 }

@@ -1,5 +1,5 @@
 /* Kevin Pita 2022 */
-package io.github.kevinpita.comicstore.model;
+package io.github.kevinpita.comicstore.model.table;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
