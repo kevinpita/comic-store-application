@@ -32,7 +32,9 @@ public class ConfigurationController {
     @FXML
     public boolean checkConfig() {
         boolean validationResult = validate();
+
         Alert alert;
+
         if (validationResult) {
             alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(i18n.getString("validServerTitle"));
@@ -43,9 +45,11 @@ public class ConfigurationController {
             alert.setHeaderText(i18n.getString("invalidServerHeader"));
             alert.setContentText(i18n.getString("invalidServerContent"));
         }
+
         // center the dialog on the parent window
         alert.initOwner(configSave.getScene().getWindow());
         alert.showAndWait();
+
         return validationResult;
     }
 
@@ -59,9 +63,11 @@ public class ConfigurationController {
         if (!checkConfig()) {
             return;
         }
+
         Configuration.setApiUrl(configServer.getText());
         Configuration.setAuthToken(configPassword.getText());
         Configuration.writeConfiguration();
+
         configPassword.getScene().getWindow().hide();
     }
 
@@ -83,6 +89,7 @@ public class ConfigurationController {
 
     private boolean checkServer(String server, String password) {
         HttpClient client = HttpClient.newHttpClient();
+
         try {
             HttpRequest request =
                     HttpRequest.newBuilder()
@@ -94,8 +101,8 @@ public class ConfigurationController {
                     client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (isServerValid(response)) return true;
-        } catch (Exception ignored) {
-            log.error(ExceptionUtils.getStackTrace(ignored));
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
         }
         return false;
     }
