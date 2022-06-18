@@ -20,7 +20,7 @@ public class CollectionListController {
     private Predicate<Node> createPredicate(String searchText) {
         return collection -> {
             CollectionController controller =
-                    CollectionService.getInstance().getNodeMap().get(collection);
+                    CollectionService.getInstance().getNodeControllerMap().get(collection);
             if (searchText == null || searchText.isEmpty()) return true;
             try {
                 return controller.getTitle().toLowerCase().contains(searchText.toLowerCase());

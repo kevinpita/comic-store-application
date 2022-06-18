@@ -9,6 +9,7 @@ import java.util.Properties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 @Slf4j
 public class Configuration {
@@ -57,19 +58,22 @@ public class Configuration {
             // if file not found, use default values
             writeConfiguration();
         } catch (Exception e) {
-            log.error("e");
+            log.error(ExceptionUtils.getStackTrace(e));
             CustomAlert.showAlert(i18n.getString("configurationFileError"));
         }
     }
 
     public static void writeConfiguration() {
         Properties prop = new Properties();
+
         prop.setProperty("apiUrl", apiUrl);
         prop.setProperty("authToken", authToken);
         prop.setProperty("language", language);
+
         try (OutputStream output = new FileOutputStream("./configuration.properties")) {
             prop.store(output, null);
-        } catch (Exception ignored) {
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
         }
     }
 }

@@ -23,12 +23,12 @@ public class AuthorData {
     @FXML private AnchorPane parentAnchorPane;
 
     @FXML
-    public void cancel() {
+    private void cancel() {
         saveButton.getScene().getWindow().hide();
     }
 
     @FXML
-    void save() {
+    private void save() {
         boolean error = false;
         String name = inputAuthorName.getText().strip();
         String lastName = inputAuthorLastName.getText().strip();
@@ -57,7 +57,7 @@ public class AuthorData {
     }
 
     @FXML
-    void delete() {
+    private void delete() {
         if (authorDto == null) {
             return;
         }
@@ -71,6 +71,9 @@ public class AuthorData {
     }
 
     private boolean checkSameObject(String name, String lastName) {
+        if (authorDto == null) {
+            return false;
+        }
         if (name.equals(authorDto.getName()) && lastName.equals(authorDto.getLastName())) {
             saveButton.getScene().getWindow().hide();
             return true;

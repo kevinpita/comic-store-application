@@ -54,12 +54,12 @@ public class ConfigurationController {
     }
 
     @FXML
-    public void cancelConfigEdit() {
+    private void cancelConfigEdit() {
         configPassword.getScene().getWindow().hide();
     }
 
     @FXML
-    public void saveConfigEdit() {
+    private void saveConfigEdit() {
         if (!checkConfig()) {
             return;
         }

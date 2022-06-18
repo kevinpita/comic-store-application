@@ -1,65 +1,40 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.service;
 
-import com.github.mizosoft.methanol.MediaType;
 import com.github.mizosoft.methanol.Methanol;
 import com.github.mizosoft.methanol.MultipartBodyPublisher;
 import com.github.mizosoft.methanol.MutableRequest;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import io.github.kevinpita.comicstore.configuration.Configuration;
 import io.github.kevinpita.comicstore.configuration.UrlPath;
 import io.github.kevinpita.comicstore.model.CollectionDto;
 import io.github.kevinpita.comicstore.model.data.CollectionListDto;
 import io.github.kevinpita.comicstore.model.data.NewCollectionDto;
 import io.github.kevinpita.comicstore.util.CustomAlert;
+import io.github.kevinpita.comicstore.util.RequestUtil;
 import io.github.kevinpita.comicstore.view.CollectionController;
 import io.github.kevinpita.comicstore.view.MainController;
 import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Path;
-import java.time.Duration;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.layout.BorderPane;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-// comic singleton
+// collection singleton
 @Slf4j
 public class CollectionService {
-    private static BorderPane borderPane;
-
-    public static void setBorderPanel(BorderPane borderPane) {
-        CollectionService.borderPane = borderPane;
-    }
-
-    private Gson gson =
-            new GsonBuilder()
-                    .registerTypeAdapter(
-                            LocalDate.class,
-                            (JsonDeserializer<LocalDate>)
-                                    (json, type, jsonDeserializationContext) -> {
-                                        String date = json.getAsString();
-                                        return LocalDate.of(
-                                                Integer.parseInt(date.split("-")[0]),
-                                                Integer.parseInt(date.split("-")[1]),
-                                                Integer.parseInt(date.split("-")[2]));
-                                    })
-                    .create();
     private static CollectionService instance;
     private ObservableList<CollectionDto> collections;
     private ObservableList<Node> nodes;
-    private Map<Node, CollectionController> nodeControllerMap = new HashMap<>();
+    @Getter private Map<Node, CollectionController> nodeControllerMap = new HashMap<>();
 
     private CollectionService() {}
 
@@ -70,52 +45,33 @@ public class CollectionService {
         return instance;
     }
 
-    public static boolean uploadImage(Path imagePath, int id) {
+    public static void uploadImage(Path imagePath, int id) {
         try {
             final Methanol client = Methanol.create();
-            var multipartBody =
-                    MultipartBodyPublisher.newBuilder()
-                            .filePart("image", imagePath, MediaType.IMAGE_GIF)
-                            .build();
-            var request =
-                    MutableRequest.POST(
-                                    UrlPath.UPLOAD_COLLECTION_IMAGE.getUrl() + "/" + id,
-                                    multipartBody)
-                            .header("Authorization", Configuration.getAuthToken());
+            MultipartBodyPublisher multipartBody = RequestUtil.getMultipartBodyPublisher(imagePath);
+            MutableRequest request = RequestUtil.getMutableRequest(id, multipartBody);
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                return true;
-            }
+            response.statusCode();
 
         } catch (Exception e) {
             log.error(ExceptionUtils.getStackTrace(e));
         }
-        return false;
     }
-    // SUBIR IMAGEN
+
     public static int createCollection(
             String name, String publisher, String description, Path image) {
         String url = UrlPath.COLLECTION.getUrl();
-        String password = Configuration.getAuthToken();
 
         HttpClient client = HttpClient.newHttpClient();
-        CollectionDto dto =
-                CollectionDto.builder()
-                        .name(name)
-                        .publisher(publisher)
-                        .description(description)
-                        .build();
-        String json = new Gson().toJson(dto);
+        CollectionDto dto = getCollectionDto(name, publisher, description);
+        String json = RequestUtil.getGson().toJson(dto);
         try {
             HttpRequest request =
-                    HttpRequest.newBuilder()
+                    RequestUtil.createRequest(url)
                             .POST(HttpRequest.BodyPublishers.ofString(json))
-                            .timeout(Duration.ofSeconds(3))
-                            .header("Authorization", password)
                             .header("Content-Type", "application/json")
-                            .uri(URI.create(url))
                             .build();
 
             HttpResponse<String> response =
@@ -128,12 +84,17 @@ public class CollectionService {
                 return 1;
             }
 
-            String b = response.body();
-            int id = getInstance().getGson().fromJson(b, NewCollectionDto.class).getData().getId();
-            uploadImage(image, id);
+            int id =
+                    RequestUtil.getGson()
+                            .fromJson(response.body(), NewCollectionDto.class)
+                            .getData()
+                            .getId();
+            if (image != null) {
+                uploadImage(image, id);
+            }
             return 2;
-        } catch (Exception ignored) {
-            log.error(ExceptionUtils.getStackTrace(ignored));
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
             CustomAlert.showConnectingAlert();
         }
         return 1;
@@ -142,24 +103,15 @@ public class CollectionService {
     public static int updateCollection(
             int id, String name, String publisher, String description, Path image) {
         String url = UrlPath.COLLECTION.getUrl() + "/" + id;
-        String password = Configuration.getAuthToken();
 
         HttpClient client = HttpClient.newHttpClient();
-        CollectionDto dto =
-                CollectionDto.builder()
-                        .name(name)
-                        .publisher(publisher)
-                        .description(description)
-                        .build();
-        String json = new Gson().toJson(dto);
+        CollectionDto dto = getCollectionDto(name, publisher, description);
+        String json = RequestUtil.getGson().toJson(dto);
         try {
             HttpRequest request =
-                    HttpRequest.newBuilder()
+                    RequestUtil.createRequest(url)
                             .PUT(HttpRequest.BodyPublishers.ofString(json))
-                            .timeout(Duration.ofSeconds(3))
-                            .header("Authorization", password)
                             .header("Content-Type", "application/json")
-                            .uri(URI.create(url))
                             .build();
 
             HttpResponse<String> response =
@@ -176,51 +128,45 @@ public class CollectionService {
                 uploadImage(image, id);
             }
             return 2;
-        } catch (Exception ignored) {
-            log.error(ExceptionUtils.getStackTrace(ignored));
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
             CustomAlert.showConnectingAlert();
         }
         return 1;
     }
 
-    public static boolean deletePicture(int id) {
+    private static CollectionDto getCollectionDto(
+            String name, String publisher, String description) {
+        return CollectionDto.builder()
+                .name(name)
+                .publisher(publisher)
+                .description(description)
+                .build();
+    }
+
+    public static void deletePicture(int id) {
         String url = UrlPath.COLLECTION_IMAGE.getUrl() + "/" + id;
-        String password = Configuration.getAuthToken();
 
         HttpClient client = HttpClient.newHttpClient();
         try {
-            HttpRequest request =
-                    HttpRequest.newBuilder()
-                            .DELETE()
-                            .timeout(Duration.ofSeconds(3))
-                            .header("Authorization", password)
-                            .uri(URI.create(url))
-                            .build();
+            HttpRequest request = RequestUtil.createRequest(url).DELETE().build();
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            return response.statusCode() == 200;
-        } catch (Exception ignored) {
-            log.error(ExceptionUtils.getStackTrace(ignored));
+            response.statusCode();
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
             CustomAlert.showConnectingAlert();
         }
-        return false;
     }
 
     public static boolean deleteCollection(int id) {
         String url = UrlPath.COLLECTION.getUrl() + "/" + id;
-        String password = Configuration.getAuthToken();
 
         HttpClient client = HttpClient.newHttpClient();
         try {
-            HttpRequest request =
-                    HttpRequest.newBuilder()
-                            .DELETE()
-                            .timeout(Duration.ofSeconds(3))
-                            .header("Authorization", password)
-                            .uri(URI.create(url))
-                            .build();
+            HttpRequest request = RequestUtil.createRequest(url).DELETE().build();
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -230,8 +176,8 @@ public class CollectionService {
             }
             deletePicture(id);
             return true;
-        } catch (Exception ignored) {
-            log.error(ExceptionUtils.getStackTrace(ignored));
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
             CustomAlert.showConnectingAlert();
         }
         return false;
@@ -251,7 +197,7 @@ public class CollectionService {
         }
 
         nodes.clear();
-        getNodeMap().clear();
+        nodeControllerMap.clear();
         for (CollectionDto collection : getCollections()) {
             FXMLLoader loader = MainController.getFxmlLoader("collection");
 
@@ -280,16 +226,10 @@ public class CollectionService {
 
     public void fillCollections() {
         String url = UrlPath.COLLECTION.getUrl();
-        String password = Configuration.getAuthToken();
 
         HttpClient client = HttpClient.newHttpClient();
         try {
-            HttpRequest request =
-                    HttpRequest.newBuilder()
-                            .timeout(Duration.ofSeconds(3))
-                            .uri(URI.create(url))
-                            .header("Authorization", password)
-                            .build();
+            HttpRequest request = RequestUtil.createRequest(url).build();
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -297,19 +237,14 @@ public class CollectionService {
             if (response.statusCode() != 200) {
                 return;
             }
+
             collections.clear();
+
+            Gson gson = RequestUtil.getGson();
             collections.setAll(gson.fromJson(response.body(), CollectionListDto.class).getData());
-        } catch (Exception ignored) {
-            log.error(ExceptionUtils.getStackTrace(ignored));
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
             CustomAlert.showConnectingAlert();
         }
-    }
-
-    public Gson getGson() {
-        return gson;
-    }
-
-    public Map<Node, CollectionController> getNodeMap() {
-        return nodeControllerMap;
     }
 }
