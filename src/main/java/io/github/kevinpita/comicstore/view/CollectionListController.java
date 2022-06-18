@@ -9,7 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CollectionListController {
     @FXML private FlowPane collectionFlowPane;
 
+    // check if search text matches the collection name
     private Predicate<Node> createPredicate(String searchText) {
         return collection -> {
             CollectionController controller =
@@ -32,11 +32,14 @@ public class CollectionListController {
 
     @FXML
     private void initialize() {
+        // get observable list of collections
         ObservableList<Node> collectionList =
                 CollectionService.getInstance().getCollectionsAsNodes();
-        Scene scene = MainWindow.mainScene;
+        // create filtered list of collections
         FilteredList<Node> filteredData =
                 new FilteredList<>(FXCollections.observableArrayList(collectionList));
+
+        // bind search bar to filtered list
         MainController.getSearchBar()
                 .textProperty()
                 .addListener(

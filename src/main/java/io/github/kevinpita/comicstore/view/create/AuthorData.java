@@ -11,19 +11,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import lombok.Setter;
 
 public class AuthorData {
     @FXML private Button saveButton;
     @FXML private Button removeButton;
-    AuthorDto authorDto;
+    @Setter private AuthorDto authorDto;
     @FXML private TextField inputAuthorName;
     @FXML private TextField inputAuthorLastName;
 
     @FXML private AnchorPane parentAnchorPane;
-
-    public void setAuthor(AuthorDto authorDto) {
-        this.authorDto = authorDto;
-    }
 
     @FXML
     public void cancel() {
@@ -35,21 +32,8 @@ public class AuthorData {
         boolean error = false;
         String name = inputAuthorName.getText().strip();
         String lastName = inputAuthorLastName.getText().strip();
-        Pattern pattern = Pattern.compile("^([a-zA-Z(\\s)?]+){1,50}$", Pattern.CASE_INSENSITIVE);
 
-        if (!pattern.matcher(name).matches()) {
-            inputAuthorName.getStyleClass().add("errorField");
-            error = true;
-        } else {
-            inputAuthorName.getStyleClass().remove("errorField");
-        }
-
-        if (!pattern.matcher(lastName).matches()) {
-            inputAuthorLastName.getStyleClass().add("errorField");
-            error = true;
-        } else {
-            inputAuthorLastName.getStyleClass().remove("errorField");
-        }
+        error = checkFields(name, lastName);
 
         if (error) {
             CustomAlert.showAlert(
@@ -57,21 +41,17 @@ public class AuthorData {
             return;
         }
 
+        if (checkSameObject(name, lastName)) return;
+
         boolean created;
         if (authorDto == null) {
             created = AuthorService.createAuthor(name, lastName);
         } else {
-            if (name.equals(authorDto.getName()) && lastName.equals(authorDto.getLastName())) {
-                saveButton.getScene().getWindow().hide();
-                return;
-            }
             created = AuthorService.updateAuthor(authorDto.getId(), name, lastName);
         }
-        if (created) {
-            CustomAlert.showInfo(i18n.getString("newAuthorAlert"));
-        } else {
-            CustomAlert.showAlert(i18n.getString("authorFormCreateErrorMessage"));
-        }
+
+        CustomAlert.showInfo(
+                i18n.getString(created ? "newAuthorAlert" : "authorFormCreateErrorMessage"));
 
         saveButton.getScene().getWindow().hide();
     }
@@ -88,6 +68,33 @@ public class AuthorData {
             return;
         }
         CustomAlert.showAlert(i18n.getString("authorFormDeleteErrorMessage"));
+    }
+
+    private boolean checkSameObject(String name, String lastName) {
+        if (name.equals(authorDto.getName()) && lastName.equals(authorDto.getLastName())) {
+            saveButton.getScene().getWindow().hide();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkFields(String name, String lastName) {
+        Pattern pattern = Pattern.compile("^([a-zA-Z(\\s)?]+){1,50}$", Pattern.CASE_INSENSITIVE);
+        boolean result = false;
+        if (!pattern.matcher(name).matches()) {
+            inputAuthorName.getStyleClass().add("errorField");
+            result = true;
+        } else {
+            inputAuthorName.getStyleClass().remove("errorField");
+        }
+
+        if (!pattern.matcher(lastName).matches()) {
+            inputAuthorLastName.getStyleClass().add("errorField");
+            result = true;
+        } else {
+            inputAuthorLastName.getStyleClass().remove("errorField");
+        }
+        return result;
     }
 
     public void lateInit() {

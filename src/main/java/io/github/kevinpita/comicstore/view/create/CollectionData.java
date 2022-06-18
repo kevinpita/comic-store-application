@@ -36,14 +36,37 @@ public class CollectionData {
     @FXML private TextArea txtAreaDescription;
     @FXML private Button removeButton;
 
-    @FXML private TableView comicListTableCollection;
-    @FXML private TableColumn tableColumnComicId;
-    @FXML private TableColumn tableColumnComicTitle;
+    @FXML private TableView<ComicTable> comicListTableCollection;
+    @FXML private TableColumn<ComicTable, Integer> tableColumnComicId;
+    @FXML private TableColumn<ComicTable, String> tableColumnComicTitle;
     private Path imagePath;
     @Setter CollectionDto collectionDto;
     @FXML private Button saveButton;
 
     public void lateInit() {
+        if (setupImage()) return;
+
+        setupTable();
+
+        inputCollectionName.setText(collectionDto.getName());
+        inputCollectionPublisher.setText(collectionDto.getPublisher());
+        txtAreaDescription.setText(collectionDto.getDescription());
+
+        Platform.runLater(() -> parentPane.requestFocus());
+        removeButton.setDisable(false);
+    }
+
+    private void setupTable() {
+        comicListTableCollection.setDisable(false);
+
+        tableColumnComicId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tableColumnComicTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+        comicListTableCollection.setItems(
+                ComicService.getComicTableList(collectionDto.getComics()));
+    }
+
+    private boolean setupImage() {
         Image image;
         try {
             image = new Image(collectionDto.getImageUrl());
@@ -63,23 +86,9 @@ public class CollectionData {
         circlePicture.setFill(new ImagePattern(image));
         if (collectionDto == null) {
             Platform.runLater(() -> parentPane.requestFocus());
-            return;
+            return true;
         }
-        comicListTableCollection.setDisable(false);
-
-        tableColumnComicId.setCellValueFactory(new PropertyValueFactory<ComicTable, Integer>("id"));
-        tableColumnComicTitle.setCellValueFactory(
-                new PropertyValueFactory<ComicTable, String>("title"));
-
-        comicListTableCollection.setItems(
-                ComicService.getComicTableList(collectionDto.getComics()));
-
-        inputCollectionName.setText(collectionDto.getName());
-        inputCollectionPublisher.setText(collectionDto.getPublisher());
-        txtAreaDescription.setText(collectionDto.getDescription());
-
-        Platform.runLater(() -> parentPane.requestFocus());
-        removeButton.setDisable(false);
+        return false;
     }
 
     @FXML
@@ -147,7 +156,7 @@ public class CollectionData {
             try {
                 MainController.getMainPane().setCenter(fxmlLoader.load());
             } catch (IOException e) {
-                log.error("Error loading collection list view", ExceptionUtils.getStackTrace(e));
+                log.error(ExceptionUtils.getStackTrace(e));
             }
             CustomAlert.showInfo(i18n.getString("newCollectionAlert"));
         } else if (createdStatus == 0) {
