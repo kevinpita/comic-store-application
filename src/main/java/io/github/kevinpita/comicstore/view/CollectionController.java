@@ -8,10 +8,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import lombok.Getter;
+import lombok.Setter;
 
 public class CollectionController {
 
@@ -20,14 +21,8 @@ public class CollectionController {
     @FXML private Rectangle collectionImage;
 
     private Image image;
-    private String title;
-    private CollectionDto collection;
-    private BorderPane borderPane;
-
-    public CollectionController(CollectionDto collection, BorderPane borderPane) {
-        this.collection = collection;
-        this.borderPane = borderPane;
-    }
+    @Setter @Getter private String title;
+    @Setter private CollectionDto collection;
 
     public void setImage(String imageUrl) {
         image = new Image(imageUrl);
@@ -41,16 +36,7 @@ public class CollectionController {
         }
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    @FXML
-    public void initialize() {
+    public void lateInit() {
         collectionImage.setFill(new ImagePattern(image, 0, 0, 1, 1, true));
         collectionTitle.setText(title);
 
@@ -61,6 +47,6 @@ public class CollectionController {
 
     @FXML
     public void openCollectionEditWindow() {
-        MainController.openCollectionWindow(this.collection, this.collectionImage, this.borderPane);
+        MainController.openCollectionWindow(this.collection);
     }
 }

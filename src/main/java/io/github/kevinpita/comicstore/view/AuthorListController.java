@@ -9,11 +9,9 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class AuthorListController {
@@ -31,7 +29,8 @@ public class AuthorListController {
         };
     }
 
-    public void initialize() {
+    @FXML
+    private void initialize() {
 
         authorNameTableColumn.textProperty().bind(i18n.getStringBinding("authorName"));
         authorLastNameTableColumn.textProperty().bind(i18n.getStringBinding("authorLastName"));
@@ -46,13 +45,12 @@ public class AuthorListController {
 
         ObservableList<AuthorTable> authors = AuthorService.getInstance().getAuthorsTable();
 
-        Scene scene = MainWindow.mainScene;
         FilteredList<AuthorTable> filteredData = new FilteredList<>(authors);
-        TextField textField = (TextField) scene.lookup("#searchBar");
-        textField
+
+        MainController.getSearchBar()
                 .textProperty()
                 .addListener(
-                        (observable, oldValue, newValue) -> {
+                        (ignored, oldValue, newValue) -> {
                             filteredData.setPredicate(createPredicate(newValue));
                         });
         SortedList<AuthorTable> sortedData = new SortedList<>(filteredData);
@@ -74,6 +72,6 @@ public class AuthorListController {
     }
 
     private void editAuthor(AuthorTable rowData) {
-        MainController.openAuthorWindow(rowData.getDto(), table);
+        MainController.openAuthorWindow(rowData.getDto());
     }
 }

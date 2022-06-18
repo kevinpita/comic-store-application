@@ -21,24 +21,8 @@ public class AuthorData {
 
     @FXML private AnchorPane parentAnchorPane;
 
-    public AuthorData(AuthorDto authorDto) {
+    public void setAuthor(AuthorDto authorDto) {
         this.authorDto = authorDto;
-    }
-
-    public void initialize() {
-        if (authorDto == null) {
-            Platform.runLater(() -> parentAnchorPane.requestFocus());
-            return;
-        }
-
-        String lastName = authorDto.getLastName();
-        lastName = lastName.split(Pattern.quote("("))[0];
-
-        inputAuthorName.setText(authorDto.getName());
-        inputAuthorLastName.setText(lastName);
-
-        Platform.runLater(() -> parentAnchorPane.requestFocus());
-        removeButton.setDisable(false);
     }
 
     @FXML
@@ -104,5 +88,21 @@ public class AuthorData {
             return;
         }
         CustomAlert.showAlert(i18n.getString("authorFormDeleteErrorMessage"));
+    }
+
+    public void lateInit() {
+        if (authorDto == null) {
+            Platform.runLater(() -> parentAnchorPane.requestFocus());
+            return;
+        }
+
+        String lastName = authorDto.getLastName();
+        lastName = lastName.split(Pattern.quote("("))[0];
+
+        inputAuthorName.setText(authorDto.getName());
+        inputAuthorLastName.setText(lastName);
+
+        Platform.runLater(() -> parentAnchorPane.requestFocus());
+        removeButton.setDisable(false);
     }
 }

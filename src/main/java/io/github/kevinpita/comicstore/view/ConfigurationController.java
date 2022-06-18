@@ -20,8 +20,11 @@ public class ConfigurationController {
     @FXML private Button configSave;
     @FXML private TextField configServer;
     @FXML private TextField configPassword;
+    @FXML private Button configCancel;
+    @FXML private Button configCheck;
 
-    public void initialize() {
+    @FXML
+    private void initialize() {
         configServer.setText(Configuration.getApiUrl());
         configPassword.setText(Configuration.getAuthToken());
     }
@@ -42,7 +45,7 @@ public class ConfigurationController {
         }
         // center the dialog on the parent window
         alert.initOwner(configSave.getScene().getWindow());
-        alert.show();
+        alert.showAndWait();
         return validationResult;
     }
 

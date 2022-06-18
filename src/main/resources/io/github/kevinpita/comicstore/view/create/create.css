@@ -47,7 +47,7 @@
     -fx-border-radius: 10;
     -fx-text-fill: white;
     -fx-font-size: 13px;
-    -fx-prompt-text-fill: #ccc;
+    -fx-prompt-text-fill: #b2b2a3;
 }
 
 .table-view {
@@ -94,4 +94,28 @@ TableView {
 
 .table-row-cell:selected {
     -fx-background-color: #4c5e6c;
+}
+
+.separator *.line {
+    -fx-border-color: gray;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #b2b2b2;
+
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #3a444e;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: #4d5965;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover {
+    -fx-background-color: #495562;
 }

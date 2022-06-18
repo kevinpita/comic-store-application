@@ -7,6 +7,7 @@ import io.github.kevinpita.comicstore.service.CollectionService;
 import io.github.kevinpita.comicstore.service.ComicService;
 import io.github.kevinpita.comicstore.util.CustomAlert;
 import io.github.kevinpita.comicstore.util.i18n;
+import io.github.kevinpita.comicstore.view.MainController;
 import io.github.kevinpita.comicstore.view.MainWindow;
 import java.io.File;
 import java.io.IOException;
@@ -18,11 +19,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -39,15 +40,10 @@ public class CollectionData {
     @FXML private TableColumn tableColumnComicId;
     @FXML private TableColumn tableColumnComicTitle;
     private Path imagePath;
-    CollectionDto collectionDto;
-    BorderPane reloadedPane;
+    @Setter CollectionDto collectionDto;
+    @FXML private Button saveButton;
 
-    public CollectionData(CollectionDto collectionDto, BorderPane reloadedPane) {
-        this.collectionDto = collectionDto;
-        this.reloadedPane = reloadedPane;
-    }
-
-    public void initialize() {
+    public void lateInit() {
         Image image;
         try {
             image = new Image(collectionDto.getImageUrl());
@@ -149,7 +145,7 @@ public class CollectionData {
                                     "/io/github/kevinpita/comicstore/view/collection-list.fxml"),
                             i18n.getResourceBundle());
             try {
-                reloadedPane.setCenter(fxmlLoader.load());
+                MainController.getMainPane().setCenter(fxmlLoader.load());
             } catch (IOException e) {
                 log.error("Error loading collection list view", ExceptionUtils.getStackTrace(e));
             }
@@ -178,7 +174,7 @@ public class CollectionData {
                                     "/io/github/kevinpita/comicstore/view/collection-list.fxml"),
                             i18n.getResourceBundle());
             try {
-                reloadedPane.setCenter(fxmlLoader.load());
+                MainController.getMainPane().setCenter(fxmlLoader.load());
             } catch (IOException e) {
                 log.error("Error loading collection list view", ExceptionUtils.getStackTrace(e));
             }

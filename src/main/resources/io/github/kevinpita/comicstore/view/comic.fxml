@@ -2,13 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.shape.Rectangle?>
-<AnchorPane prefHeight="245.0" prefWidth="151.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="245.0" prefWidth="151.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.ComicController">
 
     <children>
         <AnchorPane fx:id="comicPane" prefHeight="231.0" prefWidth="114.0">
@@ -16,7 +14,7 @@
                 <Insets />
             </opaqueInsets>
             <children>
-                <Rectangle fx:id="comicImage" height="193.0" width="132.0" pickOnBounds="true" >
+                <Rectangle fx:id="comicImage" height="193.0" pickOnBounds="true" width="132.0">
                 </Rectangle>
                 <Label fx:id="comicTitle" layoutX="10.0" layoutY="193.0" prefHeight="52.0" prefWidth="107.0" text="Título del comic" textFill="WHITE" wrapText="true">
                     <font>

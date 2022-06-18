@@ -118,9 +118,20 @@ TableView {
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 }
 
+Button.dark-blue:hover {
+    -fx-background-color: #535864,
+    linear-gradient(#38424b 0%, #1f2429 20%, #5d718c 100%),
+    linear-gradient(#20262b, #4e5764),
+    radial-gradient(center 50% 0%, radius 100%, rgba(114, 131, 148, 0.9), rgba(255, 255, 255, 0));
+}
+
 .combo-box .list-cell {
     -fx-text-fill: white;
 
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #4d5965;
 }
 
 .combo-box-popup .list-view .list-cell {

@@ -2,12 +2,15 @@
 package io.github.kevinpita.comicstore.view;
 
 import io.github.kevinpita.comicstore.configuration.Configuration;
+import io.github.kevinpita.comicstore.configuration.Resolution;
 import io.github.kevinpita.comicstore.model.AuthorDto;
 import io.github.kevinpita.comicstore.model.CollectionDto;
-import io.github.kevinpita.comicstore.service.CollectionService;
+import io.github.kevinpita.comicstore.model.ComicDto;
+import io.github.kevinpita.comicstore.util.CustomAlert;
 import io.github.kevinpita.comicstore.util.i18n;
 import io.github.kevinpita.comicstore.view.create.AuthorData;
 import io.github.kevinpita.comicstore.view.create.CollectionData;
+import io.github.kevinpita.comicstore.view.create.ComicData;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Optional;
@@ -16,13 +19,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
-import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -42,50 +46,32 @@ public class MainController {
     @FXML private Label createButton;
     @FXML private Label listButton;
     @FXML private Label searchLabel;
-    private Button currentMenuButton;
     @FXML private BorderPane listParentPane;
-    @FXML private ComicListController importedPaneController;
-    @FXML private TextField searchBar;
+    @FXML private TextField txtFieldSearchBar;
     @FXML private Tooltip removeSearchText;
     @FXML private Button removeSearchTextButton;
 
-    public void initialize() {
+    private Button currentMenuButton;
+    @Getter private static BorderPane mainPane;
+    @Getter private static TextField searchBar;
+
+    @FXML
+    private void initialize() {
+        // set current button to list collection button as it is the default menu
         currentMenuButton = listComicButton;
+
+        // load comic list as default
+        loadCenterScreen("comic-list");
+
+        // settings button animation
         rotateSettingsButton();
+
+        // set bindings for i18n strings
         setStringBindings();
-        CollectionService.setBorderPanel(listParentPane);
-    }
 
-    private void setStringBindings() {
-        settingsButtonTooltip.textProperty().bind(i18n.getStringBinding("settingsButton.tooltip"));
-        helpButton.textProperty().bind(i18n.getStringBinding("helpButton.tooltip"));
-        languageButton.textProperty().bind(i18n.getStringBinding("translateButton.tooltip"));
-
-        listComicButton.textProperty().bind(i18n.getStringBinding("comicButton"));
-        listCollectionButton.textProperty().bind(i18n.getStringBinding("collectionButton"));
-        listAuthorButton.textProperty().bind(i18n.getStringBinding("authorButton"));
-        listReportButton.textProperty().bind(i18n.getStringBinding("reportButton"));
-
-        createComicButton.textProperty().bind(i18n.getStringBinding("comicButton"));
-        createCollectionButton.textProperty().bind(i18n.getStringBinding("collectionButton"));
-        createAuthorButton.textProperty().bind(i18n.getStringBinding("authorButton"));
-
-        createButton.textProperty().bind(i18n.getStringBinding("createButton"));
-        listButton.textProperty().bind(i18n.getStringBinding("listButton"));
-
-        searchLabel.textProperty().bind(i18n.getStringBinding("searchLabel"));
-        searchBar.promptTextProperty().bind(i18n.getStringBinding("searchBarHint"));
-        removeSearchText.textProperty().bind(i18n.getStringBinding("removeSearchText"));
-    }
-
-    private void rotateSettingsButton() {
-        // rotate settings button 360 degrees in 0.5 seconds
-        RotateTransition rotation = new RotateTransition(Duration.seconds(0.5), settingsButton);
-        rotation.setCycleCount(1);
-        rotation.setByAngle(360);
-
-        // play rotate animation
-        settingsButton.setOnMouseEntered(e -> rotation.play());
+        // set static variables value
+        mainPane = listParentPane;
+        searchBar = txtFieldSearchBar;
     }
 
     @FXML
@@ -96,6 +82,7 @@ public class MainController {
                         i18n.getString("languageChangeConfirm"),
                         ButtonType.YES,
                         ButtonType.NO);
+
         alert.setTitle(i18n.getString("languageChangeTitle"));
 
         alert.setHeaderText(null);
@@ -119,10 +106,12 @@ public class MainController {
         alert.initOwner(settingsButton.getScene().getWindow());
         Optional<ButtonType> value = alert.showAndWait();
 
+        // if user didn't click yes, don't change language
         if (value.isEmpty() || value.get() != ButtonType.YES) {
             return;
         }
 
+        // if current language is Spanish, change to Galician
         if (Locale.getDefault().equals(new Locale("es", "ES"))) {
             Locale.setDefault(new Locale("gl", "ES"));
         } else {
@@ -138,172 +127,251 @@ public class MainController {
     }
 
     @FXML
-    public void changeButton(ActionEvent event) throws IOException {
+    public void changeButton(ActionEvent event) {
+        // get clicked source
         Button clickedButton = (Button) event.getSource();
 
+        // if clicked button is the same as current button, don't do anything
         if (clickedButton.equals(currentMenuButton)) {
             return;
         }
 
-        searchBar.setText("");
+        removeSearchText();
 
+        // add selected style to clicked button
         clickedButton.getStyleClass().add("selected");
+        // remove hover style from clicked button
         clickedButton.getStyleClass().remove("hoverButton");
 
+        // remove selected style from previous selected button
         currentMenuButton.getStyleClass().remove("selected");
+        // add hover style to previous selected button
         currentMenuButton.getStyleClass().add("hoverButton");
+
+        // set current button to clicked button
         currentMenuButton = clickedButton;
 
-        // get new FXML to show
+        // get clicked button name
         String fxmlFile =
                 currentMenuButton.getId().split("list")[1].split("Button")[0].toLowerCase();
 
+        String hintTranslation = "";
         switch (fxmlFile) {
             case "comic":
-                searchBar.promptTextProperty().bind(i18n.getStringBinding("searchBarHint"));
+                hintTranslation = "searchBarHint";
                 break;
             case "collection":
-                searchBar
-                        .promptTextProperty()
-                        .bind(i18n.getStringBinding("searchBarHintCollection"));
+                hintTranslation = "searchBarHintCollection";
                 break;
             case "author":
-                searchBar.promptTextProperty().bind(i18n.getStringBinding("searchBarHintAuthor"));
+                hintTranslation = "searchBarHintAuthor";
                 break;
             case "report":
-                searchBar.promptTextProperty().bind(i18n.getStringBinding("searchBarHintReport"));
-                searchBar.setDisable(true);
+                hintTranslation = "searchBarHintReport";
+                // as report is a special case, search bar is not needed
+                txtFieldSearchBar.setDisable(true);
                 removeSearchTextButton.setDisable(true);
                 break;
         }
-        if (!fxmlFile.equals("report") && searchBar.isDisable()) {
-            searchBar.setDisable(false);
+        // bind search bar hint text to i18n
+        txtFieldSearchBar.promptTextProperty().bind(i18n.getStringBinding(hintTranslation));
+
+        // enable search bar if coming from report scene
+        if (!fxmlFile.equals("report") && txtFieldSearchBar.isDisable()) {
+            txtFieldSearchBar.setDisable(false);
             removeSearchTextButton.setDisable(false);
         }
 
-        FXMLLoader fxmlLoader =
-                new FXMLLoader(
-                        MainWindow.class.getResource(
-                                String.format(
-                                        "/io/github/kevinpita/comicstore/view/%s-list.fxml",
-                                        fxmlFile)),
-                        i18n.getResourceBundle());
-        listParentPane.setCenter(fxmlLoader.load());
+        // load new scene
+        loadCenterScreen(fxmlFile + "-list");
     }
 
     @FXML
     public void openSettings() {
         try {
             // load configuration FXML
-            FXMLLoader fxmlLoader =
-                    new FXMLLoader(
-                            MainWindow.class.getResource(
-                                    "/io/github/kevinpita/comicstore/view/configuration.fxml"),
-                            i18n.getResourceBundle());
+            FXMLLoader fxmlLoader = getFxmlLoader("configuration");
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
 
             stage.setScene(scene);
             stage.setTitle(i18n.getString("configurationTitle"));
 
-            // put configuration FXML in the center of the parent window
+            // put configuration FXML in the center of the parent stage
             Bounds mainBounds = currentMenuButton.getScene().getRoot().getLayoutBounds();
             stage.setX(
                     currentMenuButton.getScene().getWindow().getX()
-                            + (mainBounds.getWidth() - 495) / 2);
+                            + (mainBounds.getWidth() - Resolution.CONFIGURATION.getWIDTH()) / 2);
             stage.setY(
                     currentMenuButton.getScene().getWindow().getY()
-                            + (mainBounds.getHeight() - 254) / 2);
+                            + (mainBounds.getHeight() - Resolution.CONFIGURATION.getHEIGHT()) / 2);
 
             stage.setResizable(false);
             stage.initOwner(currentMenuButton.getScene().getWindow());
+
             // make configuration screen modal
             stage.initModality(Modality.WINDOW_MODAL);
 
             stage.showAndWait();
         } catch (IOException e) {
             log.error(ExceptionUtils.getStackTrace(e));
+            CustomAlert.showAlert(i18n.getString("errorScreenLoad"));
         }
     }
 
     @FXML
     public void openAuthorCreator() {
-        openAuthorWindow(null, currentMenuButton);
+        removeSearchText();
+        openAuthorWindow(null);
     }
 
-    public static void openAuthorWindow(AuthorDto author, Node reference) {
+    @FXML
+    public void openCollectionCreator() {
+        removeSearchText();
+        openCollectionWindow(null);
+    }
+
+    @FXML
+    public void openComicCreator() {
+        removeSearchText();
+        openComicWindow(null);
+    }
+
+    @FXML
+    public void removeSearchText() {
+        txtFieldSearchBar.setText("");
+    }
+
+    public static void openAuthorWindow(AuthorDto author) {
         try {
             // load configuration FXML
-            FXMLLoader fxmlLoader =
-                    new FXMLLoader(
-                            MainWindow.class.getResource(
-                                    "/io/github/kevinpita/comicstore/view/create/author-data.fxml"),
-                            i18n.getResourceBundle());
-            AuthorData authorData = new AuthorData(author);
-            fxmlLoader.setController(authorData);
-            Scene scene = new Scene(fxmlLoader.load());
+            FXMLLoader fxmlLoader = getFxmlLoader("create/author-data");
+            // load fxml to be able to get its controller
+            Parent root = fxmlLoader.load();
+
+            // get fxml controller and set author
+            AuthorData authorData = fxmlLoader.getController();
+            authorData.setAuthor(author);
+
+            // reload added data
+            authorData.lateInit();
+
+            Scene scene = new Scene(root);
             Stage stage = new Stage();
 
             stage.setScene(scene);
             stage.setTitle(i18n.getString("authorCreatorTitle"));
 
             // put configuration FXML in the center of the parent window
-            Bounds mainBounds = reference.getScene().getRoot().getLayoutBounds();
-            stage.setX(reference.getScene().getWindow().getX() + (mainBounds.getWidth() - 421) / 2);
+            BorderPane mainPane = getMainPane();
+            Bounds mainBounds = mainPane.getScene().getRoot().getLayoutBounds();
+            stage.setX(
+                    mainPane.getScene().getWindow().getX()
+                            + (mainBounds.getWidth() - Resolution.AUTHOR.getWIDTH()) / 2);
             stage.setY(
-                    reference.getScene().getWindow().getY() + (mainBounds.getHeight() - 370) / 2);
+                    mainPane.getScene().getWindow().getY()
+                            + (mainBounds.getHeight() - Resolution.AUTHOR.getHEIGHT()) / 2);
 
             stage.setResizable(false);
-            stage.initOwner(reference.getScene().getWindow());
+            stage.initOwner(mainPane.getScene().getWindow());
             // make configuration screen modal
             stage.initModality(Modality.WINDOW_MODAL);
 
             stage.showAndWait();
         } catch (IOException e) {
             log.error(ExceptionUtils.getStackTrace(e));
+            CustomAlert.showAlert(i18n.getString("errorScreenLoad"));
         }
     }
 
-    @FXML
-    public void openCollectionCreator() {
-        try {
-            openCollectionWindow(null, currentMenuButton, listParentPane);
-        } catch (Exception e) {
-        }
-    }
+    public static void openCollectionWindow(CollectionDto collection) {
 
-    public static void openCollectionWindow(
-            CollectionDto collection, Node reference, BorderPane p) {
         try {
             // load configuration FXML
-            FXMLLoader fxmlLoader =
-                    new FXMLLoader(
-                            MainWindow.class.getResource(
-                                    "/io/github/kevinpita/comicstore/view/create/collection-data.fxml"),
-                            i18n.getResourceBundle());
-            CollectionData collectionData = new CollectionData(collection, p);
-            fxmlLoader.setController(collectionData);
-            Scene scene = new Scene(fxmlLoader.load());
+            FXMLLoader fxmlLoader = getFxmlLoader("create/collection-data");
+            // load fxml to be able to get its controller
+            Parent root = fxmlLoader.load();
+
+            // get fxml controller and set collection
+            CollectionData collectionData = fxmlLoader.getController();
+            collectionData.setCollectionDto(collection);
+
+            // reload added data
+            collectionData.lateInit();
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+
+            // set stage and title
+            stage.setScene(scene);
+            stage.setTitle(i18n.getString("collectionCreatorTitle"));
+
+            // put configuration FXML in the center of the parent window
+            stage.setHeight(Resolution.COLLECTION.getHEIGHT());
+            stage.setWidth(Resolution.COLLECTION.getWIDTH());
+            stage.setMinHeight(Resolution.COLLECTION.getHEIGHT());
+            stage.setMinWidth(Resolution.COLLECTION.getWIDTH());
+
+            // center stage on parent stage
+            BorderPane mainPane = getMainPane();
+            Bounds mainBounds = mainPane.getScene().getRoot().getLayoutBounds();
+            stage.setX(
+                    mainPane.getScene().getWindow().getX()
+                            + (mainBounds.getWidth() - stage.getWidth()) / 2);
+            stage.setY(
+                    mainPane.getScene().getWindow().getY()
+                            + (mainBounds.getHeight() - stage.getHeight()) / 2);
+
+            stage.initOwner(mainPane.getScene().getWindow());
+
+            // make configuration screen modal
+            stage.initModality(Modality.WINDOW_MODAL);
+
+            stage.showAndWait();
+        } catch (IOException e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            CustomAlert.showAlert(i18n.getString("errorScreenLoad"));
+        }
+    }
+
+    public static void openComicWindow(ComicDto comic) {
+        try {
+            // load configuration FXML
+            FXMLLoader fxmlLoader = getFxmlLoader("create/comic-data");
+
+            // load fxml to be able to get its controller
+            Parent root = fxmlLoader.load();
+
+            // get fxml controller and set comic data
+            ComicData comicData = fxmlLoader.getController();
+            comicData.setComicDto(comic);
+
+            // reloaded added data
+            comicData.lateInit();
+
+            Scene scene = new Scene(root);
             Stage stage = new Stage();
 
             stage.setScene(scene);
             stage.setTitle(i18n.getString("collectionCreatorTitle"));
 
             // put configuration FXML in the center of the parent window
-            stage.setHeight(840);
-            stage.setWidth(840);
-            stage.setMinHeight(840);
-            stage.setMinWidth(840);
+            stage.setHeight(Resolution.COMIC.getHEIGHT());
+            stage.setWidth(Resolution.COMIC.getWIDTH());
+            stage.setMinHeight(Resolution.COMIC.getHEIGHT());
+            stage.setMinWidth(Resolution.COMIC.getWIDTH());
 
-            Bounds mainBounds = reference.getScene().getRoot().getLayoutBounds();
+            // center stage on parent stage
+            BorderPane mainPane = getMainPane();
+            Bounds mainBounds = mainPane.getScene().getRoot().getLayoutBounds();
             stage.setX(
-                    reference.getScene().getWindow().getX()
+                    mainPane.getScene().getWindow().getX()
                             + (mainBounds.getWidth() - stage.getWidth()) / 2);
             stage.setY(
-                    reference.getScene().getWindow().getY()
+                    mainPane.getScene().getWindow().getY()
                             + (mainBounds.getHeight() - stage.getHeight()) / 2);
 
-            stage.initOwner(reference.getScene().getWindow());
+            stage.initOwner(mainPane.getScene().getWindow());
             // make configuration screen modal
             stage.initModality(Modality.WINDOW_MODAL);
 
@@ -313,8 +381,53 @@ public class MainController {
         }
     }
 
-    @FXML
-    public void removeSearchText() {
-        searchBar.setText("");
+    public static FXMLLoader getFxmlLoader(String name) {
+        return new FXMLLoader(
+                MainWindow.class.getResource(
+                        "/io/github/kevinpita/comicstore/view/" + name + ".fxml"),
+                i18n.getResourceBundle());
+    }
+
+    // load given fxml name in border pane center position
+    private void loadCenterScreen(String name) {
+        FXMLLoader fxmlLoader = getFxmlLoader(name);
+        try {
+            listParentPane.setCenter(fxmlLoader.load());
+        } catch (IOException e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            CustomAlert.showAlert(i18n.getString("errorScreenLoad"));
+        }
+    }
+
+    private void setStringBindings() {
+        settingsButtonTooltip.textProperty().bind(i18n.getStringBinding("settingsButton.tooltip"));
+        helpButton.textProperty().bind(i18n.getStringBinding("helpButton.tooltip"));
+        languageButton.textProperty().bind(i18n.getStringBinding("translateButton.tooltip"));
+
+        listComicButton.textProperty().bind(i18n.getStringBinding("comicButton"));
+        listCollectionButton.textProperty().bind(i18n.getStringBinding("collectionButton"));
+        listAuthorButton.textProperty().bind(i18n.getStringBinding("authorButton"));
+        listReportButton.textProperty().bind(i18n.getStringBinding("reportButton"));
+
+        createComicButton.textProperty().bind(i18n.getStringBinding("comicButton"));
+        createCollectionButton.textProperty().bind(i18n.getStringBinding("collectionButton"));
+        createAuthorButton.textProperty().bind(i18n.getStringBinding("authorButton"));
+
+        createButton.textProperty().bind(i18n.getStringBinding("createButton"));
+        listButton.textProperty().bind(i18n.getStringBinding("listButton"));
+
+        searchLabel.textProperty().bind(i18n.getStringBinding("searchLabel"));
+        txtFieldSearchBar.promptTextProperty().bind(i18n.getStringBinding("searchBarHint"));
+        removeSearchText.textProperty().bind(i18n.getStringBinding("removeSearchText"));
+    }
+
+    private void rotateSettingsButton() {
+        // rotate settings button 360 degrees in 0.5 seconds
+        RotateTransition rotation = new RotateTransition(Duration.seconds(0.5), settingsButton);
+        rotation.setCycleCount(1);
+        rotation.setByAngle(360);
+
+        // play rotate animation
+        settingsButton.setOnMouseEntered(e -> rotation.play());
     }
 }

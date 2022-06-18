@@ -9,6 +9,7 @@ import io.github.kevinpita.comicstore.util.i18n;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 
@@ -20,7 +21,8 @@ public class ReportListController {
     @javafx.fxml.FXML private Button btnReportComicAuthor;
     @javafx.fxml.FXML private Button btnReportComic;
 
-    public void initialize() {
+    @FXML
+    private void initialize() {
         btnReportComic.textProperty().bind(i18n.getStringBinding("comicReport"));
         btnReportCollection.textProperty().bind(i18n.getStringBinding("collectionReport"));
         btnReportComicAuthor.textProperty().bind(i18n.getStringBinding("comicReportAuthor"));

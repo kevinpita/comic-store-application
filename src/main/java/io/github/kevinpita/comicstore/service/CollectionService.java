@@ -15,6 +15,8 @@ import io.github.kevinpita.comicstore.model.data.CollectionListDto;
 import io.github.kevinpita.comicstore.model.data.NewCollectionDto;
 import io.github.kevinpita.comicstore.util.CustomAlert;
 import io.github.kevinpita.comicstore.view.CollectionController;
+import io.github.kevinpita.comicstore.view.MainController;
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -250,27 +252,28 @@ public class CollectionService {
 
         nodes.clear();
         getNodeMap().clear();
-        getCollections()
-                .forEach(
-                        collection -> {
-                            FXMLLoader loader =
-                                    new FXMLLoader(
-                                            getClass()
-                                                    .getResource(
-                                                            "/io/github/kevinpita/comicstore/view/collection.fxml"));
-                            CollectionController controller =
-                                    new CollectionController(collection, borderPane);
-                            loader.setController(controller);
-                            controller.setImage(collection.getImageUrl());
-                            controller.setTitle(collection.getName());
-                            try {
-                                Node node = loader.load();
-                                nodes.add(node);
-                                nodeControllerMap.put(node, controller);
-                            } catch (Exception e) {
-                                log.error(ExceptionUtils.getStackTrace(e));
-                            }
-                        });
+        for (CollectionDto collection : getCollections()) {
+            FXMLLoader loader = MainController.getFxmlLoader("collection");
+
+            Node node;
+            try {
+                node = loader.load();
+            } catch (IOException e) {
+                log.error(ExceptionUtils.getStackTrace(e));
+                continue;
+            }
+
+            CollectionController collectionController = loader.getController();
+
+            collectionController.setCollection(collection);
+            collectionController.setImage(collection.getImageUrl());
+            collectionController.setTitle(collection.getName());
+
+            collectionController.lateInit();
+
+            nodes.add(node);
+            nodeControllerMap.put(node, collectionController);
+        }
 
         return nodes;
     }

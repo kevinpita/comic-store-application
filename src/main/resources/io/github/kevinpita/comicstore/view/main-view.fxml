@@ -168,7 +168,7 @@
                                         <Insets bottom="7.0" top="8.0" />
                                     </padding>
                                 </Label>
-                                <Button fx:id="createComicButton" alignment="CENTER" contentDisplay="CENTER" prefHeight="0.0" prefWidth="170.0" text="%comicButton">
+                                <Button fx:id="createComicButton" alignment="CENTER" contentDisplay="CENTER" onAction="#openComicCreator" prefHeight="0.0" prefWidth="170.0" text="%comicButton">
                                     <VBox.margin>
                                         <Insets bottom="40.0" />
                                     </VBox.margin>
@@ -225,7 +225,7 @@
                             <children>
                                 <HBox alignment="CENTER" styleClass="searchBoxParent" HBox.hgrow="ALWAYS">
                                     <children>
-                                        <TextField fx:id="searchBar" promptText="%searchBarHint" styleClass="transparent" HBox.hgrow="SOMETIMES">
+                                        <TextField fx:id="txtFieldSearchBar" promptText="%searchBarHint" styleClass="transparent" HBox.hgrow="SOMETIMES">
                                             <HBox.margin>
                                                 <Insets left="5.0" />
                                             </HBox.margin>
@@ -268,7 +268,6 @@
                     <center>
                         <BorderPane fx:id="listParentPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <center>
-                                <fx:include fx:id="importedPane" source="comic-list.fxml" />
                             </center>
                         </BorderPane>
                     </center>

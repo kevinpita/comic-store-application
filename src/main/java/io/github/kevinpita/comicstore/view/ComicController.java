@@ -36,8 +36,7 @@ public class ComicController {
         this.title = title;
     }
 
-    @FXML
-    public void initialize() {
+    public void lateInit() {
         comicImage.setFill(new ImagePattern(image));
         comicTitle.setText(title);
 
