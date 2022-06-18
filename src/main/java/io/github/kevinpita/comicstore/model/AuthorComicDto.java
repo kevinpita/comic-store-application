@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ComicAuthorDto implements Serializable {
+public class AuthorComicDto implements Serializable {
     private int id;
     private AuthorDto creator;
     private String role;

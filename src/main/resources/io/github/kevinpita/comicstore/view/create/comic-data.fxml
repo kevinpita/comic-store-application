@@ -131,7 +131,7 @@
                                 <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="100.0">
                                     <children>
                                         <Label alignment="CENTER" styleClass="mediumWhiteLabel" text="%comicCopyList" />
-                                        <TableView fx:id="comicCopyTable" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
+                                        <TableView fx:id="comicCopyTableView" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
                                             <placeholder>
                                                 <Label text="" />
                                             </placeholder>
@@ -149,17 +149,17 @@
                                 </VBox>
                                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                                     <children>
-                                        <Button fx:id="newComicCopy" mnemonicParsing="false" prefWidth="95.0" styleClass="buttonStyle" text="%new">
+                                        <Button fx:id="newComicCopy" mnemonicParsing="false" onAction="#newComicCopy" prefWidth="95.0" styleClass="buttonStyle" text="%new">
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>
                                         </Button>
-                                        <Button fx:id="editComicCopy" disable="true" mnemonicParsing="false" prefWidth="95.0" styleClass="buttonStyle" text="%edit">
+                                        <Button fx:id="editComicCopy" disable="true" mnemonicParsing="false" onAction="#editComicCopy" prefWidth="95.0" styleClass="buttonStyle" text="%edit">
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>
                                         </Button>
-                                        <Button fx:id="deleteComicCopy" disable="true" mnemonicParsing="false" prefWidth="95.0" styleClass="buttonStyle" text="%delete">
+                                        <Button fx:id="deleteComicCopy" disable="true" mnemonicParsing="false" onAction="#deleteComicCopy" prefWidth="95.0" styleClass="buttonStyle" text="%delete">
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>
@@ -183,7 +183,7 @@
                                 <VBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1">
                                     <children>
                                         <Label alignment="CENTER" styleClass="mediumWhiteLabel" text="%authorComicList" />
-                                        <TableView fx:id="authorComicTable" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
+                                        <TableView fx:id="authorComicTableView" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
                                             <placeholder>
                                                 <Label text="" />
                                             </placeholder>
@@ -200,17 +200,17 @@
                                 <VBox prefHeight="200.0" prefWidth="100.0" />
                                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                     <children>
-                                        <Button fx:id="newAuthorComic" mnemonicParsing="false" prefWidth="95.0" styleClass="buttonStyle" text="%new">
+                                        <Button fx:id="newAuthorComic" mnemonicParsing="false" onAction="#newAuthorComic" prefWidth="95.0" styleClass="buttonStyle" text="%new">
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>
                                         </Button>
-                                        <Button fx:id="editAuthorComic" disable="true" mnemonicParsing="false" prefWidth="95.0" styleClass="buttonStyle" text="%edit">
+                                        <Button fx:id="editAuthorComic" disable="true" mnemonicParsing="false" onAction="#editAuthorComic" prefWidth="95.0" styleClass="buttonStyle" text="%edit">
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>
                                         </Button>
-                                        <Button fx:id="deleteAuthorComic" disable="true" mnemonicParsing="false" prefWidth="95.0" styleClass="buttonStyle" text="%delete">
+                                        <Button fx:id="deleteAuthorComic" disable="true" mnemonicParsing="false" onAction="#deleteAuthorComic" prefWidth="95.0" styleClass="buttonStyle" text="%delete">
                                             <VBox.margin>
                                                 <Insets top="15.0" />
                                             </VBox.margin>

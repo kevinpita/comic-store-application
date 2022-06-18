@@ -37,7 +37,7 @@ public class MainWindow extends Application {
             scene = new Scene(fxmlLoader.load());
         } catch (IOException e) {
             log.error(ExceptionUtils.getStackTrace(e));
-            CustomAlert.showAlert(i18n.getString("errorScreenLoad"));
+            CustomAlert.showAlert(i18n.getString("errorScreenLoad"), null);
         }
         mainScene = scene;
 

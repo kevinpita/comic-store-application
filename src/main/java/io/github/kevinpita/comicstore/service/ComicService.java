@@ -112,7 +112,7 @@ public class ComicService {
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
             // TODO: connecting alert
-            CustomAlert.showConnectingAlert();
+            CustomAlert.showConnectingAlert(null);
         }
     }
 }

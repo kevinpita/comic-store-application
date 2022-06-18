@@ -10,7 +10,9 @@ public enum Resolution {
     CONFIGURATION(495, 254),
     AUTHOR(421, 370),
     COLLECTION(840, 840),
-    COMIC(1250, 900);
+    COMIC(1250, 900),
+    AUTHOR_COMIC(421, 302),
+    COMIC_COPY(460, 426);
 
     private final int WIDTH;
     private final int HEIGHT;

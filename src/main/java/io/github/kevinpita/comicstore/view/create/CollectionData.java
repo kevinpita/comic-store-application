@@ -70,7 +70,9 @@ public class CollectionData {
 
         if (error) {
             CustomAlert.showAlert(
-                    i18n.getString("formError"), i18n.getString("collectionFormErrorMessage"));
+                    i18n.getString("formError"),
+                    i18n.getString("collectionFormErrorMessage"),
+                    inputCollectionName.getScene().getWindow());
             return;
         }
 
@@ -88,13 +90,19 @@ public class CollectionData {
 
         if (createdStatus == 2) {
             reloadCollectionList();
-            CustomAlert.showInfo(i18n.getString("newCollectionAlert"));
+            CustomAlert.showInfo(
+                    i18n.getString("newCollectionAlert"),
+                    inputCollectionName.getScene().getWindow());
             inputCollectionPublisher.getScene().getWindow().hide();
         } else if (createdStatus == 0) {
             inputCollectionName.getStyleClass().add("errorField");
-            CustomAlert.showAlert(i18n.getString("duplicatedCollectionFormErrorMessage"));
+            CustomAlert.showAlert(
+                    i18n.getString("duplicatedCollectionFormErrorMessage"),
+                    inputCollectionName.getScene().getWindow());
         } else {
-            CustomAlert.showAlert(i18n.getString("createCollectionError"));
+            CustomAlert.showAlert(
+                    i18n.getString("createCollectionError"),
+                    inputCollectionName.getScene().getWindow());
             inputCollectionPublisher.getScene().getWindow().hide();
         }
     }
@@ -107,11 +115,15 @@ public class CollectionData {
         boolean deleteResult = CollectionService.deleteCollection(collectionDto.getId());
         if (deleteResult) {
             reloadCollectionList();
-            CustomAlert.showInfo(i18n.getString("deleteCollectionAlert"));
+            CustomAlert.showInfo(
+                    i18n.getString("deleteCollectionAlert"),
+                    inputCollectionName.getScene().getWindow());
             inputCollectionPublisher.getScene().getWindow().hide();
             return;
         }
-        CustomAlert.showAlert(i18n.getString("collectionFormDeleteErrorMessage"));
+        CustomAlert.showAlert(
+                i18n.getString("collectionFormDeleteErrorMessage"),
+                inputCollectionName.getScene().getWindow());
     }
 
     @FXML
@@ -126,7 +138,8 @@ public class CollectionData {
             MainController.getMainPane().setCenter(fxmlLoader.load());
         } catch (IOException e) {
             log.error(ExceptionUtils.getStackTrace(e));
-            CustomAlert.showAlert(i18n.getString("errorScreenLoad"));
+            CustomAlert.showAlert(
+                    i18n.getString("errorScreenLoad"), inputCollectionName.getScene().getWindow());
         }
     }
 

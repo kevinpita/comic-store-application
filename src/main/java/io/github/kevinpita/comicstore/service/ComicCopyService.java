@@ -14,6 +14,7 @@ public class ComicCopyService {
                 comic ->
                         comicTableList.add(
                                 new ComicCopyTable(
+                                        comic.getId(),
                                         comic.getCover(),
                                         comic.getState(),
                                         comic.getPrice(),

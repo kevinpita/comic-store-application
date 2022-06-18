@@ -118,3 +118,29 @@ TableView {
 .combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover {
     -fx-background-color: #3c4652;
 }
+
+.date-picker .text-field {
+    -fx-control-inner-background: #3a444e;
+    -fx-font-size: 16px;
+}
+
+.date-picker-popup {
+    -fx-control-inner-background: #3a444e;
+}
+
+.date-picker-popup .date-picker-content {
+    -fx-background-color: red;
+}
+
+.calendar-grid {
+    -fx-background-color: #1d1d1d ;
+}
+
+.date-picker-popup > * > .day-name-cell {
+    -fx-text-fill: white;
+
+}
+.date-picker-popup > .month-year-pane {
+    -fx-base: #1d1d1d ;
+    -fx-mark-highlight-color: -fx-light-text-color ;
+}

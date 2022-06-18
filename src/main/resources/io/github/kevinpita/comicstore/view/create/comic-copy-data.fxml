@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="io.github.kevinpita.comicstore.view.create.ComicCopyData"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane fx:id="parentAnchorPane" prefHeight="413.0" prefWidth="460.0" styleClass="parentPane" stylesheets="@create.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.create.ComicCopyData">
+    <children>
+        <AnchorPane layoutX="11.0" layoutY="33.0">
+            <children>
+            <TextField fx:id="inputAuthorRole1" layoutX="119.0" layoutY="6.0" prefHeight="41.0" prefWidth="318.0" promptText="%authorJob" styleClass="mediumWhiteTextField" />
+                <Label layoutY="-9.0" prefHeight="73.0" prefWidth="113.0" styleClass="mediumWhiteLabel" text="%createDate" wrapText="true" />
+            <DatePicker fx:id="datePicker" editable="false" layoutX="119.0" layoutY="6.0" prefHeight="41.0" prefWidth="318.0" />
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="11.0" layoutY="103.0">
+            <children>
+                <Label layoutY="7.0" styleClass="mediumWhiteLabel" text="%createPrice" />
+                <TextField fx:id="inputCreatePrice" layoutX="119.0" prefHeight="41.0" prefWidth="318.0" promptText="%createPrice" styleClass="mediumWhiteTextField" />
+            </children>
+        </AnchorPane>
+        <Button fx:id="saveButton" layoutX="131.0" layoutY="317.0" mnemonicParsing="false" onAction="#save" prefHeight="40.0" prefWidth="200.0" styleClass="buttonStyle" text="%createSave" />
+      <AnchorPane layoutX="11.0" layoutY="164.0">
+         <children>
+            <Label layoutY="7.0" styleClass="mediumWhiteLabel" text="%createCover" />
+            <TextField fx:id="inputCreateCover" layoutX="119.0" prefHeight="41.0" prefWidth="318.0" promptText="%createCover" styleClass="mediumWhiteTextField" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="12.0" layoutY="223.0">
+         <children>
+            <Label layoutY="7.0" styleClass="mediumWhiteLabel" text="%createState" />
+            <TextField fx:id="inputCreateState" layoutX="119.0" prefHeight="41.0" prefWidth="318.0" promptText="%createState" styleClass="mediumWhiteTextField" />
+         </children>
+      </AnchorPane>
+    </children>
 </AnchorPane>

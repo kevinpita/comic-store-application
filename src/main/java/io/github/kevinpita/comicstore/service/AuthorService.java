@@ -77,7 +77,7 @@ public class AuthorService {
             authorsTable.setAll(dtoToTable());
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
-            CustomAlert.showConnectingAlert();
+            CustomAlert.showConnectingAlert(null);
         }
     }
 
@@ -127,7 +127,7 @@ public class AuthorService {
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
             // TODO CONNECTING ALERT
-            CustomAlert.showConnectingAlert();
+            CustomAlert.showConnectingAlert(null);
         }
         return false;
     }
@@ -155,7 +155,7 @@ public class AuthorService {
             return true;
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
-            CustomAlert.showConnectingAlert();
+            CustomAlert.showConnectingAlert(null);
         }
         return false;
     }
@@ -181,7 +181,7 @@ public class AuthorService {
             return true;
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
-            CustomAlert.showConnectingAlert();
+            CustomAlert.showConnectingAlert(null);
         }
         return false;
     }

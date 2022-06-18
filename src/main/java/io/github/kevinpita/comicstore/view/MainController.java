@@ -215,7 +215,8 @@ public class MainController {
             stage.showAndWait();
         } catch (IOException e) {
             log.error(ExceptionUtils.getStackTrace(e));
-            CustomAlert.showAlert(i18n.getString("errorScreenLoad"));
+            CustomAlert.showAlert(
+                    i18n.getString("errorScreenLoad"), removeSearchText.getScene().getWindow());
         }
     }
 
@@ -280,7 +281,8 @@ public class MainController {
             stage.showAndWait();
         } catch (IOException e) {
             log.error(ExceptionUtils.getStackTrace(e));
-            CustomAlert.showAlert(i18n.getString("errorScreenLoad"));
+            CustomAlert.showAlert(
+                    i18n.getString("errorScreenLoad"), mainPane.getScene().getWindow());
         }
     }
 
@@ -330,7 +332,8 @@ public class MainController {
             stage.showAndWait();
         } catch (IOException e) {
             log.error(ExceptionUtils.getStackTrace(e));
-            CustomAlert.showAlert(i18n.getString("errorScreenLoad"));
+            CustomAlert.showAlert(
+                    i18n.getString("errorScreenLoad"), mainPane.getScene().getWindow());
         }
     }
 
@@ -395,7 +398,8 @@ public class MainController {
             listParentPane.setCenter(fxmlLoader.load());
         } catch (IOException e) {
             log.error(ExceptionUtils.getStackTrace(e));
-            CustomAlert.showAlert(i18n.getString("errorScreenLoad"));
+            CustomAlert.showAlert(
+                    i18n.getString("errorScreenLoad"), removeSearchText.getScene().getWindow());
         }
     }
 

@@ -59,7 +59,7 @@ public class Configuration {
             writeConfiguration();
         } catch (Exception e) {
             log.error(ExceptionUtils.getStackTrace(e));
-            CustomAlert.showAlert(i18n.getString("configurationFileError"));
+            CustomAlert.showAlert(i18n.getString("configurationFileError"), null);
         }
     }
 

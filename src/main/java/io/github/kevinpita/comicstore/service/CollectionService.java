@@ -95,7 +95,7 @@ public class CollectionService {
             return 2;
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
-            CustomAlert.showConnectingAlert();
+            CustomAlert.showConnectingAlert(null);
         }
         return 1;
     }
@@ -130,7 +130,7 @@ public class CollectionService {
             return 2;
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
-            CustomAlert.showConnectingAlert();
+            CustomAlert.showConnectingAlert(null);
         }
         return 1;
     }
@@ -157,7 +157,7 @@ public class CollectionService {
             response.statusCode();
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
-            CustomAlert.showConnectingAlert();
+            CustomAlert.showConnectingAlert(null);
         }
     }
 
@@ -178,7 +178,7 @@ public class CollectionService {
             return true;
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
-            CustomAlert.showConnectingAlert();
+            CustomAlert.showConnectingAlert(null);
         }
         return false;
     }
@@ -244,7 +244,7 @@ public class CollectionService {
             collections.setAll(gson.fromJson(response.body(), CollectionListDto.class).getData());
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
-            CustomAlert.showConnectingAlert();
+            CustomAlert.showConnectingAlert(null);
         }
     }
 }

@@ -37,7 +37,9 @@ public class AuthorData {
 
         if (error) {
             CustomAlert.showAlert(
-                    i18n.getString("formError"), i18n.getString("authorFormErrorMessage"));
+                    i18n.getString("formError"),
+                    i18n.getString("authorFormErrorMessage"),
+                    inputAuthorName.getScene().getWindow());
             return;
         }
 
@@ -51,7 +53,8 @@ public class AuthorData {
         }
 
         CustomAlert.showInfo(
-                i18n.getString(created ? "newAuthorAlert" : "authorFormCreateErrorMessage"));
+                i18n.getString(created ? "newAuthorAlert" : "authorFormCreateErrorMessage"),
+                inputAuthorName.getScene().getWindow());
 
         saveButton.getScene().getWindow().hide();
     }
@@ -63,11 +66,14 @@ public class AuthorData {
         }
         boolean deleteResult = AuthorService.deleteAuthor(authorDto.getId());
         if (deleteResult) {
-            CustomAlert.showInfo(i18n.getString("deleteAuthorAlert"));
+            CustomAlert.showInfo(
+                    i18n.getString("deleteAuthorAlert"), inputAuthorName.getScene().getWindow());
             saveButton.getScene().getWindow().hide();
             return;
         }
-        CustomAlert.showAlert(i18n.getString("authorFormDeleteErrorMessage"));
+        CustomAlert.showAlert(
+                i18n.getString("authorFormDeleteErrorMessage"),
+                inputAuthorName.getScene().getWindow());
     }
 
     private boolean checkSameObject(String name, String lastName) {

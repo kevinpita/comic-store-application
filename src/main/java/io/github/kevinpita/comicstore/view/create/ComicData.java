@@ -1,9 +1,11 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.view.create;
 
+import io.github.kevinpita.comicstore.configuration.Resolution;
 import io.github.kevinpita.comicstore.model.CollectionDto;
+import io.github.kevinpita.comicstore.model.ComicCopyDto;
 import io.github.kevinpita.comicstore.model.ComicDto;
-import io.github.kevinpita.comicstore.model.table.ComicAuthorTable;
+import io.github.kevinpita.comicstore.model.table.AuthorComicTable;
 import io.github.kevinpita.comicstore.model.table.ComicCopyTable;
 import io.github.kevinpita.comicstore.service.CollectionService;
 import io.github.kevinpita.comicstore.service.ComicService;
@@ -14,17 +16,23 @@ import io.github.kevinpita.comicstore.view.MainController;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -32,17 +40,17 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 @Slf4j
 public class ComicData {
     @FXML private Button newAuthorComic;
-    @FXML private TableColumn<ComicAuthorTable, String> authorComicRoleTable;
-    @FXML private TableColumn<ComicAuthorTable, String> authorComicNameTable;
+    @FXML private TableColumn<AuthorComicTable, String> authorComicRoleTable;
+    @FXML private TableColumn<AuthorComicTable, String> authorComicNameTable;
     @FXML private TableColumn<ComicCopyTable, String> comicCopyPurchaseTable;
     @FXML private Button deleteComicCopy;
     @FXML private ComboBox<CollectionDto> collectionPublisher;
-    @FXML private TableView<ComicCopyTable> comicCopyTable;
+    @FXML private TableView<ComicCopyTable> comicCopyTableView;
     @FXML private Button editAuthorComic;
     @FXML private Button deleteAuthorComic;
     @FXML private TableColumn<ComicCopyTable, String> comicCopyCoverTable;
     @FXML private Circle circlePicture;
-    @FXML private TableView<ComicAuthorTable> authorComicTable;
+    @FXML private TableView<AuthorComicTable> authorComicTableView;
     @FXML private Button cancelButton;
     @FXML private Button newComicCopy;
     @FXML private Button removeButton;
@@ -58,17 +66,21 @@ public class ComicData {
     @Setter private ComicDto comicDto;
 
     private ObservableList<ComicCopyTable> comicCopyTableList;
-    private ObservableList<ComicAuthorTable> comicAuthorTableList;
+    private ObservableList<AuthorComicTable> authorComicTableList;
 
     public void lateInit() {
-        setupTable(authorComicTable, deleteAuthorComic, editAuthorComic);
-        setupTable(comicCopyTable, deleteComicCopy, editComicCopy);
-        setCollectionPublisher();
+        fillComicAuthorTableList();
+        fillComicCopyTableList();
 
-        if (setupImage()) return;
+        setupTable(authorComicTableView, deleteAuthorComic, editAuthorComic);
+        setupTable(comicCopyTableView, deleteComicCopy, editComicCopy);
+
+        setCollectionPublisher();
 
         setupAuthorTableData();
         setupCopyTableData();
+
+        if (setupImage()) return;
 
         creatorAuthorMenu.setText(comicDto.getTitle());
         comicIssueNumber.setText(comicDto.getIssueNumber() + "");
@@ -92,67 +104,38 @@ public class ComicData {
     }
 
     @FXML
+    private void editComicCopy() {
+        ComicCopyTable comicCopyTableRow = comicCopyTableView.getSelectionModel().getSelectedItem();
+        if (comicCopyTableView == null) {
+            editComicCopy.setDisable(true);
+            removeButton.setDisable(true);
+            return;
+        }
+        openNewComicCopy(comicCopyTableRow.toDto());
+    }
+
+    @FXML
+    private void editAuthorComic() {
+        AuthorComicTable comicCopyTableRow =
+                authorComicTableView.getSelectionModel().getSelectedItem();
+        if (comicCopyTableView == null) {
+            editComicCopy.setDisable(true);
+            removeButton.setDisable(true);
+            return;
+        }
+        openNewAuthorComic(comicCopyTableRow);
+    }
+
+    @FXML
     private void cancel() {
         circlePicture.getScene().getWindow().hide();
     }
 
     @FXML
-    private void save() {
-        //        boolean error;
-        //        String name = inputCollectionName.getText().strip();
-        //        String publisher = inputCollectionPublisher.getText().strip();
-        //        String description = txtAreaDescription.getText().strip();
-        //
-        //        error = checkError(name, publisher, description);
-        //
-        //        if (error) {
-        //            CustomAlert.showAlert(
-        //                    i18n.getString("formError"),
-        // i18n.getString("collectionFormErrorMessage"));
-        //            return;
-        //        }
-        //
-        //        if (checkSameObject(name, publisher, description)) return;
-        //
-        //        int createdStatus;
-        //        if (collectionDto == null) {
-        //            createdStatus =
-        //                    CollectionService.createCollection(name, publisher, description,
-        // imagePath);
-        //        } else {
-        //            createdStatus =
-        //                    CollectionService.updateCollection(
-        //                            collectionDto.getId(), name, publisher, description,
-        // imagePath);
-        //        }
-        //
-        //        if (createdStatus == 2) {
-        //            reloadCollectionList();
-        //            CustomAlert.showInfo(i18n.getString("newCollectionAlert"));
-        //        } else if (createdStatus == 0) {
-        //            inputCollectionName.getStyleClass().add("errorField");
-        //            CustomAlert.showAlert(i18n.getString("duplicatedCollectionFormErrorMessage"));
-        //        } else {
-        //            CustomAlert.showAlert(i18n.getString("createCollectionError"));
-        //        }
-        //
-        //        inputCollectionPublisher.getScene().getWindow().hide();
-    }
+    private void save() {}
 
     @FXML
-    private void delete() {
-        //        if (collectionDto == null) {
-        //            return;
-        //        }
-        //        boolean deleteResult = CollectionService.deleteCollection(collectionDto.getId());
-        //        if (deleteResult) {
-        //            reloadCollectionList();
-        //            CustomAlert.showInfo(i18n.getString("deleteCollectionAlert"));
-        //            inputCollectionPublisher.getScene().getWindow().hide();
-        //            return;
-        //        }
-        //        CustomAlert.showAlert(i18n.getString("collectionFormDeleteErrorMessage"));
-    }
+    private void delete() {}
 
     @FXML
     private void selectNewPicture() {
@@ -160,10 +143,108 @@ public class ComicData {
     }
 
     @FXML
-    private void newComicCopy() {}
+    private void newComicCopy() {
+        openNewComicCopy(null);
+    }
 
     @FXML
-    private void newAuthorComic() {}
+    private void newAuthorComic() {
+        openNewAuthorComic(null);
+    }
+
+    @FXML
+    private void deleteAuthorComic() {
+        AuthorComicTable authorComicTableRow =
+                authorComicTableView.getSelectionModel().getSelectedItem();
+        if (authorComicTableRow == null) {
+            deleteAuthorComic.setDisable(true);
+            return;
+        }
+        authorComicTableView.getItems().remove(authorComicTableRow);
+        authorComicTableView.getSelectionModel().select(null);
+    }
+
+    @FXML
+    private void deleteComicCopy() {}
+
+    private void openNewComicCopy(ComicCopyDto comicCopyDto) {
+        FXMLLoader loader = MainController.getFxmlLoader("/create/comic-copy-data");
+        Parent root;
+        try {
+            root = loader.load();
+        } catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            return;
+        }
+        ComicCopyData controller = loader.getController();
+
+        controller.lateInit();
+
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+
+        stage.setScene(scene);
+        stage.setTitle(i18n.getString("comicCopyTitle"));
+
+        // put configuration FXML in the center of the parent window
+        Bounds mainBounds = parentPane.getScene().getRoot().getLayoutBounds();
+        stage.setX(
+                parentPane.getScene().getWindow().getX()
+                        + (mainBounds.getWidth() - Resolution.COMIC_COPY.getWIDTH()) / 2);
+        stage.setY(
+                parentPane.getScene().getWindow().getY()
+                        + (mainBounds.getHeight() - Resolution.COMIC_COPY.getHEIGHT()) / 2);
+
+        stage.setResizable(false);
+        stage.initOwner(parentPane.getScene().getWindow());
+        // make configuration screen modal
+        stage.initModality(Modality.WINDOW_MODAL);
+
+        stage.showAndWait();
+    }
+
+    private void openNewAuthorComic(AuthorComicTable authorComicElement) {
+        FXMLLoader loader = MainController.getFxmlLoader("/create/author-comic-data");
+        Parent root;
+        try {
+            root = loader.load();
+        } catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            return;
+        }
+        AuthorComicData controller = loader.getController();
+
+        controller.setAuthorComicTable(authorComicElement);
+        controller.setRoles(
+                authorComicTableList.stream()
+                        .map(AuthorComicTable::getRole)
+                        .collect(Collectors.toList()));
+        controller.setTable(authorComicTableView);
+
+        controller.lateInit();
+
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+
+        stage.setScene(scene);
+        stage.setTitle(i18n.getString("authorCreatorTitle"));
+
+        // put configuration FXML in the center of the parent window
+        Bounds mainBounds = parentPane.getScene().getRoot().getLayoutBounds();
+        stage.setX(
+                parentPane.getScene().getWindow().getX()
+                        + (mainBounds.getWidth() - Resolution.AUTHOR_COMIC.getWIDTH()) / 2);
+        stage.setY(
+                parentPane.getScene().getWindow().getY()
+                        + (mainBounds.getHeight() - Resolution.AUTHOR_COMIC.getHEIGHT()) / 2);
+
+        stage.setResizable(false);
+        stage.initOwner(parentPane.getScene().getWindow());
+        // make configuration screen modal
+        stage.initModality(Modality.WINDOW_MODAL);
+
+        stage.showAndWait();
+    }
 
     public void fillComicCopyTableList() {
         if (comicCopyTableList == null) {
@@ -176,6 +257,7 @@ public class ComicData {
                             copy -> {
                                 ComicCopyTable comicCopyTable =
                                         new ComicCopyTable(
+                                                copy.getId(),
                                                 copy.getCover(),
                                                 copy.getState(),
                                                 copy.getPrice(),
@@ -187,19 +269,20 @@ public class ComicData {
     }
 
     public void fillComicAuthorTableList() {
-        if (comicAuthorTableList == null) {
-            comicAuthorTableList = FXCollections.observableArrayList();
+        if (authorComicTableList == null) {
+            authorComicTableList = FXCollections.observableArrayList();
         }
-        comicAuthorTableList.clear();
+        authorComicTableList.clear();
         if (comicDto != null) {
             comicDto.getComicCreators()
                     .forEach(
                             comicCreator -> {
-                                ComicAuthorTable comicAuthorTable =
-                                        new ComicAuthorTable(
+                                AuthorComicTable authorComicTable =
+                                        new AuthorComicTable(
+                                                comicCreator.getId(),
                                                 comicCreator.getRole(),
-                                                comicCreator.getCreator().toString());
-                                comicAuthorTableList.add(comicAuthorTable);
+                                                comicCreator.getCreator());
+                                authorComicTableList.add(authorComicTable);
                             });
         }
     }
@@ -211,7 +294,8 @@ public class ComicData {
             MainController.getMainPane().setCenter(fxmlLoader.load());
         } catch (IOException e) {
             log.error(ExceptionUtils.getStackTrace(e));
-            CustomAlert.showAlert(i18n.getString("errorScreenLoad"));
+            CustomAlert.showAlert(
+                    i18n.getString("errorScreenLoad"), deleteComicCopy.getScene().getWindow());
         }
     }
 
@@ -266,8 +350,7 @@ public class ComicData {
         authorComicNameTable.setCellValueFactory(new PropertyValueFactory<>("name"));
         authorComicRoleTable.setCellValueFactory(new PropertyValueFactory<>("role"));
 
-        fillComicAuthorTableList();
-        authorComicTable.setItems(comicAuthorTableList);
+        authorComicTableView.setItems(authorComicTableList);
     }
 
     private void setupCopyTableData() {
@@ -276,8 +359,7 @@ public class ComicData {
         comicCopyCoverTable.setCellValueFactory(new PropertyValueFactory<>("cover"));
         comicCopyPurchaseTable.setCellValueFactory(new PropertyValueFactory<>("purchase"));
 
-        fillComicCopyTableList();
-        comicCopyTable.setItems(comicCopyTableList);
+        comicCopyTableView.setItems(comicCopyTableList);
     }
 
     private boolean setupImage() {

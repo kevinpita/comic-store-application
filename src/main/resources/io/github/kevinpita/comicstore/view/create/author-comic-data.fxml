@@ -6,21 +6,20 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="parentAnchorPane" prefHeight="302.0" prefWidth="421.0" styleClass="parentPane" stylesheets="@create.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.create.AuthorComicData">
+<AnchorPane fx:id="parentAnchorPane" prefHeight="296.0" prefWidth="460.0" styleClass="parentPane" stylesheets="@create.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.create.AuthorComicData">
     <children>
-        <AnchorPane layoutX="11.0" layoutY="32.0">
+        <AnchorPane layoutX="11.0" layoutY="33.0">
             <children>
-                <ComboBox fx:id="inputAuthorName" layoutX="96.0" prefHeight="25.0" prefWidth="289.0" styleClass="mediumWhiteTextField" />
-                <Label layoutY="7.0" styleClass="mediumWhiteLabel" text="%selectedAuthor" />
+                <ComboBox fx:id="inputAuthorName" layoutX="119.0" layoutY="6.0" prefHeight="43.0" prefWidth="318.0" styleClass="mediumWhiteTextField" AnchorPane.topAnchor="6.0" />
+                <Label layoutY="-9.0" prefHeight="73.0" prefWidth="113.0" styleClass="mediumWhiteLabel" text="%selectedAuthor" wrapText="true" />
             </children>
         </AnchorPane>
         <AnchorPane layoutX="11.0" layoutY="103.0">
             <children>
                 <Label layoutY="7.0" styleClass="mediumWhiteLabel" text="%authorJob" />
-                <TextField fx:id="inputAuthorLastName" layoutX="96.0" prefHeight="25.0" prefWidth="289.0" promptText="%authorJob" styleClass="mediumWhiteTextField" />
+                <TextField fx:id="inputAuthorRole" layoutX="119.0" prefHeight="41.0" prefWidth="318.0" promptText="%authorJob" styleClass="mediumWhiteTextField" />
             </children>
         </AnchorPane>
-        <Button fx:id="saveButton" layoutX="111.0" layoutY="173.0" mnemonicParsing="false" onAction="#save" prefHeight="40.0" prefWidth="200.0" styleClass="buttonStyle" text="%createSave" />
-        <Button fx:id="removeButton" disable="true" layoutX="111.0" layoutY="235.0" mnemonicParsing="false" onAction="#delete" prefHeight="40.0" prefWidth="200.0" styleClass="buttonStyle" text="%createDelete" />
+        <Button fx:id="saveButton" layoutX="130.0" layoutY="199.0" mnemonicParsing="false" onAction="#save" prefHeight="40.0" prefWidth="200.0" styleClass="buttonStyle" text="%createSave" />
     </children>
 </AnchorPane>
