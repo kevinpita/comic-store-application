@@ -5,6 +5,7 @@ import com.github.mizosoft.methanol.Methanol;
 import com.github.mizosoft.methanol.MultipartBodyPublisher;
 import com.github.mizosoft.methanol.MutableRequest;
 import com.google.gson.Gson;
+import io.github.kevinpita.comicstore.configuration.ReturnStatus;
 import io.github.kevinpita.comicstore.configuration.UrlPath;
 import io.github.kevinpita.comicstore.model.CollectionDto;
 import io.github.kevinpita.comicstore.model.data.CollectionListDto;
@@ -60,7 +61,7 @@ public class CollectionService {
         }
     }
 
-    public static int createCollection(
+    public static ReturnStatus createCollection(
             String name, String publisher, String description, Path image) {
         String url = UrlPath.COLLECTION.getUrl();
 
@@ -78,10 +79,10 @@ public class CollectionService {
                     client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 409) {
-                return 0;
+                return ReturnStatus.DUPLICATED;
             }
             if (response.statusCode() != 201) {
-                return 1;
+                return ReturnStatus.ERROR;
             }
 
             int id =
@@ -92,15 +93,15 @@ public class CollectionService {
             if (image != null) {
                 uploadImage(UrlPath.UPLOAD_COLLECTION_IMAGE.getUrl(), image, id);
             }
-            return 2;
+            return ReturnStatus.SUCCESS;
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
             CustomAlert.showConnectingAlert(null);
         }
-        return 1;
+        return ReturnStatus.SUCCESS;
     }
 
-    public static int updateCollection(
+    public static ReturnStatus updateCollection(
             int id, String name, String publisher, String description, Path image) {
         String url = UrlPath.COLLECTION.getUrl() + "/" + id;
 
@@ -118,21 +119,21 @@ public class CollectionService {
                     client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 409) {
-                return 0;
+                return ReturnStatus.DUPLICATED;
             }
             if (response.statusCode() != 201) {
-                return 1;
+                return ReturnStatus.ERROR;
             }
             AuthorService.getInstance().getAuthors();
             if (image != null) {
                 uploadImage(UrlPath.UPLOAD_COLLECTION_IMAGE.getUrl(), image, id);
             }
-            return 2;
+            return ReturnStatus.SUCCESS;
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
             CustomAlert.showConnectingAlert(null);
         }
-        return 1;
+        return ReturnStatus.ERROR;
     }
 
     private static CollectionDto getCollectionDto(

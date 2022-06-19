@@ -2,6 +2,7 @@
 package io.github.kevinpita.comicstore.view.create;
 
 import io.github.kevinpita.comicstore.configuration.Resolution;
+import io.github.kevinpita.comicstore.configuration.ReturnStatus;
 import io.github.kevinpita.comicstore.model.AuthorComicDto;
 import io.github.kevinpita.comicstore.model.CollectionDto;
 import io.github.kevinpita.comicstore.model.ComicCopyDto;
@@ -203,16 +204,16 @@ public class ComicData {
         comicDto.setComicCreators(authorComicList);
         comicDto.setCopies(comicCopyList);
 
-        int code = ComicService.getInstance().createComic(comicDto, imagePath);
-        if (code == 2) {
+        ReturnStatus code = ComicService.getInstance().createComic(comicDto, imagePath);
+        if (code == ReturnStatus.SUCCESS) {
             reloadCollectionList();
             CustomAlert.showInfo(
                     i18n.getString("newComicAlert"), comicIssueNumber.getScene().getWindow());
             comicIssueNumber.getScene().getWindow().hide();
-        } else if (code == 0) {
+        } else if (code == ReturnStatus.DUPLICATED) {
             //            menu.getStyleClass().add("errorField");
             CustomAlert.showAlert(
-                    i18n.getString("duplicatedCollectionFormErrorMessage"),
+                    i18n.getString("duplicatedComicFormErrorMessage"),
                     comicIssueNumber.getScene().getWindow());
         } else {
             CustomAlert.showAlert(

@@ -4,6 +4,7 @@ package io.github.kevinpita.comicstore.service;
 import static io.github.kevinpita.comicstore.service.CollectionService.uploadImage;
 
 import com.google.gson.Gson;
+import io.github.kevinpita.comicstore.configuration.ReturnStatus;
 import io.github.kevinpita.comicstore.configuration.UrlPath;
 import io.github.kevinpita.comicstore.model.ComicDto;
 import io.github.kevinpita.comicstore.model.data.ComicListDto;
@@ -120,7 +121,7 @@ public class ComicService {
         }
     }
 
-    public int createComic(ComicDto comicDto, Path image) {
+    public ReturnStatus createComic(ComicDto comicDto, Path image) {
         String url = UrlPath.COMIC.getUrl();
 
         HttpClient client = HttpClient.newHttpClient();
@@ -137,10 +138,10 @@ public class ComicService {
                     client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 409) {
-                return 0;
+                return ReturnStatus.DUPLICATED;
             }
             if (response.statusCode() != 201) {
-                return 1;
+                return ReturnStatus.ERROR;
             }
 
             int id =
@@ -151,11 +152,11 @@ public class ComicService {
             if (image != null) {
                 uploadImage(UrlPath.UPLOAD_COMIC_IMAGE.getUrl(), image, id);
             }
-            return 2;
+            return ReturnStatus.SUCCESS;
         } catch (Exception logged) {
             log.error(ExceptionUtils.getStackTrace(logged));
             CustomAlert.showConnectingAlert(null);
         }
-        return 1;
+        return ReturnStatus.ERROR;
     }
 }

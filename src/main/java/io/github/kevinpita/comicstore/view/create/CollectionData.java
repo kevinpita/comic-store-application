@@ -1,6 +1,7 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.view.create;
 
+import io.github.kevinpita.comicstore.configuration.ReturnStatus;
 import io.github.kevinpita.comicstore.model.CollectionDto;
 import io.github.kevinpita.comicstore.model.table.ComicTable;
 import io.github.kevinpita.comicstore.service.CollectionService;
@@ -78,7 +79,7 @@ public class CollectionData {
 
         if (checkSameObject(name, publisher, description)) return;
 
-        int createdStatus;
+        ReturnStatus createdStatus;
         if (collectionDto == null) {
             createdStatus =
                     CollectionService.createCollection(name, publisher, description, imagePath);
@@ -88,13 +89,13 @@ public class CollectionData {
                             collectionDto.getId(), name, publisher, description, imagePath);
         }
 
-        if (createdStatus == 2) {
+        if (createdStatus == ReturnStatus.SUCCESS) {
             reloadCollectionList();
             CustomAlert.showInfo(
                     i18n.getString("newCollectionAlert"),
                     inputCollectionName.getScene().getWindow());
             inputCollectionPublisher.getScene().getWindow().hide();
-        } else if (createdStatus == 0) {
+        } else if (createdStatus == ReturnStatus.DUPLICATED) {
             inputCollectionName.getStyleClass().add("errorField");
             CustomAlert.showAlert(
                     i18n.getString("duplicatedCollectionFormErrorMessage"),
