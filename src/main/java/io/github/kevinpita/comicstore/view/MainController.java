@@ -85,12 +85,16 @@ public class MainController {
         try {
             String path = i18n.getString("helpFile");
             URL helpURL = this.getClass().getResource(path);
+            if (helpURL == null) {
+                CustomAlert.showAlert(i18n.getString("failHelp"), null);
+                log.error("Help file not found");
+                return;
+            }
             HelpSet helpset = new HelpSet(null, helpURL);
             HelpBroker browser = helpset.createHelpBroker();
             browser.enableHelpOnButton(javaHelpButton, "principal", helpset);
         } catch (Exception ex) {
             log.error(ExceptionUtils.getStackTrace(ex));
-            CustomAlert.showAlert(i18n.getString("failHelp"), mainPane.getScene().getWindow());
         }
     }
 
@@ -391,7 +395,7 @@ public class MainController {
             Stage stage = new Stage();
 
             stage.setScene(scene);
-            stage.setTitle(i18n.getString("collectionCreatorTitle"));
+            stage.setTitle(i18n.getString("comicCreatorTitle"));
 
             // put configuration FXML in the center of the parent window
             stage.setHeight(Resolution.COMIC.getHEIGHT());
