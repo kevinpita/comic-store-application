@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="parentAnchorPane" prefHeight="370.0" prefWidth="421.0" styleClass="parentPane" stylesheets="@create.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.create.AuthorData">
+<AnchorPane fx:id="parentAnchorPane" prefHeight="370.0" prefWidth="421.0" styleClass="parentPane" stylesheets="@create.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.create.AuthorData">
     <children>
         <AnchorPane layoutX="11.0" layoutY="32.0">
             <children>

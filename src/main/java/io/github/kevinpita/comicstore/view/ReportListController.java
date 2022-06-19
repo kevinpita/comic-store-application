@@ -11,11 +11,13 @@ import io.github.kevinpita.comicstore.util.i18n;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.GridPane;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -30,9 +32,12 @@ public class ReportListController {
     @javafx.fxml.FXML private ComboBox<AuthorDto> comboReportComicAuthor;
     @javafx.fxml.FXML private Button btnReportComicAuthor;
     @javafx.fxml.FXML private Button btnReportComic;
+    @FXML private GridPane parentPane;
 
     @FXML
     private void initialize() {
+        Platform.runLater(() -> parentPane.requestFocus());
+
         setStringBindings();
 
         // get collection observable list

@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="245.0" prefWidth="151.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.CollectionController">
+<AnchorPane fx:id="parentPane" prefHeight="245.0" prefWidth="151.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.CollectionController">
 
     <children>
         <AnchorPane fx:id="collectionPane" prefHeight="231.0" prefWidth="114.0">

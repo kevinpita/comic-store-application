@@ -30,6 +30,8 @@ public class ComicCopyData {
 
     @FXML
     private void initialize() {
+        Platform.runLater(() -> parentAnchorPane.requestFocus());
+
         setDoubleTextField();
     }
 

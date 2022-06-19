@@ -8,10 +8,12 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -22,9 +24,12 @@ public class ConfigurationController {
     @FXML private TextField configPassword;
     @FXML private Button configCancel;
     @FXML private Button configCheck;
+    @FXML private AnchorPane parentPane;
 
     @FXML
     private void initialize() {
+        Platform.runLater(() -> parentPane.requestFocus());
+
         configServer.setText(Configuration.getApiUrl());
         configPassword.setText(Configuration.getAuthToken());
     }

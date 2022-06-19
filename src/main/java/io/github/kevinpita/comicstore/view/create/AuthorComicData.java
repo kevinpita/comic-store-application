@@ -7,6 +7,7 @@ import io.github.kevinpita.comicstore.service.AuthorService;
 import io.github.kevinpita.comicstore.util.CustomAlert;
 import io.github.kevinpita.comicstore.util.i18n;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +26,11 @@ public class AuthorComicData {
     @Setter private AuthorComicTable authorComicTableElement;
     @Setter private List<String> roles;
     @Setter private TableView<AuthorComicTable> table;
+
+    @FXML
+    private void initialize() {
+        Platform.runLater(() -> parentAnchorPane.requestFocus());
+    }
 
     public void lateInit() {
         ObservableList<AuthorDto> authors = AuthorService.getInstance().getAuthors();

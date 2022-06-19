@@ -3,6 +3,7 @@ package io.github.kevinpita.comicstore.view;
 
 import io.github.kevinpita.comicstore.model.CollectionDto;
 import java.util.Objects;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -23,6 +24,7 @@ public class CollectionController {
     private Image image;
     @Setter @Getter private String title;
     @Setter private CollectionDto collection;
+    @FXML private AnchorPane parentPane;
 
     public void setImage(String imageUrl) {
         image = new Image(imageUrl);
@@ -34,6 +36,11 @@ public class CollectionController {
                                             .getResourceAsStream(
                                                     "/io/github/kevinpita/comicstore/view/images/nopicture.png")));
         }
+    }
+
+    @FXML
+    private void initialize() {
+        Platform.runLater(() -> parentPane.requestFocus());
     }
 
     public void lateInit() {

@@ -42,6 +42,11 @@ public class CollectionData {
     private Path imagePath;
     @Setter private CollectionDto collectionDto;
 
+    @FXML
+    private void initialize() {
+        Platform.runLater(() -> parentPane.requestFocus());
+    }
+
     public void lateInit() {
         if (setupImage()) return;
 
@@ -51,7 +56,6 @@ public class CollectionData {
         inputCollectionPublisher.setText(collectionDto.getPublisher());
         txtAreaDescription.setText(collectionDto.getDescription());
 
-        Platform.runLater(() -> parentPane.requestFocus());
         removeButton.setDisable(false);
     }
 

@@ -72,7 +72,13 @@ public class ComicData {
     private ObservableList<ComicCopyTable> comicCopyTableList;
     private ObservableList<AuthorComicTable> authorComicTableList;
 
+    @FXML
+    private void initialize() {
+        Platform.runLater(() -> parentPane.requestFocus());
+    }
+
     public void lateInit() {
+        Platform.runLater(() -> parentPane.requestFocus());
         setupIntegerTextField();
         fillComicAuthorTableList();
         fillComicCopyTableList();
@@ -102,8 +108,6 @@ public class ComicData {
                 return;
             }
         }
-
-        Platform.runLater(() -> parentPane.requestFocus());
     }
 
     private void setupIntegerTextField() {

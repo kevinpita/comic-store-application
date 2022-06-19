@@ -3,18 +3,21 @@ package io.github.kevinpita.comicstore.view;
 
 import io.github.kevinpita.comicstore.service.ComicService;
 import java.util.function.Predicate;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ComicListController {
     @FXML private FlowPane comicFlowPane;
+    @FXML private BorderPane parentPane;
 
     private Predicate<Node> createPredicate(String searchText) {
         return collection -> {
@@ -43,6 +46,8 @@ public class ComicListController {
 
     @FXML
     private void initialize() {
+        Platform.runLater(() -> parentPane.requestFocus());
+
         // get observable list of comics
         ObservableList<Node> comicList = ComicService.getInstance().getCollectionsAsNodes();
         // create filtered list of comics

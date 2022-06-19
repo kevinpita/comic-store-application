@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<BorderPane prefHeight="600.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.ComicListController">
+<BorderPane fx:id="parentPane" prefHeight="600.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.kevinpita.comicstore.view.ComicListController">
     <center>
         <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: #525252;">
             <content>

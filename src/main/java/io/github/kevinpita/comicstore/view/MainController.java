@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.Optional;
 import javafx.animation.RotateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,9 +60,12 @@ public class MainController {
     private Button currentMenuButton;
     @Getter private static BorderPane mainPane;
     @Getter private static TextField searchBar;
+    @FXML private BorderPane parentPane;
 
     @FXML
     private void initialize() {
+        Platform.runLater(() -> parentPane.requestFocus());
+
         // set current button to list collection button as it is the default menu
         currentMenuButton = listComicButton;
 

@@ -3,6 +3,7 @@ package io.github.kevinpita.comicstore.view;
 
 import io.github.kevinpita.comicstore.model.ComicDto;
 import java.util.Objects;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -24,6 +25,12 @@ public class ComicController {
     @Getter @Setter private String title;
 
     @Setter @Getter private ComicDto comic;
+    @FXML private AnchorPane parentPane;
+
+    @FXML
+    private void initialize() {
+        Platform.runLater(() -> parentPane.requestFocus());
+    }
 
     public void setImage(String imageUrl) {
         image = new Image(imageUrl);

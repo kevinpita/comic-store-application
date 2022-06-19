@@ -5,6 +5,7 @@ import io.github.kevinpita.comicstore.model.table.AuthorTable;
 import io.github.kevinpita.comicstore.service.AuthorService;
 import io.github.kevinpita.comicstore.util.i18n;
 import java.util.function.Predicate;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -13,15 +14,19 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 
 public class AuthorListController {
     @FXML private TableColumn<AuthorTable, String> authorNameTableColumn;
     @FXML private TableColumn<AuthorTable, Integer> comicCountTableColumn;
     @FXML private TableColumn<AuthorTable, String> authorLastNameTableColumn;
     @FXML private TableView<AuthorTable> table;
+    @FXML private BorderPane parentPane;
 
     @FXML
     private void initialize() {
+        Platform.runLater(() -> parentPane.requestFocus());
+
         bindTableColumns();
 
         ObservableList<AuthorTable> authors = AuthorService.getInstance().getAuthorsTable();

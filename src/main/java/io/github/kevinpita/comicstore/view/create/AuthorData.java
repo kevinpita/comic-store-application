@@ -23,6 +23,11 @@ public class AuthorData {
     @FXML private AnchorPane parentAnchorPane;
 
     @FXML
+    private void initialize() {
+        Platform.runLater(() -> parentAnchorPane.requestFocus());
+    }
+
+    @FXML
     private void cancel() {
         saveButton.getScene().getWindow().hide();
     }
