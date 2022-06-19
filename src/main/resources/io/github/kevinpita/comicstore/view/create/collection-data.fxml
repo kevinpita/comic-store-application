@@ -65,8 +65,8 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="207.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                             <children>
-                                <Label layoutY="7.0" prefWidth="230.0" styleClass="mediumWhiteLabel" text="%collectionPublisher" />
-                                <TextField fx:id="inputCollectionPublisher" layoutX="96.0" prefHeight="25.0" prefWidth="286.0" promptText="%collectionPublisher" styleClass="mediumWhiteTextField" HBox.hgrow="ALWAYS">
+                                <Label layoutY="7.0" prefWidth="230.0" styleClass="mediumWhiteLabel" text="%collectionPublisherText" />
+                                <TextField fx:id="inputCollectionPublisher" layoutX="96.0" prefHeight="25.0" prefWidth="286.0" promptText="%collectionPublisherText" styleClass="mediumWhiteTextField" HBox.hgrow="ALWAYS">
                                     <HBox.margin>
                                         <Insets />
                                     </HBox.margin>

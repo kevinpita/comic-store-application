@@ -283,6 +283,7 @@ public class MainController {
     }
 
     public static void openAuthorWindow(AuthorDto author) {
+        searchBar.clear();
         try {
             // load configuration FXML
             FXMLLoader fxmlLoader = getFxmlLoader("create/author-data");
@@ -326,7 +327,7 @@ public class MainController {
     }
 
     public static void openCollectionWindow(CollectionDto collection) {
-
+        searchBar.clear();
         try {
             // load configuration FXML
             FXMLLoader fxmlLoader = getFxmlLoader("create/collection-data");
@@ -377,6 +378,7 @@ public class MainController {
     }
 
     public static void openComicWindow(ComicDto comic) {
+        searchBar.clear();
         try {
             // load configuration FXML
             FXMLLoader fxmlLoader = getFxmlLoader("create/comic-data");
