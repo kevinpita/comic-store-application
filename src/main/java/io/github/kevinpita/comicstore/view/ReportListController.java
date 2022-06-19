@@ -5,14 +5,23 @@ import io.github.kevinpita.comicstore.model.AuthorDto;
 import io.github.kevinpita.comicstore.model.CollectionDto;
 import io.github.kevinpita.comicstore.service.AuthorService;
 import io.github.kevinpita.comicstore.service.CollectionService;
+import io.github.kevinpita.comicstore.service.ComicService;
+import io.github.kevinpita.comicstore.util.CustomAlert;
 import io.github.kevinpita.comicstore.util.i18n;
-import java.util.List;
+import java.io.InputStream;
+import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import lombok.extern.slf4j.Slf4j;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
+@Slf4j
 public class ReportListController {
     @javafx.fxml.FXML private ComboBox<CollectionDto> comboReportComicCollection;
     @javafx.fxml.FXML private Button btnReportCollection;
@@ -62,5 +71,31 @@ public class ReportListController {
         btnReportComicCollection
                 .textProperty()
                 .bind(i18n.getStringBinding("comicReportCollection"));
+    }
+
+    @FXML
+    private void openComicReport() {
+        try {
+            InputStream in =
+                    ReportListController.class.getResourceAsStream(
+                            "/io/github/kevinpita/comicstore/reports/general_comic.jrxml");
+            Map<String, Object> parameters = new HashMap<>();
+            JasperReport jasperReport = JasperCompileManager.compileReport(in);
+            JasperPrint jasperPrint =
+                    JasperFillManager.fillReport(jasperReport, parameters, getDataSource());
+            JasperViewer.viewReport(jasperPrint, false);
+
+        } catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            CustomAlert.showAlert(
+                    i18n.getString("errorShowingReport"),
+                    btnReportCollection.getScene().getWindow());
+        }
+    }
+
+    private JRDataSource getDataSource() {
+
+        return new JRBeanCollectionDataSource(
+                new ArrayList<>(ComicService.getInstance().getComics()));
     }
 }

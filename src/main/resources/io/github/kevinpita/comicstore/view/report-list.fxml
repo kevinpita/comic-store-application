@@ -22,7 +22,7 @@
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <center>
-            <Button fx:id="btnReportComic" mnemonicParsing="false" prefHeight="70.0" prefWidth="160.0" styleClass="dark-blue" text="%comicReport" BorderPane.alignment="CENTER">
+            <Button fx:id="btnReportComic" mnemonicParsing="false" onAction="#openComicReport" prefHeight="70.0" prefWidth="160.0" styleClass="dark-blue" text="%comicReport" BorderPane.alignment="CENTER">
                <font>
                   <Font size="17.0" />
                </font>

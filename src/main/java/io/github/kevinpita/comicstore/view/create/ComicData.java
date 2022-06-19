@@ -217,6 +217,11 @@ public class ComicData {
             CustomAlert.showInfo(
                     i18n.getString("newComicAlert"), comicIssueNumber.getScene().getWindow());
             comicIssueNumber.getScene().getWindow().hide();
+        } else if (code == ReturnStatus.DUPLICATED) {
+            comicIssueNumber.getStyleClass().add("errorField");
+            CustomAlert.showAlert(
+                    i18n.getString("duplicatedComicFormErrorMessage"),
+                    comicIssueNumber.getScene().getWindow());
         } else {
             CustomAlert.showAlert(
                     i18n.getString("createCollectionError"),
