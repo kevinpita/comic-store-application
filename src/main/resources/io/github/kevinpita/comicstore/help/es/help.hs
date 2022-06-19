@@ -1,10 +1,10 @@
-<?xml version='1.0' encoding='ISO-8859-1' ?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE helpset
   PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp HelpSet Version 1.0//EN"
          "http://java.sun.com/products/javahelp/helpset_1_0.dtd">
 <helpset version="1.0">
    <!-- title --> 
-   <title>Ayuda gestión de películas</title>
+   <title>Ayuda gestiÃ³n de cÃ³mics</title>
 			
    <maps>
      <homeID>manual</homeID>
@@ -19,8 +19,8 @@
    </view>
 	
    <view>
-      <name>Índice</name>
-      <label>El Índice</label>
+      <name>Ãndice</name>
+      <label>El Ã­ndice</label>
       <type>javax.help.IndexView</type>
       <data>indice.xml</data>
    </view>
@@ -44,7 +44,7 @@
        <name>Ayuda</name>
        <size width="850" height="850" />
        <location x="300" y="200" />
-       <title>Ayuda gestión de películas</title>
+       <title>Ayuda gestiÃ³n de cÃ³mics</title>
        <toolbar>
            <helpaction image="BackwardIco">javax.help.BackAction</helpaction>
            <helpaction image="ForwardIco">javax.help.ForwardAction</helpaction>

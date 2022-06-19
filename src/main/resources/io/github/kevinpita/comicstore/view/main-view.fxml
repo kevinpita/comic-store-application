@@ -130,7 +130,7 @@
                             <Insets bottom="40.0" />
                         </VBox.margin>
                     </Button>
-                    <Button mnemonicParsing="false" styleClass="transparent">
+                    <Button mnemonicParsing="false" onAction="#openHelp" styleClass="transparent">
                         <graphic>
                             <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                 <image>

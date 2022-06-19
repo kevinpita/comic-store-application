@@ -164,7 +164,6 @@ public class ComicService {
 
         HttpClient client = HttpClient.newHttpClient();
         String json = RequestUtil.getGson().toJson(comicDto);
-        System.out.println(json);
         try {
             HttpRequest request =
                     RequestUtil.createRequest(url)

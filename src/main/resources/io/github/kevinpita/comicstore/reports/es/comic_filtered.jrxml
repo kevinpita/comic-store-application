@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1848bb06-a6d8-4f61-a9ed-f6873312a620">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<subDataset name="Dataset1" uuid="e4430345-edc4-46cb-8876-b6160551a22b">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="id" class="java.lang.Long"/>
+		<field name="purchaseDate" class="java.time.LocalDate"/>
+		<field name="cover" class="java.lang.String"/>
+		<field name="state" class="java.lang.String"/>
+		<field name="price" class="java.lang.Double"/>
+	</subDataset>
+	<subDataset name="Dataset2" uuid="d600f462-094e-4ad7-ac9e-0ad4198992d6">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="id" class="java.lang.Long"/>
+		<field name="role" class="java.lang.String"/>
+		<field name="creator" class="java.lang.Object"/>
+	</subDataset>
+	<parameter name="filter" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="title" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="issueNumber" class="java.lang.Integer"/>
+	<field name="imageUrl" class="java.lang.String"/>
+	<field name="comicCreators" class="java.util.List"/>
+	<field name="copies" class="java.util.List"/>
+	<field name="collection" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField textAdjust="StretchHeight">
+				<reportElement x="0" y="0" width="551" height="79" uuid="5b09e23e-cafd-494c-9dff-df80302f37a3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="22"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Listado de cómics de " + $P{filter}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="411" splitType="Stretch">
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement positionType="Float" x="0" y="10" width="89" height="120" uuid="8795ede8-78de-4404-ae5c-16eeaec03bbe"/>
+				<imageExpression><![CDATA[$F{imageUrl}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement positionType="Float" x="110" y="30" width="442" height="30" uuid="8130deb3-8388-4d93-9d79-a262428523cc"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="110" y="70" width="200" height="30" uuid="24693cbe-c76a-46cb-85c0-26aa536fe5a9"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Número de publicación:"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="170" width="110" height="30" uuid="93ff3c71-f430-4497-9fef-19e62121ed58"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Descripción: "]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement positionType="Float" x="80" y="259" width="400" height="29" uuid="e735b720-2fa6-4b25-a33f-016e699bc2ec"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="Dataset1" uuid="facc4114-a8e6-4fc5-9ad6-0de2f2f2a8fc">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{copies})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="29" width="400">
+						<textField>
+							<reportElement x="0" y="0" width="100" height="29" uuid="6503230d-bc69-46d4-b664-46f8be696abb"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{purchaseDate}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="100" y="0" width="100" height="29" uuid="b86ef90f-8fb9-4e5f-ae50-22048ccc2e26"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{price} + "€"]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="200" y="0" width="100" height="29" uuid="a3fd814b-042e-4328-a74f-fabf3c65c94f"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{cover}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="300" y="0" width="100" height="29" uuid="56dd863c-f06f-450d-b010-a43006299e5d"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{state}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<textField>
+				<reportElement positionType="Float" x="306" y="70" width="246" height="30" uuid="774db03a-575b-4224-b6bd-e35e4ccf2c31"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{issueNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="204" y="110" width="348" height="30" uuid="2939fdcd-53eb-4be9-bbd0-fcdef8b57330"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{collection}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="110" y="110" width="100" height="30" uuid="25f24d08-9b49-4e95-b083-f79182b2bbb1"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Colección:"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="80" y="217" width="100" height="42" uuid="8b772073-694e-4b80-83d3-2ee78281a653"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de adquisición]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="180" y="217" width="100" height="42" uuid="520626f2-689d-45b8-98cd-694d134725ac"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Precio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="280" y="217" width="100" height="42" uuid="8b573e4a-3837-41c8-830a-961be5a9ec7c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tapa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="380" y="217" width="100" height="42" uuid="fe83b345-2673-4648-8179-895e7c339f0f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="81" y="370" width="410" height="29" uuid="7c19b8bb-ba96-4638-81ef-b3b8ab4848ba">
+					<property name="com.jaspersoft.studio.layout"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="Dataset2" uuid="11171ef6-92ef-486d-a11b-ea1f0c62c462">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{comicCreators})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="29" width="410">
+						<textField>
+							<reportElement x="26" y="0" width="100" height="29" uuid="443f7e4f-68bb-4fd9-821e-1bcd0ad2af5b"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{role}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="127" y="0" width="280" height="29" uuid="b888465c-e57e-4479-8928-2c7fb876c0c5"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{creator}.toString()]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="81" y="327" width="100" height="42" uuid="ea4545b5-457c-410a-80c0-d1428891bce6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Trabajo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="181" y="327" width="100" height="42" uuid="79a57e97-dee1-43fb-860b-a1b8a8149c58"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Autor]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="110" y="170" width="442" height="30" uuid="22dde81b-8ebb-454b-aad0-b3e2e78fd8e2"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement positionType="Float" x="0" y="410" width="560" height="1" uuid="f555cc7f-f420-48c7-9da8-9cc1785ae27e"/>
+			</break>
+		</band>
+	</detail>
+</jasperReport>

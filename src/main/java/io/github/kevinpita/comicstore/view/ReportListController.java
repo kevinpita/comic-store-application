@@ -10,6 +10,7 @@ import io.github.kevinpita.comicstore.util.CustomAlert;
 import io.github.kevinpita.comicstore.util.i18n;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -74,15 +75,18 @@ public class ReportListController {
     }
 
     @FXML
-    private void openComicReport() {
+    private void openCollectionReport() {
         try {
             InputStream in =
                     ReportListController.class.getResourceAsStream(
-                            "/io/github/kevinpita/comicstore/reports/general_comic.jrxml");
+                            "/io/github/kevinpita/comicstore/reports/es/collection.jrxml");
+            JRBeanCollectionDataSource comics =
+                    new JRBeanCollectionDataSource(
+                            new ArrayList<>(CollectionService.getInstance().getCollections()));
             Map<String, Object> parameters = new HashMap<>();
             JasperReport jasperReport = JasperCompileManager.compileReport(in);
             JasperPrint jasperPrint =
-                    JasperFillManager.fillReport(jasperReport, parameters, getDataSource());
+                    JasperFillManager.fillReport(jasperReport, parameters, comics);
             JasperViewer.viewReport(jasperPrint, false);
 
         } catch (Exception e) {
@@ -93,9 +97,89 @@ public class ReportListController {
         }
     }
 
-    private JRDataSource getDataSource() {
+    @FXML
+    private void openComicReport() {
+        try {
+            InputStream in =
+                    ReportListController.class.getResourceAsStream(
+                            "/io/github/kevinpita/comicstore/reports/es/comic.jrxml");
+            JRBeanCollectionDataSource comics =
+                    new JRBeanCollectionDataSource(
+                            new ArrayList<>(ComicService.getInstance().getComics()));
+            Map<String, Object> parameters = new HashMap<>();
+            JasperReport jasperReport = JasperCompileManager.compileReport(in);
+            JasperPrint jasperPrint =
+                    JasperFillManager.fillReport(jasperReport, parameters, comics);
+            JasperViewer.viewReport(jasperPrint, false);
 
-        return new JRBeanCollectionDataSource(
-                new ArrayList<>(ComicService.getInstance().getComics()));
+        } catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            CustomAlert.showAlert(
+                    i18n.getString("errorShowingReport"),
+                    btnReportCollection.getScene().getWindow());
+        }
+    }
+
+    @FXML
+    private void openCollectionComicReport() {
+        try {
+            CollectionDto collection =
+                    comboReportComicCollection.getSelectionModel().getSelectedItem();
+            JRBeanCollectionDataSource comics =
+                    new JRBeanCollectionDataSource(
+                            ComicService.getInstance().getComics().stream()
+                                    .filter(
+                                            (comic) ->
+                                                    comic.getCollection()
+                                                            .getName()
+                                                            .equals(collection.getName()))
+                                    .collect(Collectors.toList()));
+            openFilteredReport(comics, collection.toString());
+
+        } catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            CustomAlert.showAlert(
+                    i18n.getString("errorShowingReport"),
+                    btnReportCollection.getScene().getWindow());
+        }
+    }
+
+    @FXML
+    private void openAuthorComicReport() {
+        try {
+            AuthorDto author = comboReportComicAuthor.getSelectionModel().getSelectedItem();
+            JRBeanCollectionDataSource comics =
+                    new JRBeanCollectionDataSource(
+                            ComicService.getInstance().getComics().stream()
+                                    .filter(
+                                            (comic) ->
+                                                    comic.getComicCreators().stream()
+                                                            .anyMatch(
+                                                                    (comicCreator) ->
+                                                                            comicCreator
+                                                                                    .getCreator()
+                                                                                    .equals(
+                                                                                            author)))
+                                    .collect(Collectors.toList()));
+            openFilteredReport(comics, author.toString());
+
+        } catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            CustomAlert.showAlert(
+                    i18n.getString("errorShowingReport"),
+                    btnReportCollection.getScene().getWindow());
+        }
+    }
+
+    private void openFilteredReport(JRBeanCollectionDataSource comics, String parameterField)
+            throws JRException {
+        InputStream in =
+                ReportListController.class.getResourceAsStream(
+                        "/io/github/kevinpita/comicstore/reports/es/comic_filtered.jrxml");
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("filter", parameterField);
+        JasperReport jasperReport = JasperCompileManager.compileReport(in);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, comics);
+        JasperViewer.viewReport(jasperPrint, false);
     }
 }

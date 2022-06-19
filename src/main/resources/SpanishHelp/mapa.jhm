@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='ISO-8859-1'?>
-<map version="1.0">
-	<mapID target="principal" url="paginas/principal.html" />
-	<mapID target="configuracion_conexion" url="paginas/configuracion_conexion.html" />
-	<mapID target="peliculas" url="paginas/peliculas.html" />
-	<mapID target="actores" url="paginas/actores.html" />
-	<mapID target="informes" url="paginas/informes.html" />
-	<mapID target="generos" url="paginas/generos.html" />
-</map>

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<map version="1.0">
+    <mapID target="principal" url="paginas/principal.html"/>
+
+    <mapID target="comic" url="paginas/listar/comic.html"/>
+    <mapID target="nuevoComic" url="paginas/crear/comic.html"/>
+
+    <mapID target="coleccion" url="paginas/listar/coleccion.html"/>
+    <mapID target="nuevoColeccion" url="paginas/crear/coleccion.html"/>
+
+    <mapID target="autor" url="paginas/listar/autor.html"/>
+    <mapID target="nuevoAutor" url="paginas/crear/autor.html"/>
+
+    <mapID target="informe" url="paginas/listar/informe.html"/>
+
+    <mapID target="servidor" url="paginas/configuracion/servidor.html"/>
+    <mapID target="idioma" url="paginas/configuracion/idioma.html"/>
+
+    <mapID target="nuevoEjemplarComic" url="paginas/crear/comic/ejemplar.html"/>
+    <mapID target="nuevoAutorComic" url="paginas/crear/comic/autor.html"/>
+
+</map>

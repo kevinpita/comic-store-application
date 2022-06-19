@@ -12,6 +12,7 @@ import io.github.kevinpita.comicstore.view.create.AuthorData;
 import io.github.kevinpita.comicstore.view.create.CollectionData;
 import io.github.kevinpita.comicstore.view.create.ComicData;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Locale;
 import java.util.Optional;
 import javafx.animation.RotateTransition;
@@ -26,6 +27,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
 import javax.swing.*;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +55,7 @@ public class MainController {
     @FXML private Tooltip removeSearchText;
     @FXML private Button removeSearchTextButton;
 
+    private JButton javaHelpButton = new JButton();
     private Button currentMenuButton;
     @Getter private static BorderPane mainPane;
     @Getter private static TextField searchBar;
@@ -73,6 +77,26 @@ public class MainController {
 
         // set bindings for i18n strings
         setStringBindings();
+
+        setupHelp();
+    }
+
+    private void setupHelp() {
+        try {
+            String path = i18n.getString("helpFile");
+            URL helpURL = this.getClass().getResource(path);
+            HelpSet helpset = new HelpSet(null, helpURL);
+            HelpBroker browser = helpset.createHelpBroker();
+            browser.enableHelpOnButton(javaHelpButton, "principal", helpset);
+        } catch (Exception ex) {
+            log.error(ExceptionUtils.getStackTrace(ex));
+            CustomAlert.showAlert(i18n.getString("failHelp"), mainPane.getScene().getWindow());
+        }
+    }
+
+    @FXML
+    private void openHelp() {
+        javaHelpButton.doClick();
     }
 
     @FXML
@@ -118,6 +142,9 @@ public class MainController {
         } else {
             Locale.setDefault(new Locale("es", "ES"));
         }
+
+        // reload help language
+        setupHelp();
 
         // write new default language into config file
         Configuration.setLanguage(Locale.getDefault());

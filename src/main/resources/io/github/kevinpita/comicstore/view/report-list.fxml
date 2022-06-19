@@ -31,7 +31,7 @@
       </BorderPane>
       <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
          <center>
-            <Button fx:id="btnReportCollection" mnemonicParsing="false" prefHeight="70.0" prefWidth="160.0" styleClass="dark-blue" text="%collectionReport" BorderPane.alignment="CENTER">
+            <Button fx:id="btnReportCollection" mnemonicParsing="false" onAction="#openCollectionReport" prefHeight="70.0" prefWidth="160.0" styleClass="dark-blue" text="%collectionReport" BorderPane.alignment="CENTER">
                <font>
                   <Font size="17.0" />
                </font>
@@ -42,7 +42,7 @@
          <center>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER_RIGHT">
                <children>
-                  <Button fx:id="btnReportComicAuthor" mnemonicParsing="false" prefHeight="70.0" prefWidth="160.0" styleClass="dark-blue" text="%comicReportAuthor" textAlignment="CENTER" wrapText="true">
+                  <Button fx:id="btnReportComicAuthor" mnemonicParsing="false" onAction="#openAuthorComicReport" prefHeight="70.0" prefWidth="160.0" styleClass="dark-blue" text="%comicReportAuthor" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -63,7 +63,7 @@
          <center>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER_RIGHT">
                <children>
-                  <Button fx:id="btnReportComicCollection" mnemonicParsing="false" prefHeight="70.0" prefWidth="160.0" styleClass="dark-blue" text="%comicReportCollection" textAlignment="CENTER" wrapText="true">
+                  <Button fx:id="btnReportComicCollection" mnemonicParsing="false" onAction="#openCollectionComicReport" prefHeight="70.0" prefWidth="160.0" styleClass="dark-blue" text="%comicReportCollection" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font size="17.0" />
                      </font>

@@ -34,11 +34,11 @@
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="174" y="19" width="215" height="50" uuid="db20b2d1-3d9a-47ac-8f9a-ffc23f2511df"/>
-				<textElement>
+				<reportElement x="174" y="0" width="215" height="79" uuid="db20b2d1-3d9a-47ac-8f9a-ffc23f2511df"/>
+				<textElement verticalAlignment="Middle">
 					<font size="26"/>
 				</textElement>
-				<text><![CDATA[Listado de Cómics]]></text>
+				<text><![CDATA[Listado de cómics]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -49,7 +49,7 @@
 				<imageExpression><![CDATA[$F{imageUrl}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="110" y="30" width="435" height="30" uuid="8130deb3-8388-4d93-9d79-a262428523cc"/>
+				<reportElement x="110" y="30" width="442" height="30" uuid="8130deb3-8388-4d93-9d79-a262428523cc"/>
 				<textElement>
 					<font size="16"/>
 				</textElement>
@@ -115,7 +115,7 @@
 				<textFieldExpression><![CDATA[$F{issueNumber}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="204" y="110" width="332" height="30" uuid="2939fdcd-53eb-4be9-bbd0-fcdef8b57330"/>
+				<reportElement x="204" y="110" width="348" height="30" uuid="2939fdcd-53eb-4be9-bbd0-fcdef8b57330"/>
 				<textElement>
 					<font size="16"/>
 				</textElement>
@@ -157,23 +157,23 @@
 				<text><![CDATA[Estado]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement positionType="Float" isPrintRepeatedValues="false" x="81" y="370" width="400" height="29" uuid="7c19b8bb-ba96-4638-81ef-b3b8ab4848ba">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="81" y="370" width="410" height="29" uuid="7c19b8bb-ba96-4638-81ef-b3b8ab4848ba">
 					<property name="com.jaspersoft.studio.layout"/>
 				</reportElement>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset2" uuid="11171ef6-92ef-486d-a11b-ea1f0c62c462">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{comicCreators})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="29" width="400">
+					<jr:listContents height="29" width="410">
 						<textField>
-							<reportElement x="0" y="0" width="100" height="29" uuid="443f7e4f-68bb-4fd9-821e-1bcd0ad2af5b"/>
-							<textElement textAlignment="Center" verticalAlignment="Middle">
+							<reportElement x="26" y="0" width="100" height="29" uuid="443f7e4f-68bb-4fd9-821e-1bcd0ad2af5b"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
 								<font size="14"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{role}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement x="110" y="0" width="280" height="29" uuid="b888465c-e57e-4479-8928-2c7fb876c0c5"/>
+							<reportElement x="127" y="0" width="280" height="29" uuid="b888465c-e57e-4479-8928-2c7fb876c0c5"/>
 							<textElement textAlignment="Left" verticalAlignment="Middle">
 								<font size="14"/>
 							</textElement>
@@ -197,7 +197,7 @@
 				<text><![CDATA[Autor]]></text>
 			</staticText>
 			<textField textAdjust="StretchHeight">
-				<reportElement x="110" y="170" width="434" height="30" uuid="22dde81b-8ebb-454b-aad0-b3e2e78fd8e2"/>
+				<reportElement x="110" y="170" width="442" height="30" uuid="22dde81b-8ebb-454b-aad0-b3e2e78fd8e2"/>
 				<textElement>
 					<font size="16"/>
 				</textElement>
