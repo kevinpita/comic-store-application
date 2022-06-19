@@ -77,12 +77,18 @@ public class ReportListController {
     @FXML
     private void openCollectionReport() {
         try {
-            InputStream in =
-                    ReportListController.class.getResourceAsStream(
-                            "/io/github/kevinpita/comicstore/reports/es/collection.jrxml");
             JRBeanCollectionDataSource comics =
                     new JRBeanCollectionDataSource(
                             new ArrayList<>(CollectionService.getInstance().getCollections()));
+            if (checkListLength(comics)) {
+                CustomAlert.showAlert(
+                        i18n.getString("noDataForReport"),
+                        btnReportCollection.getScene().getWindow());
+                return;
+            }
+            InputStream in =
+                    ReportListController.class.getResourceAsStream(
+                            i18n.getString("collectionReportPath"));
             Map<String, Object> parameters = new HashMap<>();
             JasperReport jasperReport = JasperCompileManager.compileReport(in);
             JasperPrint jasperPrint =
@@ -100,12 +106,18 @@ public class ReportListController {
     @FXML
     private void openComicReport() {
         try {
-            InputStream in =
-                    ReportListController.class.getResourceAsStream(
-                            "/io/github/kevinpita/comicstore/reports/es/comic.jrxml");
             JRBeanCollectionDataSource comics =
                     new JRBeanCollectionDataSource(
                             new ArrayList<>(ComicService.getInstance().getComics()));
+            if (checkListLength(comics)) {
+                CustomAlert.showAlert(
+                        i18n.getString("noDataForReport"),
+                        btnReportCollection.getScene().getWindow());
+                return;
+            }
+            InputStream in =
+                    ReportListController.class.getResourceAsStream(
+                            i18n.getString("comicReportPath"));
             Map<String, Object> parameters = new HashMap<>();
             JasperReport jasperReport = JasperCompileManager.compileReport(in);
             JasperPrint jasperPrint =
@@ -134,6 +146,12 @@ public class ReportListController {
                                                             .getName()
                                                             .equals(collection.getName()))
                                     .collect(Collectors.toList()));
+            if (checkListLength(comics)) {
+                CustomAlert.showAlert(
+                        i18n.getString("noDataForReport"),
+                        btnReportCollection.getScene().getWindow());
+                return;
+            }
             openFilteredReport(comics, collection.toString());
 
         } catch (Exception e) {
@@ -161,6 +179,12 @@ public class ReportListController {
                                                                                     .equals(
                                                                                             author)))
                                     .collect(Collectors.toList()));
+            if (checkListLength(comics)) {
+                CustomAlert.showAlert(
+                        i18n.getString("noDataForReport"),
+                        btnReportCollection.getScene().getWindow());
+                return;
+            }
             openFilteredReport(comics, author.toString());
 
         } catch (Exception e) {
@@ -171,11 +195,15 @@ public class ReportListController {
         }
     }
 
+    public boolean checkListLength(JRBeanCollectionDataSource data) {
+        return data.getRecordCount() < 1;
+    }
+
     private void openFilteredReport(JRBeanCollectionDataSource comics, String parameterField)
             throws JRException {
         InputStream in =
                 ReportListController.class.getResourceAsStream(
-                        "/io/github/kevinpita/comicstore/reports/es/comic_filtered.jrxml");
+                        i18n.getString("comicFilterReportPath"));
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("filter", parameterField);
         JasperReport jasperReport = JasperCompileManager.compileReport(in);
