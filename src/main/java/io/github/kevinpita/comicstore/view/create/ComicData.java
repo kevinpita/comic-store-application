@@ -92,6 +92,13 @@ public class ComicData {
         comicIssueNumber.setText(comicDto.getIssueNumber() + "");
         comicDescription.setText(comicDto.getDescription());
 
+        for (CollectionDto collectionDto : collectionPublisher.getItems()) {
+            if (collectionDto.getName().equals(comicDto.getCollection().getName())) {
+                collectionPublisher.setValue(collectionDto);
+                return;
+            }
+        }
+
         Platform.runLater(() -> parentPane.requestFocus());
         removeButton.setDisable(false);
     }
