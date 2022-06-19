@@ -3,7 +3,6 @@ package io.github.kevinpita.comicstore.view.create;
 
 import io.github.kevinpita.comicstore.configuration.Resolution;
 import io.github.kevinpita.comicstore.model.CollectionDto;
-import io.github.kevinpita.comicstore.model.ComicCopyDto;
 import io.github.kevinpita.comicstore.model.ComicDto;
 import io.github.kevinpita.comicstore.model.table.AuthorComicTable;
 import io.github.kevinpita.comicstore.model.table.ComicCopyTable;
@@ -69,6 +68,7 @@ public class ComicData {
     private ObservableList<AuthorComicTable> authorComicTableList;
 
     public void lateInit() {
+        setupIntegerTextField();
         fillComicAuthorTableList();
         fillComicCopyTableList();
 
@@ -88,6 +88,17 @@ public class ComicData {
 
         Platform.runLater(() -> parentPane.requestFocus());
         removeButton.setDisable(false);
+    }
+
+    private void setupIntegerTextField() {
+        comicIssueNumber
+                .textProperty()
+                .addListener(
+                        (observable, oldValue, newValue) -> {
+                            if (!newValue.matches("\\d*")) {
+                                comicIssueNumber.setText(newValue.replaceAll("\\D", ""));
+                            }
+                        });
     }
 
     private void setCollectionPublisher() {
@@ -111,7 +122,7 @@ public class ComicData {
             removeButton.setDisable(true);
             return;
         }
-        openNewComicCopy(comicCopyTableRow.toDto());
+        openNewComicCopy(comicCopyTableRow);
     }
 
     @FXML
@@ -132,7 +143,9 @@ public class ComicData {
     }
 
     @FXML
-    private void save() {}
+    private void save() {
+        String nome = creatorAuthorMenu.getText().strip();
+    }
 
     @FXML
     private void delete() {}
@@ -165,9 +178,16 @@ public class ComicData {
     }
 
     @FXML
-    private void deleteComicCopy() {}
+    private void deleteComicCopy() {
+        ComicCopyTable comicCopyTableRow = comicCopyTableView.getSelectionModel().getSelectedItem();
+        if (comicCopyTableRow == null) {
+            deleteComicCopy.setDisable(true);
+            return;
+        }
+        comicCopyTableView.getItems().remove(comicCopyTableRow);
+    }
 
-    private void openNewComicCopy(ComicCopyDto comicCopyDto) {
+    private void openNewComicCopy(ComicCopyTable comicCopyTable) {
         FXMLLoader loader = MainController.getFxmlLoader("/create/comic-copy-data");
         Parent root;
         try {
@@ -177,6 +197,9 @@ public class ComicData {
             return;
         }
         ComicCopyData controller = loader.getController();
+
+        controller.setComicCopyTableObservableList(comicCopyTableList);
+        controller.setComicCopyTable(comicCopyTable);
 
         controller.lateInit();
 

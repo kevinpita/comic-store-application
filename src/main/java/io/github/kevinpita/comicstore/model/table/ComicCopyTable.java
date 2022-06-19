@@ -72,16 +72,16 @@ public class ComicCopyTable {
         this.price.set(price);
     }
 
-    public String getPurchase() {
-        return purchase.get();
+    public LocalDate getPurchase() {
+        return LocalDate.parse(purchase.get(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
     public SimpleStringProperty purchaseProperty() {
         return purchase;
     }
 
-    public void setPurchase(String purchase) {
-        this.purchase.set(purchase);
+    public void setPurchase(LocalDate purchase) {
+        this.purchase.set(purchase.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 
     public ComicCopyDto toDto() {
@@ -90,7 +90,8 @@ public class ComicCopyTable {
                 .cover(getCover())
                 .state(getState())
                 .purchaseDate(
-                        LocalDate.parse(getPurchase(), DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+                        LocalDate.parse(
+                                this.purchase.get(), DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                 .price(Double.parseDouble(getPrice().replace("€", "")))
                 .build();
     }

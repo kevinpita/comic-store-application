@@ -10,7 +10,6 @@
     <children>
         <AnchorPane layoutX="11.0" layoutY="33.0">
             <children>
-            <TextField fx:id="inputAuthorRole1" layoutX="119.0" layoutY="6.0" prefHeight="41.0" prefWidth="318.0" promptText="%authorJob" styleClass="mediumWhiteTextField" />
                 <Label layoutY="-9.0" prefHeight="73.0" prefWidth="113.0" styleClass="mediumWhiteLabel" text="%createDate" wrapText="true" />
             <DatePicker fx:id="datePicker" editable="false" layoutX="119.0" layoutY="6.0" prefHeight="41.0" prefWidth="318.0" />
             </children>
