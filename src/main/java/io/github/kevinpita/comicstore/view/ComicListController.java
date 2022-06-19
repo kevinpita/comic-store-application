@@ -1,45 +1,61 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.view;
 
-import io.github.kevinpita.comicstore.model.ComicDto;
 import io.github.kevinpita.comicstore.service.ComicService;
-import java.util.List;
+import java.util.function.Predicate;
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.layout.FlowPane;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 @Slf4j
 public class ComicListController {
     @FXML private FlowPane comicFlowPane;
 
+    private Predicate<Node> createPredicate(String searchText) {
+        return collection -> {
+            ComicController controller =
+                    ComicService.getInstance().getNodeControllerMap().get(collection);
+            if (searchText == null || searchText.isEmpty()) return true;
+            try {
+                return checkTitle(controller, searchText);
+            } catch (Exception e) {
+                return false;
+            }
+        };
+    }
+
+    private boolean checkTitle(ComicController comic, String search) {
+        boolean containsTitle = comic.getTitle().toLowerCase().contains(search.toLowerCase());
+        boolean containsCollection =
+                comic.getComic()
+                        .getCollection()
+                        .getName()
+                        .toLowerCase()
+                        .contains(search.toLowerCase());
+
+        return containsTitle || containsCollection;
+    }
+
     @FXML
     private void initialize() {
-        // get all comics from filled list
-        List<ComicDto> comics = ComicService.getInstance().getComics();
+        // get observable list of comics
+        ObservableList<Node> comicList = ComicService.getInstance().getCollectionsAsNodes();
+        // create filtered list of comics
+        FilteredList<Node> filteredData =
+                new FilteredList<>(FXCollections.observableArrayList(comicList));
 
-        // for each comic create an instance
-        for (ComicDto comic : comics) {
-            FXMLLoader loader = MainController.getFxmlLoader("comic");
-            Parent root;
-            try {
-                root = loader.load();
-            } catch (Exception e) {
-                log.error(ExceptionUtils.getStackTrace(e));
-                continue;
-            }
-
-            ComicController comicController = loader.getController();
-
-            comicController.setComic(comic);
-            comicController.setImage(comic.getImageUrl());
-            comicController.setTitle(comic.getFullTitle());
-
-            comicController.lateInit();
-
-            comicFlowPane.getChildren().add(root);
-        }
+        // bind search bar to filtered list
+        MainController.getSearchBar()
+                .textProperty()
+                .addListener(
+                        (ignored, oldValue, newValue) -> {
+                            filteredData.setPredicate(createPredicate(newValue));
+                        });
+        Bindings.bindContent(comicFlowPane.getChildren(), filteredData);
     }
 }

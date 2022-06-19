@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
 import javafx.util.StringConverter;
 import lombok.Setter;
 
@@ -80,7 +81,9 @@ public class ComicCopyData {
         if (state.isEmpty() || state.length() > 50) {
             error = true;
             inputCreateState.getStyleClass().add("errorField");
-            inputCreateState.setTooltip(new Tooltip(i18n.getString("stateError")));
+            Tooltip tooltip = new Tooltip(i18n.getString("stateError"));
+            tooltip.setFont(new Font(16));
+            inputCreateState.setTooltip(tooltip);
         } else {
             inputCreateState.getStyleClass().remove("errorField");
             inputCreateState.setTooltip(null);
@@ -89,7 +92,10 @@ public class ComicCopyData {
         if (cover.isEmpty() || cover.length() > 50) {
             error = true;
             inputCreateCover.getStyleClass().add("errorField");
-            inputCreateCover.setTooltip(new Tooltip(i18n.getString("coverError")));
+
+            Tooltip tooltip = new Tooltip(i18n.getString("coverError"));
+            tooltip.setFont(new Font(16));
+            inputCreateCover.setTooltip(tooltip);
         } else {
             inputCreateCover.getStyleClass().remove("errorField");
             inputCreateCover.setTooltip(null);
@@ -98,7 +104,9 @@ public class ComicCopyData {
         if (price <= 0) {
             error = true;
             inputCreatePrice.getStyleClass().add("errorField");
-            inputCreatePrice.setTooltip(new Tooltip(i18n.getString("priceError")));
+            Tooltip tooltip = new Tooltip(i18n.getString("priceError"));
+            tooltip.setFont(new Font(16));
+            inputCreatePrice.setTooltip(tooltip);
         } else {
             inputCreatePrice.getStyleClass().remove("errorField");
             inputCreatePrice.setTooltip(null);
@@ -107,7 +115,9 @@ public class ComicCopyData {
         if (selectedDate == null || selectedDate.isAfter(LocalDate.now())) {
             error = true;
             datePicker.getStyleClass().add("errorField");
-            datePicker.setTooltip(new Tooltip(i18n.getString("dateError")));
+            Tooltip tooltip = new Tooltip(i18n.getString("dateError"));
+            tooltip.setFont(new Font(16));
+            datePicker.setTooltip(tooltip);
         } else {
             datePicker.getStyleClass().remove("errorField");
             datePicker.setTooltip(null);

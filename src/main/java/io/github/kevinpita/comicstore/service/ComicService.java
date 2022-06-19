@@ -1,10 +1,13 @@
 /* Kevin Pita 2022 */
 package io.github.kevinpita.comicstore.service;
 
+import static io.github.kevinpita.comicstore.service.CollectionService.uploadImage;
+
 import com.google.gson.Gson;
 import io.github.kevinpita.comicstore.configuration.UrlPath;
 import io.github.kevinpita.comicstore.model.ComicDto;
 import io.github.kevinpita.comicstore.model.data.ComicListDto;
+import io.github.kevinpita.comicstore.model.data.NewComicDto;
 import io.github.kevinpita.comicstore.model.table.ComicTable;
 import io.github.kevinpita.comicstore.util.CustomAlert;
 import io.github.kevinpita.comicstore.util.RequestUtil;
@@ -14,6 +17,7 @@ import java.io.IOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +70,7 @@ public class ComicService {
         nodeControllerMap.clear();
 
         for (ComicDto comic : getComics()) {
-            FXMLLoader loader = MainController.getFxmlLoader("collection");
+            FXMLLoader loader = MainController.getFxmlLoader("comic");
 
             Node node;
             try {
@@ -80,7 +84,7 @@ public class ComicService {
 
             comicController.setComic(comic);
             comicController.setImage(comic.getImageUrl());
-            comicController.setTitle(comic.getTitle());
+            comicController.setTitle(comic.getFullTitle());
 
             comicController.lateInit();
 
@@ -114,5 +118,44 @@ public class ComicService {
             // TODO: connecting alert
             CustomAlert.showConnectingAlert(null);
         }
+    }
+
+    public int createComic(ComicDto comicDto, Path image) {
+        String url = UrlPath.COMIC.getUrl();
+
+        HttpClient client = HttpClient.newHttpClient();
+        String json = RequestUtil.getGson().toJson(comicDto);
+        System.out.println(json);
+        try {
+            HttpRequest request =
+                    RequestUtil.createRequest(url)
+                            .POST(HttpRequest.BodyPublishers.ofString(json))
+                            .header("Content-Type", "application/json")
+                            .build();
+
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 409) {
+                return 0;
+            }
+            if (response.statusCode() != 201) {
+                return 1;
+            }
+
+            int id =
+                    RequestUtil.getGson()
+                            .fromJson(response.body(), NewComicDto.class)
+                            .getData()
+                            .getId();
+            if (image != null) {
+                uploadImage(UrlPath.UPLOAD_COMIC_IMAGE.getUrl(), image, id);
+            }
+            return 2;
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
+            CustomAlert.showConnectingAlert(null);
+        }
+        return 1;
     }
 }

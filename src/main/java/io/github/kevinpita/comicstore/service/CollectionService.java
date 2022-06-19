@@ -45,11 +45,11 @@ public class CollectionService {
         return instance;
     }
 
-    public static void uploadImage(Path imagePath, int id) {
+    public static void uploadImage(String urlPath, Path imagePath, int id) {
         try {
             final Methanol client = Methanol.create();
             MultipartBodyPublisher multipartBody = RequestUtil.getMultipartBodyPublisher(imagePath);
-            MutableRequest request = RequestUtil.getMutableRequest(id, multipartBody);
+            MutableRequest request = RequestUtil.getMutableRequest(urlPath, id, multipartBody);
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -90,7 +90,7 @@ public class CollectionService {
                             .getData()
                             .getId();
             if (image != null) {
-                uploadImage(image, id);
+                uploadImage(UrlPath.UPLOAD_COLLECTION_IMAGE.getUrl(), image, id);
             }
             return 2;
         } catch (Exception logged) {
@@ -125,7 +125,7 @@ public class CollectionService {
             }
             AuthorService.getInstance().getAuthors();
             if (image != null) {
-                uploadImage(image, id);
+                uploadImage(UrlPath.UPLOAD_COLLECTION_IMAGE.getUrl(), image, id);
             }
             return 2;
         } catch (Exception logged) {

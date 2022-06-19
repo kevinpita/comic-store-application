@@ -23,7 +23,7 @@ public class ComicController {
     private Image image;
     @Getter @Setter private String title;
 
-    @Setter private ComicDto comic;
+    @Setter @Getter private ComicDto comic;
 
     public void setImage(String imageUrl) {
         image = new Image(imageUrl);

@@ -26,6 +26,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javax.swing.*;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -60,6 +61,10 @@ public class MainController {
         // set current button to list collection button as it is the default menu
         currentMenuButton = listComicButton;
 
+        // set static variables value
+        mainPane = listParentPane;
+        searchBar = txtFieldSearchBar;
+
         // load comic list as default
         loadCenterScreen("comic-list");
 
@@ -68,10 +73,6 @@ public class MainController {
 
         // set bindings for i18n strings
         setStringBindings();
-
-        // set static variables value
-        mainPane = listParentPane;
-        searchBar = txtFieldSearchBar;
     }
 
     @FXML
@@ -131,6 +132,10 @@ public class MainController {
         // get clicked source
         Button clickedButton = (Button) event.getSource();
 
+        setCenterFXML(clickedButton);
+    }
+
+    private void setCenterFXML(Button clickedButton) {
         // if clicked button is the same as current button, don't do anything
         if (clickedButton.equals(currentMenuButton)) {
             return;
@@ -223,18 +228,21 @@ public class MainController {
     @FXML
     private void openAuthorCreator() {
         removeSearchText();
+        setCenterFXML(listAuthorButton);
         openAuthorWindow(null);
     }
 
     @FXML
     private void openCollectionCreator() {
         removeSearchText();
+        setCenterFXML(listCollectionButton);
         openCollectionWindow(null);
     }
 
     @FXML
     private void openComicCreator() {
         removeSearchText();
+        setCenterFXML(listComicButton);
         openComicWindow(null);
     }
 

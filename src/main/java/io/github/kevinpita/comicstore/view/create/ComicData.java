@@ -2,7 +2,9 @@
 package io.github.kevinpita.comicstore.view.create;
 
 import io.github.kevinpita.comicstore.configuration.Resolution;
+import io.github.kevinpita.comicstore.model.AuthorComicDto;
 import io.github.kevinpita.comicstore.model.CollectionDto;
+import io.github.kevinpita.comicstore.model.ComicCopyDto;
 import io.github.kevinpita.comicstore.model.ComicDto;
 import io.github.kevinpita.comicstore.model.table.AuthorComicTable;
 import io.github.kevinpita.comicstore.model.table.ComicCopyTable;
@@ -14,6 +16,7 @@ import io.github.kevinpita.comicstore.util.i18n;
 import io.github.kevinpita.comicstore.view.MainController;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
@@ -30,6 +33,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Setter;
@@ -81,6 +85,8 @@ public class ComicData {
         setupCopyTableData();
 
         if (setupImage()) return;
+
+        comicIssueNumber.setDisable(true);
 
         creatorAuthorMenu.setText(comicDto.getTitle());
         comicIssueNumber.setText(comicDto.getIssueNumber() + "");
@@ -145,6 +151,68 @@ public class ComicData {
     @FXML
     private void save() {
         String nome = creatorAuthorMenu.getText().strip();
+        String issueNumber = comicIssueNumber.getText().strip();
+        CollectionDto publisher = collectionPublisher.getValue();
+        String description = comicDescription.getText().strip();
+
+        boolean error = false;
+
+        if (issueNumber.isEmpty() || issueNumber.equals("0") || issueNumber.length() > 9) {
+            error = true;
+            comicIssueNumber.getStyleClass().add("errorField");
+
+            Tooltip tooltip = new Tooltip(i18n.getString("errorIssueNumber"));
+            tooltip.setFont(new Font(16));
+            comicIssueNumber.setTooltip(tooltip);
+        } else {
+            comicIssueNumber.getStyleClass().remove("errorField");
+            comicIssueNumber.setTooltip(null);
+        }
+        error = checkError(nome, publisher, description) || error;
+
+        if (error) {
+            CustomAlert.showAlert(
+                    i18n.getString("formError"), comicDescription.getScene().getWindow());
+            return;
+        }
+
+        List<ComicCopyDto> comicCopyList =
+                comicCopyTableList.stream()
+                        .map(ComicCopyDto::fromTable)
+                        .collect(Collectors.toList());
+        List<AuthorComicDto> authorComicList =
+                authorComicTableList.stream()
+                        .map(AuthorComicDto::fromTable)
+                        .collect(Collectors.toList());
+
+        if (comicDto == null) {
+            comicDto = new ComicDto();
+            comicDto.setId(0);
+        }
+        comicDto.setTitle(nome);
+        comicDto.setIssueNumber(Integer.parseInt(issueNumber));
+        comicDto.setCollection(ComicDto.CollectionDto.builder().id(publisher.getId()).build());
+        comicDto.setDescription(description);
+        comicDto.setComicCreators(authorComicList);
+        comicDto.setCopies(comicCopyList);
+
+        int code = ComicService.getInstance().createComic(comicDto, imagePath);
+        if (code == 2) {
+            reloadCollectionList();
+            CustomAlert.showInfo(
+                    i18n.getString("newComicAlert"), comicIssueNumber.getScene().getWindow());
+            comicIssueNumber.getScene().getWindow().hide();
+        } else if (code == 0) {
+            //            menu.getStyleClass().add("errorField");
+            CustomAlert.showAlert(
+                    i18n.getString("duplicatedCollectionFormErrorMessage"),
+                    comicIssueNumber.getScene().getWindow());
+        } else {
+            CustomAlert.showAlert(
+                    i18n.getString("createCollectionError"),
+                    comicIssueNumber.getScene().getWindow());
+            comicIssueNumber.getScene().getWindow().hide();
+        }
     }
 
     @FXML
@@ -322,41 +390,43 @@ public class ComicData {
         }
     }
 
-    private boolean checkError(String name, String publisher, String description) {
-        //        boolean error = false;
-        //        if (name.isBlank() || name.length() > 255) {
-        //            inputCollectionName.getStyleClass().add("errorField");
-        //            error = true;
-        //        } else {
-        //            inputCollectionName.getStyleClass().remove("errorField");
-        //        }
-        //
-        //        if (publisher.isBlank() || publisher.length() > 255) {
-        //            inputCollectionPublisher.getStyleClass().add("errorField");
-        //            error = true;
-        //        } else {
-        //            inputCollectionPublisher.getStyleClass().remove("errorField");
-        //        }
-        //
-        //        if (description.length() > 512) {
-        //            txtAreaDescription.getStyleClass().add("errorField");
-        //            error = true;
-        //        } else {
-        //            txtAreaDescription.getStyleClass().remove("errorField");
-        //        }
-        //        return error;
-        return false;
-    }
+    private boolean checkError(String name, CollectionDto publisher, String description) {
+        boolean error = false;
+        if (name.isEmpty() || name.length() > 254) {
+            error = true;
+            creatorAuthorMenu.getStyleClass().add("errorField");
 
-    private boolean checkSameObject(String name, String publisher, String description) {
-        //        if (name.equals(collectionDto.getName())
-        //                && publisher.equals(collectionDto.getPublisher())
-        //                && description.equals(collectionDto.getDescription())
-        //                && imagePath == null) {
-        //            inputCollectionPublisher.getScene().getWindow().hide();
-        //            return true;
-        //        }
-        return false;
+            Tooltip tooltip = new Tooltip(i18n.getString("errorName"));
+            tooltip.setFont(new Font(16));
+            creatorAuthorMenu.setTooltip(tooltip);
+        } else {
+            creatorAuthorMenu.getStyleClass().remove("errorField");
+            creatorAuthorMenu.setTooltip(null);
+        }
+
+        if (publisher == null) {
+            error = true;
+            collectionPublisher.getStyleClass().add("errorField");
+            Tooltip tooltip = new Tooltip(i18n.getString("errorPublisher"));
+            tooltip.setFont(new Font(16));
+            collectionPublisher.setTooltip(tooltip);
+        } else {
+            collectionPublisher.getStyleClass().remove("errorField");
+            collectionPublisher.setTooltip(null);
+        }
+
+        if (description.length() > 512) {
+            error = true;
+            comicDescription.getStyleClass().add("errorField");
+            Tooltip tooltip = new Tooltip(i18n.getString("errorDescription"));
+            tooltip.setFont(new Font(16));
+            comicDescription.setTooltip(tooltip);
+        } else {
+            comicDescription.getStyleClass().remove("errorField");
+            comicDescription.setTooltip(null);
+        }
+
+        return error;
     }
 
     private void setupTable(TableView<?> table, Button delete, Button edit) {
