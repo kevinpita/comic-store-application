@@ -192,4 +192,43 @@ public class ComicService {
         }
         return ReturnStatus.ERROR;
     }
+
+    public static void deletePicture(int id) {
+        String url = UrlPath.COMIC_IMAGE.getUrl() + "/" + id;
+
+        HttpClient client = HttpClient.newHttpClient();
+        try {
+            HttpRequest request = RequestUtil.createRequest(url).DELETE().build();
+
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            response.statusCode();
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
+            CustomAlert.showConnectingAlert(null);
+        }
+    }
+
+    public static boolean deleteComic(int id) {
+        String url = UrlPath.COMIC.getUrl() + "/" + id;
+
+        HttpClient client = HttpClient.newHttpClient();
+        try {
+            HttpRequest request = RequestUtil.createRequest(url).DELETE().build();
+
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                return false;
+            }
+            deletePicture(id);
+            return true;
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
+            CustomAlert.showConnectingAlert(null);
+        }
+        return false;
+    }
 }

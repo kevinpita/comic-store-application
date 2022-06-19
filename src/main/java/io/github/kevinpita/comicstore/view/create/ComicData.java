@@ -94,6 +94,8 @@ public class ComicData {
         comicIssueNumber.setText(comicDto.getIssueNumber() + "");
         comicDescription.setText(comicDto.getDescription());
 
+        removeButton.setDisable(false);
+
         for (CollectionDto collectionDto : collectionPublisher.getItems()) {
             if (collectionDto.getName().equals(comicDto.getCollection().getName())) {
                 collectionPublisher.setValue(collectionDto);
@@ -102,7 +104,6 @@ public class ComicData {
         }
 
         Platform.runLater(() -> parentPane.requestFocus());
-        removeButton.setDisable(false);
     }
 
     private void setupIntegerTextField() {
@@ -212,7 +213,7 @@ public class ComicData {
             code = ComicService.getInstance().updateComic(comicDto, imagePath);
         }
         if (code == ReturnStatus.SUCCESS) {
-            reloadCollectionList();
+            reloadComicList();
             CustomAlert.showInfo(
                     i18n.getString("newComicAlert"), comicIssueNumber.getScene().getWindow());
             comicIssueNumber.getScene().getWindow().hide();
@@ -225,7 +226,22 @@ public class ComicData {
     }
 
     @FXML
-    private void delete() {}
+    private void delete() {
+        if (comicDto == null) {
+            removeButton.setDisable(true);
+            return;
+        }
+        if (ComicService.deleteComic(comicDto.getId())) {
+            reloadComicList();
+            CustomAlert.showInfo(
+                    i18n.getString("deleteComicAlert"), comicIssueNumber.getScene().getWindow());
+            comicIssueNumber.getScene().getWindow().hide();
+            return;
+        }
+        CustomAlert.showAlert(
+                i18n.getString("comicFormDeleteErrorMessage"),
+                comicIssueNumber.getScene().getWindow());
+    }
 
     @FXML
     private void selectNewPicture() {
@@ -387,7 +403,7 @@ public class ComicData {
         }
     }
 
-    private void reloadCollectionList() {
+    private void reloadComicList() {
         ComicService.getInstance().getCollectionsAsNodes();
         FXMLLoader fxmlLoader = MainController.getFxmlLoader("comic-list");
         try {
