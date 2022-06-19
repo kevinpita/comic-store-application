@@ -124,7 +124,7 @@ public class CollectionService {
             if (response.statusCode() != 201) {
                 return ReturnStatus.ERROR;
             }
-            AuthorService.getInstance().getAuthors();
+
             if (image != null) {
                 uploadImage(UrlPath.UPLOAD_COLLECTION_IMAGE.getUrl(), image, id);
             }

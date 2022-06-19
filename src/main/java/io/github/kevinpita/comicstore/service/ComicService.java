@@ -126,7 +126,6 @@ public class ComicService {
 
         HttpClient client = HttpClient.newHttpClient();
         String json = RequestUtil.getGson().toJson(comicDto);
-        System.out.println(json);
         try {
             HttpRequest request =
                     RequestUtil.createRequest(url)
@@ -151,6 +150,40 @@ public class ComicService {
                             .getId();
             if (image != null) {
                 uploadImage(UrlPath.UPLOAD_COMIC_IMAGE.getUrl(), image, id);
+            }
+            return ReturnStatus.SUCCESS;
+        } catch (Exception logged) {
+            log.error(ExceptionUtils.getStackTrace(logged));
+            CustomAlert.showConnectingAlert(null);
+        }
+        return ReturnStatus.ERROR;
+    }
+
+    public ReturnStatus updateComic(ComicDto comicDto, Path image) {
+        String url = UrlPath.COMIC.getUrl();
+
+        HttpClient client = HttpClient.newHttpClient();
+        String json = RequestUtil.getGson().toJson(comicDto);
+        System.out.println(json);
+        try {
+            HttpRequest request =
+                    RequestUtil.createRequest(url)
+                            .PUT(HttpRequest.BodyPublishers.ofString(json))
+                            .header("Content-Type", "application/json")
+                            .build();
+
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 409) {
+                return ReturnStatus.DUPLICATED;
+            }
+            if (response.statusCode() != 201) {
+                return ReturnStatus.ERROR;
+            }
+
+            if (image != null) {
+                uploadImage(UrlPath.UPLOAD_COMIC_IMAGE.getUrl(), image, comicDto.getId());
             }
             return ReturnStatus.SUCCESS;
         } catch (Exception logged) {

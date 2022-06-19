@@ -88,6 +88,7 @@ public class ComicData {
         if (setupImage()) return;
 
         comicIssueNumber.setDisable(true);
+        collectionPublisher.setDisable(true);
 
         creatorAuthorMenu.setText(comicDto.getTitle());
         comicIssueNumber.setText(comicDto.getIssueNumber() + "");
@@ -204,17 +205,17 @@ public class ComicData {
         comicDto.setComicCreators(authorComicList);
         comicDto.setCopies(comicCopyList);
 
-        ReturnStatus code = ComicService.getInstance().createComic(comicDto, imagePath);
+        ReturnStatus code;
+        if (comicDto.getId() == 0) {
+            code = ComicService.getInstance().createComic(comicDto, imagePath);
+        } else {
+            code = ComicService.getInstance().updateComic(comicDto, imagePath);
+        }
         if (code == ReturnStatus.SUCCESS) {
             reloadCollectionList();
             CustomAlert.showInfo(
                     i18n.getString("newComicAlert"), comicIssueNumber.getScene().getWindow());
             comicIssueNumber.getScene().getWindow().hide();
-        } else if (code == ReturnStatus.DUPLICATED) {
-            //            menu.getStyleClass().add("errorField");
-            CustomAlert.showAlert(
-                    i18n.getString("duplicatedComicFormErrorMessage"),
-                    comicIssueNumber.getScene().getWindow());
         } else {
             CustomAlert.showAlert(
                     i18n.getString("createCollectionError"),
@@ -313,7 +314,7 @@ public class ComicData {
         }
         AuthorComicData controller = loader.getController();
 
-        controller.setAuthorComicTable(authorComicElement);
+        controller.setAuthorComicTableElement(authorComicElement);
         controller.setRoles(
                 authorComicTableList.stream()
                         .map(AuthorComicTable::getRole)

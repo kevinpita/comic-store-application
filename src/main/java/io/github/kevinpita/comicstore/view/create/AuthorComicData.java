@@ -22,7 +22,7 @@ public class AuthorComicData {
     @FXML private AnchorPane parentAnchorPane;
     @FXML private TextField inputAuthorRole;
     @FXML private Button saveButton;
-    @Setter private AuthorComicTable authorComicTable;
+    @Setter private AuthorComicTable authorComicTableElement;
     @Setter private List<String> roles;
     @Setter private TableView<AuthorComicTable> table;
 
@@ -37,13 +37,13 @@ public class AuthorComicData {
 
         inputAuthorName.setItems(authors);
 
-        if (authorComicTable == null) {
+        if (authorComicTableElement == null) {
             inputAuthorName.setValue(authors.get(0));
             return;
         }
 
-        inputAuthorRole.setText(authorComicTable.getRole());
-        inputAuthorName.setValue(authorComicTable.getCreator());
+        inputAuthorRole.setText(authorComicTableElement.getRole());
+        inputAuthorName.setValue(authorComicTableElement.getCreator());
     }
 
     @FXML
@@ -61,7 +61,10 @@ public class AuthorComicData {
         }
 
         if (roles.contains(authorRole)
-                && inputAuthorName.getSelectionModel().equals(authorComicTable.getCreator())) {
+                && (authorComicTableElement == null
+                        || inputAuthorName
+                                .getSelectionModel()
+                                .equals(authorComicTableElement.getCreator()))) {
             inputAuthorRole.getStyleClass().add("errorField");
             CustomAlert.showAlert(
                     i18n.getString("formError"),
@@ -70,12 +73,13 @@ public class AuthorComicData {
             return;
         }
 
-        if (authorComicTable == null) {
-            authorComicTable = new AuthorComicTable(0, authorRole, inputAuthorName.getValue());
-            table.getItems().add(authorComicTable);
+        if (authorComicTableElement == null) {
+            authorComicTableElement =
+                    new AuthorComicTable(0, authorRole, inputAuthorName.getValue());
+            table.getItems().add(authorComicTableElement);
         } else {
-            authorComicTable.setCreator(inputAuthorName.getValue());
-            authorComicTable.setRole(inputAuthorRole.getText());
+            authorComicTableElement.setCreator(inputAuthorName.getValue());
+            authorComicTableElement.setRole(inputAuthorRole.getText());
         }
         CustomAlert.showInfo(
                 i18n.getString("newAuthorAlert"), parentAnchorPane.getScene().getWindow());
