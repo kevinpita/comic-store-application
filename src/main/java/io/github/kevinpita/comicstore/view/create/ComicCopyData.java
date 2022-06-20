@@ -103,7 +103,7 @@ public class ComicCopyData {
             inputCreateCover.setTooltip(null);
         }
 
-        if (price <= 0) {
+        if (price <= 0 || price > 9_999_999.00) {
             error = true;
             inputCreatePrice.getStyleClass().add("errorField");
             Tooltip tooltip = new Tooltip(i18n.getString("priceError"));
