@@ -109,6 +109,11 @@ public class ComicCopyData {
             Tooltip tooltip = new Tooltip(i18n.getString("priceError"));
             tooltip.setFont(new Font(16));
             inputCreatePrice.setTooltip(tooltip);
+            if (price <= 0) {
+                inputCreatePrice.setText("0.01");
+            } else {
+                inputCreatePrice.setText("9999999.00");
+            }
         } else {
             inputCreatePrice.getStyleClass().remove("errorField");
             inputCreatePrice.setTooltip(null);

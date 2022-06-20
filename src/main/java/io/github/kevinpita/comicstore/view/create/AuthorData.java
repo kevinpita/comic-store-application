@@ -85,7 +85,8 @@ public class AuthorData {
         if (authorDto == null) {
             return false;
         }
-        if (name.equals(authorDto.getName()) && lastName.equals(authorDto.getLastName())) {
+        if (name.equals(authorDto.getName())
+                && lastName.equals(authorDto.getLastName().split(Pattern.quote(" ("))[0])) {
             saveButton.getScene().getWindow().hide();
             return true;
         }
@@ -93,7 +94,7 @@ public class AuthorData {
     }
 
     private boolean checkFields(String name, String lastName) {
-        Pattern pattern = Pattern.compile("^([a-zA-Z(\\s)?]+){1,50}$", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("^([a-zA-Z(\\s)?]){1,50}$", Pattern.CASE_INSENSITIVE);
         boolean result = false;
         if (!pattern.matcher(name).matches()) {
             inputAuthorName.getStyleClass().add("errorField");
@@ -118,7 +119,7 @@ public class AuthorData {
         }
 
         String lastName = authorDto.getLastName();
-        lastName = lastName.split(Pattern.quote("("))[0];
+        lastName = lastName.split(Pattern.quote("("))[0].strip();
 
         inputAuthorName.setText(authorDto.getName());
         inputAuthorLastName.setText(lastName);
