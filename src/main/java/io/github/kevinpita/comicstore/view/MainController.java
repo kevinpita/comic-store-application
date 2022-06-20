@@ -57,6 +57,7 @@ public class MainController {
     @FXML private Button removeSearchTextButton;
 
     private JButton javaHelpButton = new JButton();
+    private JButton javaHelpButtonGl = new JButton();
     private Button currentMenuButton;
     @Getter private static BorderPane mainPane;
     @Getter private static TextField searchBar;
@@ -87,8 +88,8 @@ public class MainController {
 
     private void setupHelp() {
         try {
-            String path = i18n.getString("helpFile");
-            URL helpURL = this.getClass().getResource(path);
+            URL helpURL =
+                    this.getClass().getResource("/io/github/kevinpita/comicstore/help/es/help.hs");
             if (helpURL == null) {
                 CustomAlert.showAlert(i18n.getString("failHelp"), null);
                 log.error("Help file not found");
@@ -100,11 +101,34 @@ public class MainController {
         } catch (Exception ex) {
             log.error(ExceptionUtils.getStackTrace(ex));
         }
+
+        try {
+            URL helpURL =
+                    this.getClass().getResource("/io/github/kevinpita/comicstore/help/gl/help.hs");
+            if (helpURL == null) {
+                CustomAlert.showAlert(i18n.getString("failHelp"), null);
+                log.error("Help file not found");
+                return;
+            }
+            HelpSet helpset = new HelpSet(null, helpURL);
+            HelpBroker browser = helpset.createHelpBroker();
+            browser.enableHelpOnButton(javaHelpButtonGl, "principal", helpset);
+        } catch (Exception ex) {
+            log.error(ExceptionUtils.getStackTrace(ex));
+        }
     }
 
     @FXML
     private void openHelp() {
-        javaHelpButton.doClick();
+        try {
+            if (Locale.getDefault().getLanguage().equals("es")) {
+                javaHelpButton.doClick();
+            } else {
+                javaHelpButtonGl.doClick();
+            }
+        } catch (Exception ex) {
+            log.error(ExceptionUtils.getStackTrace(ex));
+        }
     }
 
     @FXML
@@ -150,9 +174,6 @@ public class MainController {
         } else {
             Locale.setDefault(new Locale("es", "ES"));
         }
-
-        // reload help language
-        setupHelp();
 
         // write new default language into config file
         Configuration.setLanguage(Locale.getDefault());

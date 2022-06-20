@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<toc version="1.0">
+    <tocitem text="Manual">
+        <tocitem target="principal" text="Principal">
+            <tocitem text="Listar">
+                <tocitem target="comic" text="Listar banda deseñada"/>
+                <tocitem target="coleccion" text="Listar colección"/>
+                <tocitem target="autor" text="Listar autor"/>
+                <tocitem target="informe" text="Listar informe"/>
+            </tocitem>
+            <tocitem text="Crear">
+                <tocitem target="nuevoComic" text="Crear banda deseñada">
+                    <tocitem target="nuevoEjemplarComic" text="Agregar exemplar"/>
+                    <tocitem target="nuevoAutorComic" text="Agregar autor"/>
+                </tocitem>
+                <tocitem target="nuevaColeccion" text="Crear colección"/>
+                <tocitem target="nuevoAutor" text="Crear autor"/>
+            </tocitem>
+            <tocitem text="Configuración">
+                <tocitem target="servidor" text="Axustes servidor"/>
+                <tocitem target="idioma" text="Cambiar idioma"/>
+            </tocitem>
+        </tocitem>
+    </tocitem>
+</toc>

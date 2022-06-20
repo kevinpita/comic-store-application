@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<index version="1.0">
+    <indexitem text="Principal" target="principal"/>
+
+    <indexitem text="Listar banda deseñada" target="comic"/>
+    <indexitem text="Listar colección" target="coleccion"/>
+    <indexitem text="Listar autor" target="autor"/>
+    <indexitem text="Listar informe" target="informe"/>
+
+    <indexitem text="Crear banda deseñada" target="nuevoComic"/>
+    <indexitem text="Crear colección" target="nuevoColeccion"/>
+    <indexitem text="Crear autor" target="nuevoAutor"/>
+
+    <indexitem text="Axustes servidor" target="servidor"/>
+    <indexitem text="Cambiar idioma" target="idioma"/>
+</index>
