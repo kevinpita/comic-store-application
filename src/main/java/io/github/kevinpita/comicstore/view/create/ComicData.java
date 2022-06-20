@@ -239,6 +239,11 @@ public class ComicData {
             removeButton.setDisable(true);
             return;
         }
+
+        if (!CustomAlert.askDelete(removeButton.getScene().getWindow())) {
+            return;
+        }
+
         if (ComicService.deleteComic(comicDto.getId())) {
             reloadComicList();
             CustomAlert.showInfo(
@@ -274,6 +279,9 @@ public class ComicData {
             deleteAuthorComic.setDisable(true);
             return;
         }
+        if (!CustomAlert.askDelete(removeButton.getScene().getWindow())) {
+            return;
+        }
         authorComicTableView.getItems().remove(authorComicTableRow);
         authorComicTableView.getSelectionModel().select(null);
     }
@@ -285,11 +293,15 @@ public class ComicData {
             deleteComicCopy.setDisable(true);
             return;
         }
+        if (!CustomAlert.askDelete(removeButton.getScene().getWindow())) {
+            return;
+        }
         comicCopyTableView.getItems().remove(comicCopyTableRow);
+        comicCopyTableView.getSelectionModel().select(null);
     }
 
     private void openNewComicCopy(ComicCopyTable comicCopyTable) {
-        FXMLLoader loader = MainController.getFxmlLoader("/create/comic-copy-data");
+        FXMLLoader loader = MainController.getFxmlLoader("create/comic-copy-data");
         Parent root;
         try {
             root = loader.load();
@@ -328,7 +340,7 @@ public class ComicData {
     }
 
     private void openNewAuthorComic(AuthorComicTable authorComicElement) {
-        FXMLLoader loader = MainController.getFxmlLoader("/create/author-comic-data");
+        FXMLLoader loader = MainController.getFxmlLoader("create/author-comic-data");
         Parent root;
         try {
             root = loader.load();

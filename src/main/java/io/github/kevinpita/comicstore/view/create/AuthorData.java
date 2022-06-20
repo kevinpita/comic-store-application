@@ -69,6 +69,9 @@ public class AuthorData {
         if (authorDto == null) {
             return;
         }
+        if (!CustomAlert.askDelete(removeButton.getScene().getWindow())) {
+            return;
+        }
         boolean deleteResult = AuthorService.deleteAuthor(authorDto.getId());
         if (deleteResult) {
             CustomAlert.showInfo(

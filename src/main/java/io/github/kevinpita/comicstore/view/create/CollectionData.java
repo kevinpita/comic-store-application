@@ -117,6 +117,9 @@ public class CollectionData {
         if (collectionDto == null) {
             return;
         }
+        if (!CustomAlert.askDelete(removeButton.getScene().getWindow())) {
+            return;
+        }
         boolean deleteResult = CollectionService.deleteCollection(collectionDto.getId());
         if (deleteResult) {
             reloadCollectionList();
