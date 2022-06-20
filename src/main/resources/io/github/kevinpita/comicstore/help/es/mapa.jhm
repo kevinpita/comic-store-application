@@ -1,22 +1,22 @@
 <?xml version='1.0' encoding='ISO-8859-1'?>
 <map version="1.0">
-    <mapID target="principal" url="paginas/principal.html"/>
+    <mapID target="principal" url="pages/main.html"/>
 
-    <mapID target="comic" url="paginas/listar/comic.html"/>
-    <mapID target="nuevoComic" url="paginas/crear/comic.html"/>
+    <mapID target="comic" url="pages/list/comic.html"/>
+    <mapID target="nuevoComic" url="pages/create/comic.html"/>
 
-    <mapID target="coleccion" url="paginas/listar/coleccion.html"/>
-    <mapID target="nuevoColeccion" url="paginas/crear/coleccion.html"/>
+    <mapID target="coleccion" url="pages/list/collection.html"/>
+    <mapID target="nuevaColeccion" url="pages/create/collection.html"/>
 
-    <mapID target="autor" url="paginas/listar/autor.html"/>
-    <mapID target="nuevoAutor" url="paginas/crear/autor.html"/>
+    <mapID target="autor" url="pages/list/author.html"/>
+    <mapID target="nuevoAutor" url="pages/create/author.html"/>
 
-    <mapID target="informe" url="paginas/listar/informe.html"/>
+    <mapID target="informe" url="pages/list/report.html"/>
 
-    <mapID target="servidor" url="paginas/configuracion/servidor.html"/>
-    <mapID target="idioma" url="paginas/configuracion/idioma.html"/>
+    <mapID target="servidor" url="pages/config/server.html"/>
+    <mapID target="idioma" url="pages/config/language.html"/>
 
-    <mapID target="nuevoEjemplarComic" url="paginas/crear/comic/ejemplar.html"/>
-    <mapID target="nuevoAutorComic" url="paginas/crear/comic/autor.html"/>
+    <mapID target="nuevoEjemplarComic" url="pages/create/comic/copy.html"/>
+    <mapID target="nuevoAutorComic" url="pages/create/comic/author.html"/>
 
 </map>

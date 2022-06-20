@@ -10,8 +10,8 @@
             </tocitem>
             <tocitem text="Crear">
                 <tocitem target="nuevoComic" text="Crear cómic">
-                    <tocitem target="nuevoEjemplarComic" text="Añadir ejemplar"/>
-                    <tocitem target="nuevoAutorComic" text="Añadir autor"/>
+                    <tocitem target="nuevoEjemplarComic" text="Agregar ejemplar"/>
+                    <tocitem target="nuevoAutorComic" text="Agregar autor"/>
                 </tocitem>
                 <tocitem target="nuevaColeccion" text="Crear colección"/>
                 <tocitem target="nuevoAutor" text="Crear autor"/>

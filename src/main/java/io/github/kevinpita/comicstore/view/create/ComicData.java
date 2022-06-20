@@ -174,7 +174,6 @@ public class ComicData {
         if (issueNumber.isEmpty() || issueNumber.equals("0") || issueNumber.length() > 9) {
             error = true;
             comicIssueNumber.getStyleClass().add("errorField");
-
             Tooltip tooltip = new Tooltip(i18n.getString("errorIssueNumber"));
             tooltip.setFont(new Font(16));
             comicIssueNumber.setTooltip(tooltip);
